@@ -103,7 +103,13 @@
       backdrop-filter: blur(4px);
       transition: 0.3s;
     }
-
+    
+    .box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
     .box:hover {
       transform: translateY(-5px);
       background: rgba(255, 255, 255, 0.9);
@@ -159,12 +165,23 @@
   </div>
 
   <!-- BOTTOM SECTION -->
-  <div class="container">
-    <a href="Design1.html" class="box">Design1</a>
-    <a href="Design2.html" class="box">Design2</a>
-    <a href="Design3.html" class="box">Design3</a>
-    <a href="Design4.html" class="box">Design4</a>
-  </div>
+<div class="container">
+  <a href="Design1.html" class="box">
+    <img src="dentist.png" alt="Design 1">
+  </a>
+  
+  <a href="Design2.html" class="box">
+    <img src="memoryGame.png" alt="Design 2">
+  </a>
+  
+  <a href="Design3.html" class="box">
+    <img src="eCommerce.png" alt="Design 3">
+  </a>
+  
+  <a href="Design4.html" class="box">
+    <img src="analyticsSite.png" alt="Design 4">
+  </a>
+</div>
 
 </body>
 
