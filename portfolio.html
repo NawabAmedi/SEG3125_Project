@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* TOP SECTION */
+    .top {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      gap: 30px;
+      border-bottom: 2px solid black;
+    }
+
+    .circle {
+      width: 120px;
+      height: 120px;
+      border: 2px solid black;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .text-lines h1 {
+      margin: 0;
+    }
+
+    .text-lines p {
+      margin: 10px 0 0 0;
+    }
+
+    /* BOTTOM GRID */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .box {
+      height: 150px;
+      border: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: black;
+    }
+
+    /* make D4 sit bottom-left like sketch */
+    .box4 {
+      grid-column: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP SECTION -->
+  <div class="top">
+    <div class="circle">
+      picture
+    </div>
+
+    <div class="text-lines">
+      <h1>Nawab Amedi</h1>
+      <p>I am Nawab Amedi, a second year software-engineering student at the University of Ottawa.</p>
+    </div>
+  </div>
+
+  <!-- BOTTOM SECTION -->
+  <div class="container">
+    <a href="Design1.html" class="box">Design1</a>
+    <a href="Design2.html" class="box">Design2</a>
+    <a href="Design3.html" class="box">Design3</a>
+    <a href="Design4.html" class="box box4">Design4</a>
+  </div>
+
+</body>
+
+</html>
