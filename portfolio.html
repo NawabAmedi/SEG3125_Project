@@ -12,12 +12,24 @@
       font-family: Arial, sans-serif;
     }
 
-    /* TOP SECTION */
-    .top {
+    /* MAIN LAYOUT */
+    .main {
+      display: flex;
+      gap: 40px;
+      padding: 30px;
+    }
+
+    /* LEFT SIDE */
+    .left {
+      flex: 2;
+    }
+
+    /* HEADER (NAME + PICTURE SIDE BY SIDE) */
+    .header {
       display: flex;
       align-items: center;
-      padding: 30px;
-      gap: 30px;
+      gap: 20px;
+      padding-bottom: 20px;
       border-bottom: 2px solid black;
     }
 
@@ -30,66 +42,100 @@
       justify-content: center;
       align-items: center;
       font-size: 14px;
+      background: white;
     }
 
-    .text-lines h1 {
+    .header h1 {
       margin: 0;
     }
 
-    .text-lines p {
-      margin: 10px 0 0 0;
+    /* ABOUT SECTION */
+    .about {
+      padding-top: 20px;
+      line-height: 1.6;
     }
 
-    /* BOTTOM GRID */
-    .container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 80px;
-      padding: 40px;
+    .about h2 {
+      margin-bottom: 5px;
+    }
+
+    /* RIGHT SIDE (DESIGNS) */
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .box {
-      height: 350px;
+      height: 150px;
       border: 2px solid black;
       display: flex;
       justify-content: center;
       align-items: center;
       text-decoration: none;
       color: black;
+      font-weight: bold;
     }
 
-    /* make D4 sit bottom-left like sketch */
-    .box4 {
-      grid-column: 1;
+    .box:hover {
+      background-color: #f2f2f2;
     }
+
   </style>
 </head>
 
 <body>
 
-  <!-- TOP SECTION -->
-  <div class="top" style="background-color: #e3f2fd;">
-    <div class="circle">
-      picture
+  <div class="main">
+
+    <!-- LEFT SIDE -->
+    <div class="left">
+
+      <!-- NAME + PICTURE -->
+      <div class="header">
+        <div class="circle">
+          picture
+        </div>
+        <h1>Nawab Amedi</h1>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="about">
+        <h2>About Me</h2>
+        <p>
+          I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious
+          and consistently working to improve my skills in both software development and design. Outside of academics,
+          I enjoy playing sports to stay active, and I also play video games, which has helped me develop
+          problem-solving skills and quick decision-making.
+        </p>
+
+        <h2>How I Work</h2>
+        <p>
+          I do not currently have professional experience in UI design. At the moment, I am taking a UI design course
+          where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and
+          user-centered design principles.
+        </p>
+
+        <p>
+          I also use resources such as the Nielsen Norman Group (NN/g) to understand usability best practices.
+        </p>
+
+        <p>
+          My design process focuses on learning through practice, applying feedback, and improving iteratively.
+        </p>
+      </div>
+
     </div>
 
-    <div class="text-lines">
-      <h1>Nawab Amedi</h1>
-      <h2>About Me</h2> 
-      <p>I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious and consistently working to improve my skills in both software development and design. Outside of academics, I enjoy playing sports to stay active, and I also play video games, which has helped me develop problem-solving skills and quick decision-making.</p>
-      <h2>How I Work</h2> 
-      <p>I do not currently have professional experience in UI design. At the moment, I am taking a UI design course where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and user-centered design principles.</p>
-      <p>I am also using industry resources such as the Nielsen Norman Group (NN/g) to better understand established usability standards and best practices.</p>
-      <p>My current design process is focused on learning and improvement. It involves understanding basic concepts, applying them in simple designs, receiving feedback, and refining my work. As the course progresses, I will continue developing my understanding of concepts such as user-centered design, heuristic evaluation, and iterative design.</p>
+    <!-- RIGHT SIDE -->
+    <div class="right">
+      <a href="Design1.html" class="box">Design 1</a>
+      <a href="Design2.html" class="box">Design 2</a>
+      <a href="Design3.html" class="box">Design 3</a>
+      <a href="Design4.html" class="box">Design 4</a>
     </div>
-  </div>
 
-  <!-- BOTTOM SECTION -->
-  <div class="container" style="background-color: #eceff1;">
-    <a href="Design1.html" class="box">Design1</a>
-    <a href="Design2.html" class="box">Design2</a>
-    <a href="Design3.html" class="box">Design3</a>
-    <a href="Design4.html" class="box box4">Design4</a>
   </div>
 
 </body>
