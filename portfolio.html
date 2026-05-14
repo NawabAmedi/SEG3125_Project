@@ -10,6 +10,9 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+
+      /* simple blended background */
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff, #eceff1);
     }
 
     /* TOP SECTION */
@@ -18,13 +21,15 @@
       align-items: center;
       padding: 30px;
       gap: 30px;
-      border-bottom: 2px solid black;
+
+      background: #e0f7fa;
+      border-bottom: 1px solid #ccc;
     }
 
     .circle {
       width: 120px;
       height: 120px;
-      border: 2px solid black;
+      border: 2px solid #333;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -45,6 +50,7 @@
     .about {
       padding: 40px;
       line-height: 1.6;
+      background: #ffffff;
     }
 
     .about h2 {
@@ -55,18 +61,20 @@
     .container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 80px;
+      gap: 40px;
       padding: 40px;
+      background: #eceff1;
     }
 
     .box {
       height: 350px;
-      border: 2px solid black;
+      border: 2px solid #333;
       display: flex;
       justify-content: center;
       align-items: center;
       text-decoration: none;
       color: black;
+      background: white;
     }
 
   </style>
@@ -75,7 +83,7 @@
 <body>
 
   <!-- TOP SECTION -->
-  <div class="top" style = "background-color: #e0f7fa">
+  <div class="top">
     <div class="circle">
       picture
     </div>
@@ -92,32 +100,22 @@
     <p>
       I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious and
       consistently working to improve my skills in both software development and design. Outside of academics, I enjoy
-      playing sports to stay active, and I also play video games, which has helped me develop problem-solving skills
-      and quick decision-making.
+      playing sports and video games.
     </p>
 
     <h2>How I Work</h2>
     <p>
-      I do not currently have professional experience in UI design. At the moment, I am taking a UI design course
-      where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and
-      user-centered design principles.
+      I am currently learning UI design, focusing on layout, color theory, accessibility, and user-centered design.
+      I also use resources like Nielsen Norman Group to understand usability principles.
     </p>
 
     <p>
-      I am also using industry resources such as the Nielsen Norman Group (NN/g) to better understand established
-      usability standards and best practices.
-    </p>
-
-    <p>
-      My current design process is focused on learning and improvement. It involves understanding basic concepts,
-      applying them in simple designs, receiving feedback, and refining my work. As the course progresses, I will
-      continue developing my understanding of concepts such as user-centered design, heuristic evaluation, and iterative
-      design.
+      My process is simple: learn concepts, apply them, get feedback, and improve over time.
     </p>
   </div>
 
   <!-- BOTTOM SECTION -->
-  <div class="container" style = "background-color: #eceff1">
+  <div class="container">
     <a href="Design1.html" class="box">Design1</a>
     <a href="Design2.html" class="box">Design2</a>
     <a href="Design3.html" class="box">Design3</a>
