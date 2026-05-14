@@ -12,27 +12,14 @@
       font-family: Arial, sans-serif;
     }
 
-    /* OUTER LAYOUT */
-    .main {
-      display: flex;
-      height: 100vh;
-    }
-
-    /* LEFT SIDE */
-    .left {
-      flex: 2;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      border-right: 3px solid black;
-    }
-
-    /* HEADER (NAME + PIC SIDE BY SIDE) */
-    .header {
+    /* TOP SECTION */
+    .top {
       display: flex;
       align-items: center;
-      gap: 20px;
-      padding-bottom: 20px;
+      padding: 30px;
+      gap: 30px;
+      border-bottom: 2px solid black;
+      background-color: #e43f2f;
     }
 
     .circle {
@@ -43,86 +30,103 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 14px;
+      background: white;
     }
 
-    h1 {
+    .text-lines h1 {
       margin: 0;
     }
 
-    /* TEXT SECTION */
+    .text-lines p {
+      margin: 10px 0 0 0;
+    }
+
+    /* ABOUT SECTION */
     .about {
-      margin-top: 20px;
+      padding: 40px;
       line-height: 1.6;
+      border-bottom: 2px solid black;
     }
 
     .about h2 {
-      margin-bottom: 5px;
+      margin-top: 0;
     }
 
-    /* RIGHT SIDE (SCROLL AREA) */
-    .right {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      overflow-y: auto; /* THIS makes it scrollable */
+    /* BOTTOM GRID */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 80px;
+      padding: 40px;
     }
 
-    .design-box {
-      height: 200px;
-      border: 3px solid black;
+    .box {
+      height: 350px;
+      border: 2px solid black;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: bold;
       text-decoration: none;
       color: black;
     }
 
+    .box4 {
+      grid-column: 1;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="main">
-
-    <!-- LEFT PANEL -->
-    <div class="left">
-
-      <div class="header">
-        <div class="circle">picture</div>
-        <h1>Nawab Amedi</h1>
-      </div>
-
-      <div class="about">
-        <h2>About Me</h2>
-        <p>
-          I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious
-          and enjoy improving my skills in software development and design. Outside of school, I play sports and
-          video games.
-        </p>
-
-        <h2>How I Work</h2>
-        <p>
-          I am currently learning UI design through a course where I study layout, accessibility, and user-centered
-          design principles. I also use resources like Nielsen Norman Group (NN/g) to understand best practices.
-        </p>
-      </div>
-
+  <!-- TOP SECTION -->
+  <div class="top">
+    <div class="circle">
+      picture
     </div>
 
-    <!-- RIGHT PANEL (SCROLLABLE DESIGN STACK) -->
-    <div class="right">
-
-      <a href="Design1.html" class="design-box">Design 1</a>
-      <a href="Design2.html" class="design-box">Design 2</a>
-      <a href="Design3.html" class="design-box">Design 3</a>
-      <a href="Design4.html" class="design-box">Design 4</a>
-
+    <div class="text-lines">
+      <h1>Nawab Amedi</h1>
+      <p>Software Engineering Student – University of Ottawa</p>
     </div>
+  </div>
 
+  <!-- ABOUT SECTION -->
+  <div class="about">
+    <h2>About Me</h2>
+    <p>
+      I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious and
+      consistently working to improve my skills in both software development and design. Outside of academics, I enjoy
+      playing sports to stay active, and I also play video games, which has helped me develop problem-solving skills
+      and quick decision-making.
+    </p>
+
+    <h2>How I Work</h2>
+    <p>
+      I do not currently have professional experience in UI design. At the moment, I am taking a UI design course
+      where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and
+      user-centered design principles.
+    </p>
+
+    <p>
+      I am also using industry resources such as the Nielsen Norman Group (NN/g) to better understand established
+      usability standards and best practices.
+    </p>
+
+    <p>
+      My current design process is focused on learning and improvement. It involves understanding basic concepts,
+      applying them in simple designs, receiving feedback, and refining my work. As the course progresses, I will
+      continue developing my understanding of concepts such as user-centered design, heuristic evaluation, and iterative
+      design.
+    </p>
+  </div>
+
+  <!-- BOTTOM SECTION -->
+  <div class="container">
+    <a href="Design1.html" class="box">Design1</a>
+    <a href="Design2.html" class="box">Design2</a>
+    <a href="Design3.html" class="box">Design3</a>
+    <a href="Design4.html" class="box">Design4</a>
   </div>
 
 </body>
