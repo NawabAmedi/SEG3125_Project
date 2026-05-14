@@ -12,25 +12,27 @@
       font-family: Arial, sans-serif;
     }
 
-    /* MAIN LAYOUT */
+    /* OUTER LAYOUT */
     .main {
       display: flex;
-      gap: 40px;
-      padding: 30px;
+      height: 100vh;
     }
 
     /* LEFT SIDE */
     .left {
       flex: 2;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      border-right: 3px solid black;
     }
 
-    /* HEADER (NAME + PICTURE SIDE BY SIDE) */
+    /* HEADER (NAME + PIC SIDE BY SIDE) */
     .header {
       display: flex;
       align-items: center;
       gap: 20px;
       padding-bottom: 20px;
-      border-bottom: 2px solid black;
     }
 
     .circle {
@@ -41,17 +43,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 14px;
-      background: white;
     }
 
-    .header h1 {
+    h1 {
       margin: 0;
     }
 
-    /* ABOUT SECTION */
+    /* TEXT SECTION */
     .about {
-      padding-top: 20px;
+      margin-top: 20px;
       line-height: 1.6;
     }
 
@@ -59,27 +59,26 @@
       margin-bottom: 5px;
     }
 
-    /* RIGHT SIDE (DESIGNS) */
+    /* RIGHT SIDE (SCROLL AREA) */
     .right {
       flex: 1;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 20px;
+
+      overflow-y: auto; /* THIS makes it scrollable */
     }
 
-    .box {
-      height: 150px;
-      border: 2px solid black;
+    .design-box {
+      height: 200px;
+      border: 3px solid black;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-weight: bold;
       text-decoration: none;
       color: black;
-      font-weight: bold;
-    }
-
-    .box:hover {
-      background-color: #f2f2f2;
     }
 
   </style>
@@ -89,51 +88,39 @@
 
   <div class="main">
 
-    <!-- LEFT SIDE -->
+    <!-- LEFT PANEL -->
     <div class="left">
 
-      <!-- NAME + PICTURE -->
       <div class="header">
-        <div class="circle">
-          picture
-        </div>
+        <div class="circle">picture</div>
         <h1>Nawab Amedi</h1>
       </div>
 
-      <!-- ABOUT -->
       <div class="about">
         <h2>About Me</h2>
         <p>
           I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious
-          and consistently working to improve my skills in both software development and design. Outside of academics,
-          I enjoy playing sports to stay active, and I also play video games, which has helped me develop
-          problem-solving skills and quick decision-making.
+          and enjoy improving my skills in software development and design. Outside of school, I play sports and
+          video games.
         </p>
 
         <h2>How I Work</h2>
         <p>
-          I do not currently have professional experience in UI design. At the moment, I am taking a UI design course
-          where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and
-          user-centered design principles.
-        </p>
-
-        <p>
-          I also use resources such as the Nielsen Norman Group (NN/g) to understand usability best practices.
-        </p>
-
-        <p>
-          My design process focuses on learning through practice, applying feedback, and improving iteratively.
+          I am currently learning UI design through a course where I study layout, accessibility, and user-centered
+          design principles. I also use resources like Nielsen Norman Group (NN/g) to understand best practices.
         </p>
       </div>
 
     </div>
 
-    <!-- RIGHT SIDE -->
+    <!-- RIGHT PANEL (SCROLLABLE DESIGN STACK) -->
     <div class="right">
-      <a href="Design1.html" class="box">Design 1</a>
-      <a href="Design2.html" class="box">Design 2</a>
-      <a href="Design3.html" class="box">Design 3</a>
-      <a href="Design4.html" class="box">Design 4</a>
+
+      <a href="Design1.html" class="design-box">Design 1</a>
+      <a href="Design2.html" class="design-box">Design 2</a>
+      <a href="Design3.html" class="design-box">Design 3</a>
+      <a href="Design4.html" class="design-box">Design 4</a>
+
     </div>
 
   </div>
