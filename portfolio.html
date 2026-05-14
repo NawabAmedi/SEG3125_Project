@@ -11,8 +11,33 @@
       margin: 0;
       font-family: Arial, sans-serif;
 
-      /* simple blended background */
-      background: linear-gradient(to bottom, #e0f7fa, #ffffff, #eceff1);
+      /* 🌈 blended background */
+      background: linear-gradient(135deg, #e0f7fa, #ffffff, #eceff1);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ✨ soft glowing background shapes */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -120px;
+      left: -120px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 188, 212, 0.25), transparent 60%);
+      z-index: -1;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      bottom: -150px;
+      right: -150px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(156, 39, 176, 0.2), transparent 60%);
+      z-index: -1;
     }
 
     /* TOP SECTION */
@@ -22,20 +47,22 @@
       padding: 30px;
       gap: 30px;
 
-      background: #e0f7fa;
-      border-bottom: 1px solid #ccc;
+      /* smoother blend instead of flat color */
+      background: linear-gradient(90deg, #e0f7fa, #ffffff);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
     }
 
     .circle {
       width: 120px;
       height: 120px;
-      border: 2px solid #333;
+      border: 2px solid rgba(0, 0, 0, 0.2);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
-      background: white;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(5px);
     }
 
     .text-lines h1 {
@@ -50,7 +77,9 @@
     .about {
       padding: 40px;
       line-height: 1.6;
-      background: #ffffff;
+
+      /* subtle gradient blend */
+      background: linear-gradient(180deg, #ffffff, #eceff1);
     }
 
     .about h2 {
@@ -61,20 +90,30 @@
     .container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
+      gap: 80px;
       padding: 40px;
-      background: #eceff1;
+
+      background: linear-gradient(180deg, #eceff1, #dfe6e9);
     }
 
     .box {
       height: 350px;
-      border: 2px solid #333;
+      border: 2px solid rgba(0, 0, 0, 0.2);
       display: flex;
       justify-content: center;
       align-items: center;
       text-decoration: none;
       color: black;
-      background: white;
+
+      /* slight glass effect */
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(4px);
+      transition: 0.3s;
+    }
+
+    .box:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.9);
     }
 
   </style>
@@ -100,17 +139,27 @@
     <p>
       I am Nawab Amedi, a second-year software engineering student at the University of Ottawa. I am ambitious and
       consistently working to improve my skills in both software development and design. Outside of academics, I enjoy
-      playing sports and video games.
+      playing sports to stay active, and I also play video games, which has helped me develop problem-solving skills
+      and quick decision-making.
     </p>
 
     <h2>How I Work</h2>
     <p>
-      I am currently learning UI design, focusing on layout, color theory, accessibility, and user-centered design.
-      I also use resources like Nielsen Norman Group to understand usability principles.
+      I do not currently have professional experience in UI design. At the moment, I am taking a UI design course
+      where I am learning the fundamentals of interface design, including layout, color theory, accessibility, and
+      user-centered design principles.
     </p>
 
     <p>
-      My process is simple: learn concepts, apply them, get feedback, and improve over time.
+      I am also using industry resources such as the Nielsen Norman Group (NN/g) to better understand established
+      usability standards and best practices.
+    </p>
+
+    <p>
+      My current design process is focused on learning and improvement. It involves understanding basic concepts,
+      applying them in simple designs, receiving feedback, and refining my work. As the course progresses, I will
+      continue developing my understanding of concepts such as user-centered design, heuristic evaluation, and iterative
+      design.
     </p>
   </div>
 
