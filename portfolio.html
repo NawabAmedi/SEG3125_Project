@@ -61,6 +61,7 @@
       border-radius: 50%;
       object-fit: cover;
     }
+
     .text-lines h1 {
       margin: 0;
     }
@@ -90,6 +91,11 @@
       background: linear-gradient(180deg, #eceff1, #dfe6e9);
     }
 
+    .project {
+      display: flex;
+      flex-direction: column;
+    }
+
     .box {
       height: 350px;
       border: 2px solid rgba(0, 0, 0, 0.2);
@@ -113,6 +119,29 @@
     .box:hover {
       transform: translateY(-5px);
       background: rgba(255, 255, 255, 0.9);
+    }
+
+    .project h3 {
+      margin: 0;
+      padding: 15px;
+      background-color: #2f3640;
+      color: white;
+
+      border-left: 2px solid rgba(0,0,0,0.2);
+      border-right: 2px solid rgba(0,0,0,0.2);
+    }
+
+    .project textarea {
+      height: 100px;
+      resize: none;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top: none;
+
+      background-color: #2f3640;
+      color: white;
     }
 
   </style>
@@ -165,23 +194,45 @@
   </div>
 
   <!-- BOTTOM SECTION -->
-<div class="container">
-  <a href="Design1.html" class="box">
-    <img src="dentist.png" alt="Design 1">
-  </a>
-  
-  <a href="Design2.html" class="box">
-    <img src="memoryGame.png" alt="Design 2">
-  </a>
-  
-  <a href="Design3.html" class="box">
-    <img src="eCommerce.jfif" alt="Design 3">
-  </a>
-  
-  <a href="Design4.html" class="box">
-    <img src="analyticsSite.png" alt="Design 4">
-  </a>
-</div>
+  <div class="container">
+
+    <div class="project">
+      <a href="Design1.html" class="box">
+        <img src="dentist.png" alt="Design 1">
+      </a>
+
+      <h3>Dentist Website</h3>
+      <textarea></textarea>
+    </div>
+    
+    <div class="project">
+      <a href="Design2.html" class="box">
+        <img src="memoryGame.png" alt="Design 2">
+      </a>
+
+      <h3>Memory Game</h3>
+      <textarea></textarea>
+    </div>
+    
+    <div class="project">
+      <a href="Design3.html" class="box">
+        <img src="eCommerce.jfif" alt="Design 3">
+      </a>
+
+      <h3>E-Commerce Site</h3>
+      <textarea></textarea>
+    </div>
+    
+    <div class="project">
+      <a href="Design4.html" class="box">
+        <img src="analyticsSite.png" alt="Design 4">
+      </a>
+
+      <h3>Analytics Dashboard</h3>
+      <textarea></textarea>
+    </div>
+
+  </div>
 
 </body>
 
