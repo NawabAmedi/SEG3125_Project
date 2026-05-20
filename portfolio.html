@@ -97,22 +97,25 @@
     }
 
     .box {
-      height: 350px;
+      height: 500px;
       border: 2px solid rgba(0, 0, 0, 0.2);
+
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+
       text-decoration: none;
       color: black;
-      
+
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(4px);
       transition: 0.3s;
+
+      overflow: hidden;
     }
     
     .box img {
       width: 100%;
-      height: 100%;
+      height: 350px;
       object-fit: cover;
     }
     
@@ -121,27 +124,23 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
-    .project h3 {
-      margin: 0;
-      padding: 15px;
-      background-color: #eceff1;
-      color: black;
+    .info {
+      background-color: #e0f7fa;
+      height: 150px;
 
-      border-left: 2px solid rgba(0,0,0,0.2);
-      border-right: 2px solid rgba(0,0,0,0.2);
+      border-top: 2px solid rgba(0,0,0,0.2);
+
+      padding: 15px;
     }
 
-    .project textarea {
-      height: 50px;
-      resize: none;
-      padding: 10px;
-      font-family: Arial, sans-serif;
+    .info h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
 
-      border: 2px solid rgba(0,0,0,0.2);
-      border-top: none;
-
-      background-color: #eceff1;
-      color: black;
+    .info p {
+      margin: 0;
+      line-height: 1.4;
     }
 
   </style>
@@ -165,10 +164,11 @@
 
   <!-- ABOUT SECTION -->
   <div class="about">
+
     <h2>About Me</h2>
 
     <p>
-      I am Nawab Amedi, a second-year Software Engineering student at the University of Ottawa. I am interested in software development, technology, and design, and I enjoy learning new skills through both coursework and personal projects. 
+      I am Nawab Amedi, a second-year Software Engineering student at the University of Ottawa. I am interested in software development, technology, and design, and I enjoy learning new skills through both coursework and personal projects.
     </p>
     
     <p>
@@ -188,6 +188,7 @@
     <p>
       I learn best through practice, so a lot of my process involves trying things out, making mistakes, and improving from there. I also pay attention to small details because I think even simple changes can make a design feel much cleaner and easier to use. As I continue through the course, I will keep building my understanding of concepts such as heuristic evaluation, accessibility, iterative design, and user-centered design while improving my overall workflow and design process.
     </p>
+
   </div>
 
   <!-- BOTTOM SECTION -->
@@ -196,45 +197,57 @@
     <div class="project">
       <a href="Design1.html" class="box">
         <img src="dentist.png" alt="Design 1">
-      </a>
 
-      <h3>Dentist Website</h3>
-      <p class ="desc">
-        This is the description for the dentist website. It is not yet made ... coming soon.
-      </p>
+        <div class="info">
+          <h3>Dentist Website</h3>
+          <p>
+            This is the description for the dentist website. It is not yet made ... coming soon.
+          </p>
+        </div>
+
+      </a>
     </div>
     
     <div class="project">
       <a href="Design2.html" class="box">
         <img src="memoryGame.png" alt="Design 2">
-      </a>
 
-      <h3>Memory Game</h3>
-      <p class ="desc">
-        This is the description for the memory game. It is not yet made ... coming soon.
-      </p>
+        <div class="info">
+          <h3>Memory Game</h3>
+          <p>
+            This is the description for the memory game. It is not yet made ... coming soon.
+          </p>
+        </div>
+
+      </a>
     </div>
     
     <div class="project">
       <a href="Design3.html" class="box">
         <img src="eCommerce.jfif" alt="Design 3">
-      </a>
 
-      <h3>E-Commerce Site</h3>
-      <p class ="desc">
-        This is the description for the e-commerce site. It is not yet made ... coming soon.
-      </p>
+        <div class="info">
+          <h3>E-Commerce Site</h3>
+          <p>
+            This is the description for the e-commerce site. It is not yet made ... coming soon.
+          </p>
+        </div>
+
+      </a>
     </div>
     
     <div class="project">
       <a href="Design4.html" class="box">
         <img src="analyticsSite.png" alt="Design 4">
-      </a>
 
-      <h3>Analytics Dashboard</h3>
-      <p class ="desc">
-        This is the description for the analytics dashboard. It is not yet made ... coming soon.
-      </p>
+        <div class="info">
+          <h3>Analytics Dashboard</h3>
+          <p>
+            This is the description for the analytics dashboard. It is not yet made ... coming soon.
+          </p>
+        </div>
+
+      </a>
     </div>
 
   </div>
