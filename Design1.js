@@ -489,11 +489,6 @@ class BrightSmileDental {
                 position: relative;
                 transition: transform 0.6s;
                 transform-style: preserve-3d;
-
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                min-height: 180px;
             }
 
             .price-card-container:hover .price-card,
@@ -544,7 +539,7 @@ class BrightSmileDental {
             .amount {
                 font-size: 1.5rem;
                 color: #b8683f;
-                margin-top: auto;
+                margin: 1rem 0;
                 font-weight: 700;
             }
 
