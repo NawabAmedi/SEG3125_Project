@@ -710,7 +710,7 @@ class BrightSmileDental {
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ddd' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%23999'%3E🦷%3C/text%3E%3C/svg%3E" alt="Dental services">
+                    <img src="./dentist.png" alt="Dental services">
                 </div>
             </section>
         `;
