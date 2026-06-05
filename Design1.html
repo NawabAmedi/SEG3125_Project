@@ -3,11 +3,614 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Site</title>
+    <title>BrightSmile Dental Clinic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffe082;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            color: white;
+            padding: 80px 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button, .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #ff6f00;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e65100;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #00bcd4;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: #eceff1;
+        }
+
+        /* SERVICES SECTION */
+        .services {
+            padding: 60px 2rem;
+            background: #f5f5f5;
+        }
+
+        .services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #00bcd4;
+        }
+
+        .service-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #00bcd4;
+            color: #00bcd4;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .service-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .service-content h3 {
+            color: #00bcd4;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .service-content p {
+            margin-bottom: 1rem;
+        }
+
+        .service-content ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .service-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .cost {
+            background: #eceff1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: #00bcd4;
+        }
+
+        /* PRICING SECTION */
+        .pricing {
+            padding: 60px 2rem;
+            background: white;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #00bcd4;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .price-card:hover {
+            border-color: #00bcd4;
+            box-shadow: 0 4px 15px rgba(0,188,212,0.2);
+        }
+
+        .price-card h3 {
+            color: #00bcd4;
+            margin-bottom: 1rem;
+        }
+
+        .price-card .amount {
+            font-size: 2.5rem;
+            color: #ff6f00;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        /* APPOINTMENT SECTION */
+        .appointment {
+            padding: 60px 2rem;
+            background: linear-gradient(135deg, #eceff1, #ffffff);
+        }
+
+        .appointment h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #00bcd4;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #eceff1;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #00bcd4;
+            box-shadow: 0 0 5px rgba(0,188,212,0.3);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        /* CONTACT SECTION */
+        .contact {
+            padding: 60px 2rem;
+            background: #f5f5f5;
+        }
+
+        .contact h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #00bcd4;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .contact-card h3 {
+            color: #00bcd4;
+            margin-bottom: 1rem;
+        }
+
+        /* DESIGNER SECTION */
+        .designer {
+            padding: 60px 2rem;
+            background: white;
+            text-align: center;
+            border-top: 2px solid #eceff1;
+        }
+
+        .designer h2 {
+            color: #00bcd4;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .designer p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #263238;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        /* HIDDEN CLASS */
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<h1>Service Site</h1>
-<p>Coming Soon</p>
-<a href="index.html">Back</a>
+
+<!-- NAVBAR -->
+<nav>
+    <h2>🦷 BrightSmile Dental</h2>
+    <div>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#appointment">Book</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <h1>Welcome to BrightSmile Dental Clinic</h1>
+    <p>Professional dental care in the heart of Ottawa</p>
+    <div class="button-group">
+        <button class="btn btn-primary" onclick="document.getElementById('appointment').scrollIntoView({behavior:'smooth'})">
+            Book Appointment
+        </button>
+        <button class="btn btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+            Learn More
+        </button>
+    </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section id="services" class="services">
+    <h2>Our Services</h2>
+    
+    <div class="service-tabs">
+        <button class="tab-btn active" onclick="showService('general')">General Dentistry</button>
+        <button class="tab-btn" onclick="showService('cosmetic')">Cosmetic Dentistry</button>
+        <button class="tab-btn" onclick="showService('restorative')">Restorative Procedures</button>
+        <button class="tab-btn" onclick="showService('root')">Root Canal Therapy</button>
+    </div>
+
+    <div class="service-content">
+        <!-- General Dentistry -->
+        <div id="general" class="service-tab">
+            <h3>General Dentistry</h3>
+            <p>Keep your smile healthy with our comprehensive general dental services.</p>
+            <p><strong>What We Offer:</strong></p>
+            <ul>
+                <li>Regular cleanings and exams</li>
+                <li>Cavity fillings</li>
+                <li>Gum disease treatment</li>
+                <li>Teeth extractions</li>
+            </ul>
+            <div class="cost">Estimated Cost: $150 - $500</div>
+        </div>
+
+        <!-- Cosmetic Dentistry -->
+        <div id="cosmetic" class="service-tab hidden">
+            <h3>Cosmetic Dentistry</h3>
+            <p>Enhance your smile with our cosmetic dental treatments.</p>
+            <p><strong>What We Offer:</strong></p>
+            <ul>
+                <li>Teeth whitening</li>
+                <li>Veneers</li>
+                <li>Smile makeovers</li>
+                <li>Tooth bonding</li>
+            </ul>
+            <div class="cost">Estimated Cost: $500 - $2,000</div>
+        </div>
+
+        <!-- Restorative Procedures -->
+        <div id="restorative" class="service-tab hidden">
+            <h3>Restorative Procedures</h3>
+            <p>Restore your teeth to their natural appearance and function.</p>
+            <p><strong>What We Offer:</strong></p>
+            <ul>
+                <li>Dental crowns</li>
+                <li>Bridges</li>
+                <li>Implants</li>
+                <li>Dentures</li>
+            </ul>
+            <div class="cost">Estimated Cost: $800 - $3,000</div>
+        </div>
+
+        <!-- Root Canal Therapy -->
+        <div id="root" class="service-tab hidden">
+            <h3>Root Canal Therapy</h3>
+            <p>A root canal is used to treat infection inside a tooth and can help save a damaged tooth.</p>
+            <p><strong>What to Expect:</strong></p>
+            <ul>
+                <li>Examination and X-rays</li>
+                <li>Removal of infected tissue</li>
+                <li>Cleaning and sealing of the tooth</li>
+                <li>Follow-up appointment if required</li>
+            </ul>
+            <div class="cost">Estimated Cost: $800 - $1,200</div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section id="pricing" class="pricing">
+    <h2>Service Pricing</h2>
+    <div class="pricing-grid">
+        <div class="price-card">
+            <h3>Cleaning & Exam</h3>
+            <p>Regular checkup with professional cleaning</p>
+            <div class="amount">$150</div>
+            <button class="btn btn-primary" onclick="bookService('Cleaning & Exam')">Book</button>
+        </div>
+        <div class="price-card">
+            <h3>Cavity Filling</h3>
+            <p>Treat and restore damaged teeth</p>
+            <div class="amount">$250</div>
+            <button class="btn btn-primary" onclick="bookService('Cavity Filling')">Book</button>
+        </div>
+        <div class="price-card">
+            <h3>Root Canal</h3>
+            <p>Save infected or damaged teeth</p>
+            <div class="amount">$1,000</div>
+            <button class="btn btn-primary" onclick="bookService('Root Canal')">Book</button>
+        </div>
+        <div class="price-card">
+            <h3>Teeth Whitening</h3>
+            <p>Professional whitening treatment</p>
+            <div class="amount">$600</div>
+            <button class="btn btn-primary" onclick="bookService('Teeth Whitening')">Book</button>
+        </div>
+    </div>
+</section>
+
+<!-- APPOINTMENT SECTION -->
+<section id="appointment" class="appointment">
+    <h2>Book Your Appointment</h2>
+    <div class="form-container">
+        <form id="appointmentForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select id="service" name="service" required>
+                    <option value="">-- Select a service --</option>
+                    <option value="General Dentistry">General Dentistry</option>
+                    <option value="Cosmetic Dentistry">Cosmetic Dentistry</option>
+                    <option value="Restorative Procedures">Restorative Procedures</option>
+                    <option value="Root Canal Therapy">Root Canal Therapy</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Preferred Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Notes</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us more about your needs..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Appointment Request</button>
+            <div id="successAlert" class="alert success">
+                ✓ Appointment request received! We will contact you shortly.
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="contact">
+    <h2>Visit Us</h2>
+    <div class="contact-grid">
+        <div class="contact-card">
+            <h3>📍 Location</h3>
+            <p><strong>BrightSmile Dental Clinic</strong></p>
+            <p>123 Bank Street</p>
+            <p>Ottawa, ON K1R 3B2</p>
+        </div>
+        <div class="contact-card">
+            <h3>📞 Phone</h3>
+            <p><strong>(613) 555-1234</strong></p>
+            <p>Monday - Friday: 8AM - 6PM</p>
+            <p>Saturday: 9AM - 2PM</p>
+        </div>
+        <div class="contact-card">
+            <h3>📧 Email</h3>
+            <p><strong>info@brightsmile.ca</strong></p>
+            <p>We typically respond within 24 hours</p>
+        </div>
+    </div>
+</section>
+
+<!-- DESIGNER SECTION -->
+<section class="designer">
+    <h2>About the Designer</h2>
+    <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate UI/UX design principles and web development skills.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2024 BrightSmile Dental Clinic. All rights reserved.</p>
+    <p>Designed by Nawab Amedi | University of Ottawa</p>
+</footer>
+
+<script>
+    // Service Tab Switching
+    function showService(serviceId) {
+        // Hide all service tabs
+        document.querySelectorAll('.service-tab').forEach(tab => {
+            tab.classList.add('hidden');
+        });
+
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show selected service
+        document.getElementById(serviceId).classList.remove('hidden');
+
+        // Add active class to clicked button
+        event.target.classList.add('active');
+    }
+
+    // Book Service Function
+    function bookService(service) {
+        document.getElementById('service').value = service;
+        document.getElementById('appointment').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Form Submission
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Show success message
+        document.getElementById('successAlert').classList.add('success');
+
+        // Reset form after 2 seconds
+        setTimeout(() => {
+            this.reset();
+            document.getElementById('successAlert').classList.remove('success');
+        }, 2000);
+    });
+</script>
+
 </body>
 </html>
