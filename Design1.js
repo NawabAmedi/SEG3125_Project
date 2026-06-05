@@ -710,7 +710,7 @@ class BrightSmileDental {
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="./dentist.png" alt="Dental services">
+                    <img src="./Dentist.jpg" alt="Dental services">
                 </div>
             </section>
         `;
