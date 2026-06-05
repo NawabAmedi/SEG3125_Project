@@ -39,7 +39,7 @@ class BrightSmileDental {
             },
             root: {
                 title: 'Root Canal Therapy',
-                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might sound intimidating, modern root canal therapy is a comfortable way to save your natural tooth.',
+                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might [...]',
                 offerings: [
                     'Examination and X-rays',
                     'Removal of infected tissue',
@@ -52,12 +52,99 @@ class BrightSmileDental {
         };
 
         this.pricingServices = [
-            { name: 'Routine Cleaning', description: 'Professional cleaning and oral examination', price: '$120' },
-            { name: 'Teeth Whitening', description: 'In-office whitening treatment', price: '$450' },
-            { name: 'Dental Filling', description: 'Composite filling, varies by size', price: '$189 - $350' },
-            { name: 'Root Canal', description: 'Complete root canal therapy, varies by tooth', price: '$800 - $1,200' },
-            { name: 'Dental Crown', description: 'Porcelain or ceramic crown', price: '$1,000 - $1,500' },
-            { name: 'Dental Implant', description: 'Single tooth implant with crown', price: '$2,500 - $3,500' }
+            { 
+                name: 'Routine Cleaning', 
+                description: 'Professional cleaning and oral examination', 
+                price: '$120',
+                details: {
+                    description: 'Professional teeth cleaning and comprehensive oral examination to keep your teeth healthy and detect any issues early.',
+                    includes: [
+                        'Professional plaque and tartar removal',
+                        'Thorough teeth brushing and polishing',
+                        'Complete oral examination',
+                        'Fluoride treatment',
+                        'Oral hygiene counseling'
+                    ]
+                }
+            },
+            { 
+                name: 'Teeth Whitening', 
+                description: 'In-office whitening treatment', 
+                price: '$450',
+                details: {
+                    description: 'Professional in-office whitening treatment to brighten your smile and boost your confidence.',
+                    includes: [
+                        'Professional-grade whitening gel',
+                        'LED whitening activation light',
+                        'Shade assessment and matching',
+                        'Take-home maintenance tray',
+                        'Results visible immediately'
+                    ]
+                }
+            },
+            { 
+                name: 'Dental Filling', 
+                description: 'Composite filling, varies by size', 
+                price: '$189 - $350',
+                details: {
+                    description: 'High-quality composite resin fillings that restore damaged or decayed teeth with a natural appearance.',
+                    includes: [
+                        'Local anesthesia for comfort',
+                        'Tooth decay removal',
+                        'Composite resin restoration',
+                        'Shade matching to natural teeth',
+                        'Polishing and bite adjustment'
+                    ]
+                }
+            },
+            { 
+                name: 'Root Canal', 
+                description: 'Complete root canal therapy, varies by tooth', 
+                price: '$800 - $1,200',
+                details: {
+                    description: 'Comprehensive root canal treatment to eliminate infection and save your natural tooth from extraction.',
+                    includes: [
+                        'Complete digital imaging',
+                        'Local anesthesia administration',
+                        'Infected pulp removal',
+                        'Canal cleaning and shaping',
+                        'Biocompatible filling material',
+                        'Follow-up restoration planning'
+                    ]
+                }
+            },
+            { 
+                name: 'Dental Crown', 
+                description: 'Porcelain or ceramic crown', 
+                price: '$1,000 - $1,500',
+                details: {
+                    description: 'Custom-crafted porcelain crowns that restore the strength and appearance of damaged or weakened teeth.',
+                    includes: [
+                        'Tooth preparation and shaping',
+                        'Digital impressions and design',
+                        'Temporary crown placement',
+                        'Custom-milled porcelain crown',
+                        'Permanent cementation',
+                        'Bite and comfort adjustment'
+                    ]
+                }
+            },
+            { 
+                name: 'Dental Implant', 
+                description: 'Single tooth implant with crown', 
+                price: '$2,500 - $3,500',
+                details: {
+                    description: 'Complete tooth replacement solution featuring a titanium implant and custom crown for a natural-looking result.',
+                    includes: [
+                        '3D implant planning and imaging',
+                        'Titanium implant placement',
+                        '3-6 months osseointegration period',
+                        'Abutment placement',
+                        'Custom porcelain crown',
+                        'Permanent restoration and maintenance'
+                    ]
+                }
+            }
         ];
 
         this.contactInfo = {
@@ -389,27 +476,61 @@ class BrightSmileDental {
                 margin: 0 auto;
             }
 
+            /* FLIP CARD STYLES */
+            .price-card-container {
+                perspective: 1000px;
+                cursor: pointer;
+                height: 300px;
+            }
+
             .price-card {
-                background: white;
-                padding: 2rem;
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transition: transform 0.6s;
+                transform-style: preserve-3d;
+            }
+
+            .price-card-container:hover .price-card,
+            .price-card-container.flipped .price-card {
+                transform: rotateY(180deg);
+            }
+
+            .price-card-front,
+            .price-card-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 border-radius: 8px;
-                text-align: left;
+                padding: 2rem;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-                transition: transform 0.3s, box-shadow 0.3s;
             }
 
-            .price-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            .price-card-front {
+                background: white;
+                text-align: left;
             }
 
-            .price-card h3 {
+            .price-card-back {
+                background: #b8683f;
+                color: white;
+                transform: rotateY(180deg);
+                text-align: left;
+                overflow-y: auto;
+            }
+
+            .price-card-front h3 {
                 color: #1a1a1a;
                 margin-bottom: 0.5rem;
                 font-weight: 700;
+                font-size: 1.2rem;
             }
 
-            .price-card p {
+            .price-card-front p {
                 color: #999;
                 font-size: 0.9rem;
                 margin-bottom: 1rem;
@@ -420,6 +541,40 @@ class BrightSmileDental {
                 color: #b8683f;
                 margin: 1rem 0;
                 font-weight: 700;
+            }
+
+            .price-card-back h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                font-weight: 700;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+                padding-bottom: 0.5rem;
+            }
+
+            .price-card-back p {
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+                line-height: 1.5;
+            }
+
+            .price-card-back ul {
+                list-style: none;
+                margin: 1rem 0;
+            }
+
+            .price-card-back li {
+                padding: 0.35rem 0;
+                color: white;
+                display: flex;
+                align-items: center;
+                font-size: 0.85rem;
+            }
+
+            .price-card-back li:before {
+                content: "✓";
+                font-weight: bold;
+                margin-right: 0.6rem;
+                font-size: 1.1rem;
             }
 
             .pricing-disclaimer {
@@ -663,6 +818,10 @@ class BrightSmileDental {
                 .contact h2 {
                     font-size: 1.8rem;
                 }
+
+                .price-card-container {
+                    height: 350px;
+                }
             }
         `;
         document.head.appendChild(style);
@@ -703,7 +862,7 @@ class BrightSmileDental {
             <section class="hero">
                 <div class="hero-content">
                     <h1>Your smile deserves gentle, expert care</h1>
-                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal dental health with personalized treatment plans and caring service.</p>
+                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal[...]</p>
                     <div class="button-group">
                         <button class="btn btn-primary" onclick="window.app.scrollToSection('appointment')">Book Appointment</button>
                         <button class="btn btn-secondary" onclick="window.app.scrollToSection('services')">Learn More</button>
@@ -756,11 +915,24 @@ class BrightSmileDental {
     // Render Pricing Section
     renderPricingSection() {
         const cards = this.pricingServices
-            .map(service => `
-                <div class="price-card">
-                    <h3>${service.name}</h3>
-                    <p>${service.description}</p>
-                    <div class="amount">${service.price}</div>
+            .map((service, index) => `
+                <div class="price-card-container" onclick="window.app.togglePriceCard(event, ${index})">
+                    <div class="price-card">
+                        <div class="price-card-front">
+                            <h3>${service.name}</h3>
+                            <p>${service.description}</p>
+                            <div class="amount">${service.price}</div>
+                            <p style="color: #b8683f; font-size: 0.85rem; margin-top: 1rem;">Click or hover to see details →</p>
+                        </div>
+                        <div class="price-card-back">
+                            <h3>${service.name}</h3>
+                            <p>${service.details.description}</p>
+                            <p><strong>What's Included:</strong></p>
+                            <ul>
+                                ${service.details.includes.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             `).join('');
 
@@ -888,7 +1060,7 @@ class BrightSmileDental {
         return `
             <section class="designer">
                 <h2>About the Designer</h2>
-                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate UI/UX design principles and responsive web development practices.</p>
+                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate U[...]</p>
             </section>
         `;
     }
@@ -921,6 +1093,11 @@ class BrightSmileDental {
                 this.handleFormSubmission(e);
             });
         }
+    }
+
+    // Toggle price card flip
+    togglePriceCard(event, index) {
+        event.currentTarget.classList.toggle('flipped');
     }
 
     // Show selected service
