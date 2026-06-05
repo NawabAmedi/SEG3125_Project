@@ -39,7 +39,7 @@ class BrightSmileDental {
             },
             root: {
                 title: 'Root Canal Therapy',
-                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might sound intimidating, modern techniques make it no more uncomfortable than a regular filling. Most patients experience immediate relief from pain.',
+                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might sound intimidating, modern root canal therapy is a comfortable way to save your natural tooth.',
                 offerings: [
                     'Examination and X-rays',
                     'Removal of infected tissue',
@@ -703,14 +703,14 @@ class BrightSmileDental {
             <section class="hero">
                 <div class="hero-content">
                     <h1>Your smile deserves gentle, expert care</h1>
-                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal oral health.</p>
+                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal dental health with personalized treatment plans and caring service.</p>
                     <div class="button-group">
                         <button class="btn btn-primary" onclick="window.app.scrollToSection('appointment')">Book Appointment</button>
                         <button class="btn btn-secondary" onclick="window.app.scrollToSection('services')">Learn More</button>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ddd' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%23999'%3EDentist Image%3C/text%3E%3C/svg%3E" alt="Dental care">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ddd' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%23999'%3E🦷%3C/text%3E%3C/svg%3E" alt="Dental services">
                 </div>
             </section>
         `;
@@ -888,7 +888,7 @@ class BrightSmileDental {
         return `
             <section class="designer">
                 <h2>About the Designer</h2>
-                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate UI/UX design and web development skills.</p>
+                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate UI/UX design principles and responsive web development practices.</p>
             </section>
         `;
     }
@@ -901,6 +901,26 @@ class BrightSmileDental {
                 <p>Designed by Nawab Amedi | University of Ottawa</p>
             </footer>
         `;
+    }
+
+    // Setup event listeners
+    setupEventListeners() {
+        // Attach click listeners to tab buttons
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const serviceId = button.getAttribute('data-service');
+                this.showService(serviceId);
+            });
+        });
+
+        // Attach form submission listener
+        const appointmentForm = document.getElementById('appointmentForm');
+        if (appointmentForm) {
+            appointmentForm.addEventListener('submit', (e) => {
+                this.handleFormSubmission(e);
+            });
+        }
     }
 
     // Show selected service
@@ -964,11 +984,4 @@ class BrightSmileDental {
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new BrightSmileDental();
-    
-    // Form submission
-    document.addEventListener('submit', (e) => {
-        if (e.target.id === 'appointmentForm') {
-            window.app.handleFormSubmission(e);
-        }
-    });
 });
