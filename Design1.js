@@ -223,9 +223,16 @@ class BrightSmileDental {
                 color: #555;
                 text-decoration: none;
                 font-weight: 500;
-                transition: color 0.3s;
+                transition: all 0.3s;
                 font-size: 0.95rem;
                 cursor: pointer;
+                padding-bottom: 5px;
+                border-bottom: 3px solid transparent;
+            }
+
+            .nav-links a.active-nav {
+                color: #697b87;
+                border-bottom: 3px solid #697b87;
             }
 
             nav a:hover {
@@ -1086,22 +1093,58 @@ class BrightSmileDental {
     setupEventListeners() {
         // Attach click listeners to tab buttons
         const tabButtons = document.querySelectorAll('.tab-btn');
+    
         tabButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const serviceId = button.getAttribute('data-service');
                 this.showService(serviceId);
             });
         });
-
+    
         // Attach form submission listener
         const appointmentForm = document.getElementById('appointmentForm');
+    
         if (appointmentForm) {
             appointmentForm.addEventListener('submit', (e) => {
                 this.handleFormSubmission(e);
             });
         }
+    
+        // Track current section
+        window.addEventListener('scroll', () => {
+            this.updateActiveNav();
+        });
+    
+        this.updateActiveNav();
     }
 
+    updateActiveNav() {
+        const sections = ['services', 'pricing', 'appointment', 'contact'];
+    
+        let currentSection = '';
+    
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+    
+            if (
+                section &&
+                window.scrollY >= section.offsetTop - 150
+            ) {
+                currentSection = sectionId;
+            }
+        });
+    
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active-nav');
+    
+            const href = link.getAttribute('href').replace('#', '');
+    
+            if (href === currentSection) {
+                link.classList.add('active-nav');
+            }
+        });
+    }
+    
     // Toggle price card flip
     togglePriceCard(event, index) {
         event.currentTarget.classList.toggle('flipped');
