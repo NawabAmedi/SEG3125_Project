@@ -189,7 +189,7 @@ class BrightSmileDental {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
                 line-height: 1.6;
                 color: #333;
-                background-color: #f8fbff;
+                background-color: #f8f8f8;
             }
 
             /* NAVBAR */
