@@ -504,7 +504,8 @@ class BrightSmileDental {
                 backface-visibility: hidden;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: flex-start;
+                align-items: flex-start;
                 border-radius: 8px;
                 padding: 2rem;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -521,8 +522,13 @@ class BrightSmileDental {
                 transform: rotateY(180deg);
                 text-align: left;
                 overflow-y: auto;
+            
+                justify-content: flex-start;
+                align-items: flex-start;
+            
+                padding-top: 20px;
             }
-
+            
             .price-card-front h3 {
                 color: #1a1a1a;
                 margin-bottom: 0.5rem;
@@ -546,6 +552,7 @@ class BrightSmileDental {
             .price-card-back h3 {
                 font-size: 1.1rem;
                 margin-bottom: 1rem;
+                margin-top: 0;
                 font-weight: 700;
                 border-bottom: 2px solid rgba(255, 255, 255, 0.3);
                 padding-bottom: 0.5rem;
