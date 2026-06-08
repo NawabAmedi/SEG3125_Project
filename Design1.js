@@ -39,7 +39,7 @@ class BrightSmileDental {
             },
             root: {
                 title: 'Root Canal Therapy',
-                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might [...]',
+                description: 'A root canal treats infection deep inside a tooth. The procedure removes infected pulp, cleans the canal, and seals it to prevent further infection. While the term might sound intimidating, modern root canal therapy is a routine procedure designed to relieve pain and preserve your natural tooth.',
                 offerings: [
                     'Examination and X-rays',
                     'Removal of infected tissue',
@@ -876,7 +876,7 @@ class BrightSmileDental {
             <section class="hero">
                 <div class="hero-content">
                     <h1>Your smile deserves gentle, expert care</h1>
-                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal[...]</p>
+                    <p>At SmileCare Dental, we believe dental care should be comfortable, transparent, and tailored to your needs. Our experienced team is here to help you achieve and maintain optimal oral health through preventive, restorative, and cosmetic treatments in a welcoming and stress-free environment.</p>
                     <div class="button-group">
                         <button class="btn btn-primary" onclick="window.app.scrollToSection('appointment')">Book Appointment</button>
                         <button class="btn btn-secondary" onclick="window.app.scrollToSection('services')">Learn More</button>
@@ -1074,7 +1074,7 @@ class BrightSmileDental {
         return `
             <section class="designer">
                 <h2>About the Designer</h2>
-                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate U[...]</p>
+                <p>This website was designed and developed by Nawab Amedi, a Software Engineering student at the University of Ottawa. This project was created for the SEG 3125 course to demonstrate User-Centered Design principles through the development of a high-fidelity prototype for a dental clinic service website.</p>
             </section>
         `;
     }
