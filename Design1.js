@@ -689,7 +689,7 @@ class BrightSmileDental {
             .contact h2 {
                 font-size: 2.5rem;
                 color: #1a1a1a;
-                margin-bottom: 3rem;
+                margin-bottom: 0.75rem;
                 font-weight: 700;
             }
 
