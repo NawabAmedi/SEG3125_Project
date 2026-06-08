@@ -689,10 +689,16 @@ class BrightSmileDental {
             .contact h2 {
                 font-size: 2.5rem;
                 color: #1a1a1a;
-                margin-bottom: 0.75rem;
+                margin-bottom: 1rem;
                 font-weight: 700;
             }
-
+            
+            .contact > p {
+                color: #666;
+                margin-bottom: 0.75rem; 
+                text-align: center;
+            }
+            
             .contact-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -751,10 +757,11 @@ class BrightSmileDental {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 1rem;
-                text-align: left;
+                text-align: center;
             }
 
             .hours-item {
+                text-align: center;
                 padding: 0.5rem 0;
                 color: #666;
             }
