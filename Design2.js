@@ -169,16 +169,15 @@ class MemoryMatchMania {
     return `
       <section class="game-screen">
         <header class="top-bar">
-          <div class="top-actions">
-            <button class="icon-btn" id="homeBtn" title="Back to Home" aria-label="Back to Home">🏠</button>
-            <button class="icon-btn" id="resetBtn" title="Reset Game" aria-label="Reset Game">🔄</button>
-          </div>
+          <button class="icon-btn" id="homeBtn" title="Back to Home" aria-label="Back to Home">⌂</button>
 
           <div class="top-stats">
-            <span>⚡ <strong id="moveCounter">0</strong> moves</span>
-            <span>🕒 <strong id="timeCounter">0:00</strong></span>
-            <span>🏆 <strong id="matchCounter">0/${this.pairsByDifficulty[this.difficulty]}</strong></span>
+            <span class="stat-item moves">⚡ <strong id="moveCounter">0</strong> moves</span>
+            <span class="stat-item time">◔ <strong id="timeCounter">0:00</strong></span>
+            <span class="stat-item matches">🏆 <strong id="matchCounter">0/${this.pairsByDifficulty[this.difficulty]}</strong></span>
           </div>
+
+          <button class="icon-btn" id="resetBtn" title="Reset Game" aria-label="Reset Game">↻</button>
         </header>
 
         <div class="progress-wrap">
@@ -265,7 +264,7 @@ class MemoryMatchMania {
       const visible = card.flipped || card.matched;
       const classes = [
         "memory-card",
-        visible ? "flipped" : "",
+        card.flipped ? "flipped" : "",
         card.matched ? "matched" : ""
       ].join(" ");
 
