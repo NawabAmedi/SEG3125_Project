@@ -5,6 +5,10 @@ class MemoryMatchMania {
         this.difficulty = "easy";
         this.theme = "animals";
 
+        this.injectStyles();
+        this.renderHTML();
+        this.setupEventListeners();
+        
         this.cards = [];
         this.flippedCards = [];
 
@@ -23,15 +27,316 @@ class MemoryMatchMania {
     }
 
     injectStyles() {
-        // all CSS
+        const style = document.createElement("style");
+    
+        style.textContent = `
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+    
+        body{
+            background:#020d26;
+            color:white;
+            font-family:Arial, Helvetica, sans-serif;
+            min-height:100vh;
+        }
+    
+        .setup-screen{
+            max-width:600px;
+            margin:auto;
+            padding-top:60px;
+            text-align:center;
+        }
+    
+        .logo{
+            width:80px;
+            height:80px;
+            margin:auto;
+            margin-bottom:30px;
+            border-radius:20px;
+            background:linear-gradient(135deg,#3182ff,#00d4ff);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:32px;
+        }
+    
+        h1{
+            font-size:72px;
+            font-weight:800;
+            line-height:1;
+            margin-bottom:20px;
+        }
+    
+        .blue{
+            color:#2f82ff;
+        }
+    
+        .subtitle{
+            color:#7ea4c5;
+            margin-bottom:50px;
+            font-size:24px;
+        }
+    
+        .section-title{
+            text-align:left;
+            color:#7ea4c5;
+            letter-spacing:2px;
+            font-size:14px;
+            margin-bottom:15px;
+            margin-top:30px;
+        }
+    
+        .difficulty-container{
+            display:flex;
+            gap:15px;
+        }
+    
+        .difficulty{
+            flex:1;
+            background:#102344;
+            border:2px solid #183766;
+            border-radius:18px;
+            padding:25px;
+            cursor:pointer;
+            transition:0.3s;
+            text-align:left;
+        }
+    
+        .difficulty:hover{
+            border-color:#2f82ff;
+        }
+    
+        .difficulty.active{
+            border-color:#2f82ff;
+            box-shadow:0 0 20px rgba(47,130,255,.4);
+        }
+    
+        .difficulty h3{
+            margin-bottom:10px;
+            font-size:28px;
+        }
+    
+        .difficulty p{
+            color:#7ea4c5;
+        }
+    
+        .theme-container{
+            display:flex;
+            gap:15px;
+        }
+    
+        .theme{
+            flex:1;
+            background:#102344;
+            border:2px solid #183766;
+            border-radius:18px;
+            padding:25px;
+            cursor:pointer;
+            font-size:26px;
+            transition:.3s;
+        }
+    
+        .theme.active{
+            border-color:#00d4ff;
+            background:#072c39;
+        }
+    
+        .preview{
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            margin:40px 0;
+        }
+    
+        .preview-card{
+            width:55px;
+            height:55px;
+            background:#102344;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:28px;
+        }
+    
+        .start-btn{
+            width:100%;
+            border:none;
+            border-radius:18px;
+            background:linear-gradient(90deg,#2f82ff,#3f5fff);
+            color:white;
+            font-size:28px;
+            padding:22px;
+            cursor:pointer;
+            font-weight:bold;
+            box-shadow:0 10px 25px rgba(47,130,255,.4);
+        }
+    
+        .game-screen{
+            display:none;
+            min-height:100vh;
+        }
+    
+        .top-bar{
+            height:80px;
+            border-bottom:1px solid #163763;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:50px;
+            font-size:24px;
+        }
+    
+        .progress-container{
+            height:5px;
+            background:#12264a;
+        }
+    
+        .progress-bar{
+            height:100%;
+            width:0%;
+            background:#00d4ff;
+            transition:.3s;
+        }
+    
+        .board{
+            display:grid;
+            gap:15px;
+            width:500px;
+            margin:80px auto;
+            grid-template-columns:repeat(4,1fr);
+        }
+    
+        .card{
+            height:110px;
+            background:linear-gradient(180deg,#3872ff,#2555d8);
+            border-radius:18px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            cursor:pointer;
+            font-size:40px;
+            font-weight:bold;
+        }
+    
+        .card.flipped{
+            background:#073f4f;
+            border:2px solid #00d4ff;
+        }
+    
+        .win-screen{
+            display:none;
+            text-align:center;
+            padding-top:120px;
+        }
+    
+        .stars{
+            font-size:50px;
+            color:gold;
+            margin:25px 0;
+        }
+    
+        .stat-boxes{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            margin:40px 0;
+        }
+    
+        .stat{
+            width:180px;
+            background:#102344;
+            padding:30px;
+            border-radius:18px;
+        }
+    
+        .play-again{
+            width:400px;
+            max-width:90%;
+            border:none;
+            background:linear-gradient(90deg,#2f82ff,#3f5fff);
+            color:white;
+            padding:20px;
+            border-radius:18px;
+            font-size:24px;
+            cursor:pointer;
+        }
+        `;
+    
+        document.head.appendChild(style);
     }
 
     renderHTML() {
         document.body.innerHTML = `
-            ${this.renderHero()}
-            ${this.renderSetupScreen()}
-            ${this.renderGameArea()}
-            ${this.renderWinScreen()}
+            <div class="setup-screen">
+    
+                <div class="logo">🎴</div>
+    
+                <h1>
+                    Memory Match<br>
+                    <span class="blue">Mania</span>
+                </h1>
+    
+                <p class="subtitle">
+                    Flip cards • Find pairs • Beat your score
+                </p>
+    
+                <div class="section-title">
+                    DIFFICULTY
+                </div>
+    
+                <div class="difficulty-container">
+    
+                    <div class="difficulty">
+                        <h3>Easy</h3>
+                        <p>6 pairs • 4×3 grid</p>
+                    </div>
+    
+                    <div class="difficulty active">
+                        <h3>Medium</h3>
+                        <p>8 pairs • 4×4 grid</p>
+                    </div>
+    
+                    <div class="difficulty">
+                        <h3>Hard</h3>
+                        <p>10 pairs • 5×4 grid</p>
+                    </div>
+    
+                </div>
+    
+                <div class="section-title">
+                    THEME
+                </div>
+    
+                <div class="theme-container">
+    
+                    <div class="theme active">
+                        🐾 Animals
+                    </div>
+    
+                    <div class="theme">
+                        🌿 Nature
+                    </div>
+    
+                </div>
+    
+                <div class="preview">
+                    <div class="preview-card">🐶</div>
+                    <div class="preview-card">🐱</div>
+                    <div class="preview-card">🐻</div>
+                    <div class="preview-card">🦊</div>
+                    <div class="preview-card">🐼</div>
+                    <div class="preview-card">+7</div>
+                </div>
+    
+                <button class="start-btn">
+                    ▶ Start Game
+                </button>
+    
+            </div>
         `;
     }
 
