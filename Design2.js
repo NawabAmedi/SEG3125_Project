@@ -27,6 +27,9 @@ class MemoryMatchMania {
     const app = document.getElementById("app");
     if (!app) return;
 
+    clearInterval(this.timer);
+    this.timer = null;
+
     app.innerHTML = this.renderSetup();
     this.bindSetupEvents();
   }
@@ -116,17 +119,12 @@ class MemoryMatchMania {
     startBtn?.addEventListener("click", () => this.startGame());
   }
 
-  startGame() {
-    this.moves = 0;
-    this.matches = 0;
-    this.time = 0;
-    this.flippedIndexes = [];
-
+  buildDeck() {
     const pairCount = this.pairsByDifficulty[this.difficulty];
     const source = this.theme === "animals" ? this.animals : this.nature;
     const selectedIcons = source.slice(0, pairCount);
 
-    const deck = [...selectedIcons, ...selectedIcons]
+    return [...selectedIcons, ...selectedIcons]
       .map((icon, i) => ({
         id: i,
         icon,
@@ -134,8 +132,15 @@ class MemoryMatchMania {
         matched: false
       }))
       .sort(() => Math.random() - 0.5);
+  }
 
-    this.cards = deck;
+  startGame() {
+    this.moves = 0;
+    this.matches = 0;
+    this.time = 0;
+    this.flippedIndexes = [];
+
+    this.cards = this.buildDeck();
 
     const app = document.getElementById("app");
     app.innerHTML = this.renderGame();
@@ -145,15 +150,35 @@ class MemoryMatchMania {
     this.updateHUD();
   }
 
+  resetCurrentGame() {
+    this.moves = 0;
+    this.matches = 0;
+    this.time = 0;
+    this.flippedIndexes = [];
+
+    this.cards = this.buildDeck();
+    this.renderBoard();
+    this.updateHUD();
+
+    this.startTimer();
+  }
+
   renderGame() {
     const cols = this.difficulty === "hard" ? 5 : 4;
 
     return `
       <section class="game-screen">
         <header class="top-bar">
-          <span>⚡ <strong id="moveCounter">0</strong> moves</span>
-          <span>🕒 <strong id="timeCounter">0:00</strong></span>
-          <span>🏆 <strong id="matchCounter">0/${this.pairsByDifficulty[this.difficulty]}</strong></span>
+          <div class="top-actions">
+            <button class="icon-btn" id="homeBtn" title="Back to Home" aria-label="Back to Home">🏠</button>
+            <button class="icon-btn" id="resetBtn" title="Reset Game" aria-label="Reset Game">🔄</button>
+          </div>
+
+          <div class="top-stats">
+            <span>⚡ <strong id="moveCounter">0</strong> moves</span>
+            <span>🕒 <strong id="timeCounter">0:00</strong></span>
+            <span>🏆 <strong id="matchCounter">0/${this.pairsByDifficulty[this.difficulty]}</strong></span>
+          </div>
         </header>
 
         <div class="progress-wrap">
@@ -171,14 +196,25 @@ class MemoryMatchMania {
 
   bindGameEvents() {
     const board = document.getElementById("board");
-    if (!board) return;
+    const homeBtn = document.getElementById("homeBtn");
+    const resetBtn = document.getElementById("resetBtn");
 
-    board.addEventListener("click", (e) => {
-      const btn = e.target.closest(".memory-card");
-      if (!btn) return;
+    if (board) {
+      board.addEventListener("click", (e) => {
+        const btn = e.target.closest(".memory-card");
+        if (!btn) return;
 
-      const index = Number(btn.dataset.index);
-      this.flipCard(index);
+        const index = Number(btn.dataset.index);
+        this.flipCard(index);
+      });
+    }
+
+    homeBtn?.addEventListener("click", () => {
+      this.mount();
+    });
+
+    resetBtn?.addEventListener("click", () => {
+      this.resetCurrentGame();
     });
   }
 
