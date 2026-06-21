@@ -1,743 +1,322 @@
 class MemoryMatchMania {
+  constructor() {
+    this.difficulty = "medium";
+    this.theme = "animals";
 
-    constructor() {
+    this.moves = 0;
+    this.matches = 0;
+    this.time = 0;
+    this.timer = null;
 
-        this.difficulty = "easy";
-        this.theme = "animals";
+    this.cards = [];
+    this.flippedIndexes = [];
 
-        this.cards = [];
-        this.flippedCards = [];
+    this.pairsByDifficulty = {
+      easy: 6,
+      medium: 8,
+      hard: 10
+    };
 
-        this.moves = 0;
-        this.matches = 0;
-        this.time = 0;
-        this.timer = null;
+    this.animals = ["🐶","🐱","🐻","🦊","🐼","🐯","🐸","🦁","🐰","🐨"];
+    this.nature  = ["🌈","🌲","🌻","🍄","🌙","⭐","🌊","🌸","☀️","🌵"];
 
-        this.init();
-    }
+    this.mount();
+  }
 
-    init() {
-        this.injectStyles();
-    
-        this.renderHTML();
-    
-        // wait ONE tick so DOM exists
+  mount() {
+    const app = document.getElementById("app");
+    if (!app) return;
+
+    app.innerHTML = this.renderSetup();
+    this.bindSetupEvents();
+  }
+
+  renderSetup() {
+    return `
+      <section class="setup-screen">
+        <div class="logo">🃏</div>
+
+        <h1 class="title">
+          Memory Match<br />
+          <span class="accent">Mania</span>
+        </h1>
+        <p class="subtitle">Flip cards • Find pairs • Beat your score</p>
+
+        <div class="section-title">DIFFICULTY</div>
+        <div class="difficulty-row">
+          ${this.renderDifficultyCard("easy", "Easy", "6 pairs • 4×3 grid")}
+          ${this.renderDifficultyCard("medium", "Medium", "8 pairs • 4×4 grid")}
+          ${this.renderDifficultyCard("hard", "Hard", "10 pairs • 5×4 grid")}
+        </div>
+
+        <div class="section-title">THEME</div>
+        <div class="theme-row">
+          ${this.renderThemeCard("animals", "🐾", "Animals")}
+          ${this.renderThemeCard("nature", "🌿", "Nature")}
+        </div>
+
+        ${this.renderPreview()}
+
+        <button id="startBtn" class="primary-btn">▷ Start Game</button>
+      </section>
+    `;
+  }
+
+  renderDifficultyCard(value, label, desc) {
+    const active = this.difficulty === value ? "active" : "";
+    return `
+      <button class="card-option difficulty ${active}" data-difficulty="${value}">
+        <h3>${label}</h3>
+        <p>${desc}</p>
+      </button>
+    `;
+  }
+
+  renderThemeCard(value, emoji, label) {
+    const active = this.theme === value ? "active" : "";
+    return `
+      <button class="card-option theme-btn ${active}" data-theme="${value}">
+        <span>${emoji}</span>
+        <span>${label}</span>
+      </button>
+    `;
+  }
+
+  renderPreview() {
+    const icons = this.theme === "animals" ? this.animals : this.nature;
+    const shown = icons.slice(0, 5);
+
+    return `
+      <div class="preview">
+        ${shown.map(i => `<div class="preview-card">${i}</div>`).join("")}
+        <div class="preview-card">+${Math.max(this.pairsByDifficulty[this.difficulty]-5, 1)}</div>
+      </div>
+    `;
+  }
+
+  bindSetupEvents() {
+    const difficultyButtons = document.querySelectorAll("[data-difficulty]");
+    const themeButtons = document.querySelectorAll("[data-theme]");
+    const startBtn = document.getElementById("startBtn");
+
+    difficultyButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        this.difficulty = btn.dataset.difficulty;
+        this.mount();
+      });
+    });
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        this.theme = btn.dataset.theme;
+        this.mount();
+      });
+    });
+
+    startBtn?.addEventListener("click", () => this.startGame());
+  }
+
+  startGame() {
+    this.moves = 0;
+    this.matches = 0;
+    this.time = 0;
+    this.flippedIndexes = [];
+
+    const pairCount = this.pairsByDifficulty[this.difficulty];
+    const source = this.theme === "animals" ? this.animals : this.nature;
+    const selectedIcons = source.slice(0, pairCount);
+
+    const deck = [...selectedIcons, ...selectedIcons]
+      .map((icon, i) => ({
+        id: i,
+        icon,
+        flipped: false,
+        matched: false
+      }))
+      .sort(() => Math.random() - 0.5);
+
+    this.cards = deck;
+
+    const app = document.getElementById("app");
+    app.innerHTML = this.renderGame();
+
+    this.bindGameEvents();
+    this.startTimer();
+    this.updateHUD();
+  }
+
+  renderGame() {
+    const cols = this.difficulty === "hard" ? 5 : 4;
+
+    return `
+      <section class="game-screen">
+        <header class="top-bar">
+          <span>⚡ <strong id="moveCounter">0</strong> moves</span>
+          <span>🕒 <strong id="timeCounter">0:00</strong></span>
+          <span>🏆 <strong id="matchCounter">0/${this.pairsByDifficulty[this.difficulty]}</strong></span>
+        </header>
+
+        <div class="progress-wrap">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <main id="board" class="board" style="grid-template-columns:repeat(${cols},1fr)">
+          ${this.cards.map((card, index) => `
+            <button class="memory-card" data-index="${index}">M</button>
+          `).join("")}
+        </main>
+      </section>
+    `;
+  }
+
+  bindGameEvents() {
+    const board = document.getElementById("board");
+    if (!board) return;
+
+    board.addEventListener("click", (e) => {
+      const btn = e.target.closest(".memory-card");
+      if (!btn) return;
+
+      const index = Number(btn.dataset.index);
+      this.flipCard(index);
+    });
+  }
+
+  flipCard(index) {
+    const card = this.cards[index];
+    if (!card || card.flipped || card.matched) return;
+    if (this.flippedIndexes.length === 2) return;
+
+    card.flipped = true;
+    this.flippedIndexes.push(index);
+    this.renderBoard();
+
+    if (this.flippedIndexes.length === 2) {
+      this.moves++;
+      this.updateHUD();
+
+      const [a, b] = this.flippedIndexes;
+      const first = this.cards[a];
+      const second = this.cards[b];
+
+      if (first.icon === second.icon) {
+        first.matched = true;
+        second.matched = true;
+        this.matches++;
+        this.flippedIndexes = [];
+        this.updateHUD();
+
+        if (this.matches === this.pairsByDifficulty[this.difficulty]) {
+          clearInterval(this.timer);
+          setTimeout(() => this.showWinScreen(), 350);
+        }
+      } else {
         setTimeout(() => {
-            this.setupEventListeners();
-        }, 0);
+          first.flipped = false;
+          second.flipped = false;
+          this.flippedIndexes = [];
+          this.renderBoard();
+        }, 800);
+      }
     }
+  }
 
-    injectStyles() {
-        const style = document.createElement("style");
-    
-        style.textContent = `
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-    
-        body{
-            background:#020d26;
-            color:white;
-            font-family:Arial, Helvetica, sans-serif;
-            min-height:100vh;
-        }
-    
-        .setup-screen{
-            max-width:600px;
-            margin:auto;
-            padding-top:60px;
-            text-align:center;
-        }
-    
-        .logo{
-            width:80px;
-            height:80px;
-            margin:auto;
-            margin-bottom:30px;
-            border-radius:20px;
-            background:linear-gradient(135deg,#3182ff,#00d4ff);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-size:32px;
-        }
-    
-        h1{
-            font-size:72px;
-            font-weight:800;
-            line-height:1;
-            margin-bottom:20px;
-        }
-    
-        .blue{
-            color:#2f82ff;
-        }
-    
-        .subtitle{
-            color:#7ea4c5;
-            margin-bottom:50px;
-            font-size:24px;
-        }
-    
-        .section-title{
-            text-align:left;
-            color:#7ea4c5;
-            letter-spacing:2px;
-            font-size:14px;
-            margin-bottom:15px;
-            margin-top:30px;
-        }
-    
-        .difficulty-container{
-            display:flex;
-            gap:15px;
-        }
-    
-        .difficulty{
-            flex:1;
-            background:#102344;
-            border:2px solid #183766;
-            border-radius:18px;
-            padding:25px;
-            cursor:pointer;
-            transition:0.3s;
-            text-align:left;
-        }
-    
-        .difficulty:hover{
-            border-color:#2f82ff;
-        }
-    
-        .difficulty.active{
-            border-color:#2f82ff;
-            box-shadow:0 0 20px rgba(47,130,255,.4);
-        }
-    
-        .difficulty h3{
-            margin-bottom:10px;
-            font-size:28px;
-        }
-    
-        .difficulty p{
-            color:#7ea4c5;
-        }
-    
-        .theme-container{
-            display:flex;
-            gap:15px;
-        }
-    
-        .theme{
-            flex:1;
-            background:#102344;
-            border:2px solid #183766;
-            border-radius:18px;
-            padding:25px;
-            cursor:pointer;
-            font-size:26px;
-            transition:.3s;
-        }
-    
-        .theme.active{
-            border-color:#00d4ff;
-            background:#072c39;
-        }
-    
-        .preview{
-            display:flex;
-            justify-content:center;
-            gap:10px;
-            margin:40px 0;
-        }
-    
-        .preview-card{
-            width:55px;
-            height:55px;
-            background:#102344;
-            border-radius:12px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:28px;
-        }
-    
-        .start-btn{
-            width:100%;
-            border:none;
-            border-radius:18px;
-            background:linear-gradient(90deg,#2f82ff,#3f5fff);
-            color:white;
-            font-size:28px;
-            padding:22px;
-            cursor:pointer;
-            font-weight:bold;
-            box-shadow:0 10px 25px rgba(47,130,255,.4);
-        }
-    
-        .game-screen{
-            display:none;
-            min-height:100vh;
-        }
-    
-        .top-bar{
-            height:80px;
-            border-bottom:1px solid #163763;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:50px;
-            font-size:24px;
-        }
-    
-        .progress-container{
-            height:5px;
-            background:#12264a;
-        }
-    
-        .progress-bar{
-            height:100%;
-            width:0%;
-            background:#00d4ff;
-            transition:.3s;
-        }
-    
-        .board{
-            display:grid;
-            gap:15px;
-            width:500px;
-            margin:80px auto;
-            grid-template-columns:repeat(4,1fr);
-        }
-    
-        .card{
-            height:110px;
-            background:linear-gradient(180deg,#3872ff,#2555d8);
-            border-radius:18px;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            cursor:pointer;
-            font-size:40px;
-            font-weight:bold;
-        }
-    
-        .card.flipped{
-            background:#073f4f;
-            border:2px solid #00d4ff;
-        }
-    
-        .win-screen{
-            display:none;
-            text-align:center;
-            padding-top:120px;
-        }
-    
-        .stars{
-            font-size:50px;
-            color:gold;
-            margin:25px 0;
-        }
-    
-        .stat-boxes{
-            display:flex;
-            justify-content:center;
-            gap:20px;
-            margin:40px 0;
-        }
-    
-        .stat{
-            width:180px;
-            background:#102344;
-            padding:30px;
-            border-radius:18px;
-        }
-    
-        .play-again{
-            width:400px;
-            max-width:90%;
-            border:none;
-            background:linear-gradient(90deg,#2f82ff,#3f5fff);
-            color:white;
-            padding:20px;
-            border-radius:18px;
-            font-size:24px;
-            cursor:pointer;
-        }
-        `;
-    
-        document.head.appendChild(style);
+  renderBoard() {
+    const board = document.getElementById("board");
+    if (!board) return;
+
+    board.innerHTML = this.cards.map((card, index) => {
+      const visible = card.flipped || card.matched;
+      const classes = [
+        "memory-card",
+        visible ? "flipped" : "",
+        card.matched ? "matched" : ""
+      ].join(" ");
+
+      return `
+        <button class="${classes}" data-index="${index}">
+          ${visible ? card.icon : "M"}
+        </button>
+      `;
+    }).join("");
+  }
+
+  startTimer() {
+    clearInterval(this.timer);
+    this.timer = setInterval(() => {
+      this.time++;
+      this.updateHUD();
+    }, 1000);
+  }
+
+  formatTime(totalSec) {
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${String(s).padStart(2, "0")}`;
+  }
+
+  updateHUD() {
+    const moveEl = document.getElementById("moveCounter");
+    const timeEl = document.getElementById("timeCounter");
+    const matchEl = document.getElementById("matchCounter");
+    const progress = document.getElementById("progressBar");
+
+    if (moveEl) moveEl.textContent = String(this.moves);
+    if (timeEl) timeEl.textContent = this.formatTime(this.time);
+    if (matchEl) matchEl.textContent = `${this.matches}/${this.pairsByDifficulty[this.difficulty]}`;
+
+    if (progress) {
+      const pct = (this.matches / this.pairsByDifficulty[this.difficulty]) * 100;
+      progress.style.width = `${pct}%`;
     }
-
-    renderHTML() {
-        document.body.innerHTML = `
-            <div class="setup-screen">
-    
-                <div class="logo">🎴</div>
-    
-                <h1>
-                    Memory Match<br>
-                    <span class="blue">Mania</span>
-                </h1>
-    
-                <p class="subtitle">
-                    Flip cards • Find pairs • Beat your score
-                </p>
-    
-                <div class="section-title">
-                    DIFFICULTY
-                </div>
-    
-                <div class="difficulty-container">
-    
-                    <div class="difficulty">
-                        <h3>Easy</h3>
-                        <p>6 pairs • 4×3 grid</p>
-                    </div>
-    
-                    <div class="difficulty active">
-                        <h3>Medium</h3>
-                        <p>8 pairs • 4×4 grid</p>
-                    </div>
-    
-                    <div class="difficulty">
-                        <h3>Hard</h3>
-                        <p>10 pairs • 5×4 grid</p>
-                    </div>
-    
-                </div>
-    
-                <div class="section-title">
-                    THEME
-                </div>
-    
-                <div class="theme-container">
-    
-                    <div class="theme active">
-                        🐾 Animals
-                    </div>
-    
-                    <div class="theme">
-                        🌿 Nature
-                    </div>
-    
-                </div>
-    
-                <div class="preview">
-                    <div class="preview-card">🐶</div>
-                    <div class="preview-card">🐱</div>
-                    <div class="preview-card">🐻</div>
-                    <div class="preview-card">🦊</div>
-                    <div class="preview-card">🐼</div>
-                    <div class="preview-card">+7</div>
-                </div>
-    
-                <button class="start-btn">
-                    ▶ Start Game
-                </button>
-    
-            </div>
-        `;
-    }
-
-    renderHero() {
-        return `
-            <section class="hero">
-                <h1>Memory Match Mania</h1>
-                <p>Train your memory through exciting challenges.</p>
-            </section>
-        `;
-    }
-
-    renderSetupScreen() {
-        return `
-            <section class="setup">
-                <h2>Select Difficulty</h2>
-
-                <button onclick="window.app.selectDifficulty('easy')">
-                    Easy
-                </button>
-
-                <button onclick="window.app.selectDifficulty('medium')">
-                    Medium
-                </button>
-
-                <button onclick="window.app.selectDifficulty('hard')">
-                    Hard
-                </button>
-
-                <h2>Select Theme</h2>
-
-                <button onclick="window.app.selectTheme('animals')">
-                    Animals
-                </button>
-
-                <button onclick="window.app.selectTheme('nature')">
-                    Nature
-                </button>
-
-                <button onclick="window.app.startGame()">
-                    Start Game
-                </button>
-            </section>
-        `;
-    }
-
-    renderGameArea() {
-        return `
-            <section id="gameArea" class="hidden">
-
-                <div class="game-header">
-
-                    <div>
-                        Moves:
-                        <span id="moveCounter">0</span>
-                    </div>
-
-                    <div>
-                        Time:
-                        <span id="timer">0</span>s
-                    </div>
-
-                </div>
-
-                <div class="progress-container">
-                    <div id="progressBar"></div>
-                </div>
-
-                <div id="gameBoard"></div>
-
-            </section>
-        `;
-    }
-
-    renderWinScreen() {
-        return `
-            <section id="winScreen" class="hidden">
-
-                <h2>Congratulations!</h2>
-
-                <p id="finalStats"></p>
-
-                <button onclick="window.app.restartGame()">
-                    Play Again
-                </button>
-
-            </section>
-        `;
-    }
-
-    startGame() {
-
-        document
-            .querySelector(".setup")
-            .classList.add("hidden");
-
-        document
-            .getElementById("gameArea")
-            .classList.remove("hidden");
-
-        this.createBoard();
-
-        this.startTimer();
-    }
-
-    createBoard() {
-
-        let symbols;
-
-        if (this.theme === "animals") {
-
-            symbols = [
-                "🐶","🐱","🐼",
-                "🐸","🦁","🐻",
-                "🐰","🦊"
-            ];
-
-        } else {
-
-            symbols = [
-                "🌸","🌲","🌙",
-                "⭐","🌊","☀️",
-                "🍄","🌈"
-            ];
-        }
-
-        let pairCount = 6;
-        
-        if (this.difficulty === "easy") {
-            board.style.gridTemplateColumns = "repeat(3, 1fr)";
-        } 
-        else if (this.difficulty === "medium") {
-            board.style.gridTemplateColumns = "repeat(4, 1fr)";
-        } 
-        else {
-            board.style.gridTemplateColumns = "repeat(5, 1fr)";
-        }
-
-        let chosen = symbols.slice(0, pairCount);
-
-        let deck = [...chosen, ...chosen];
-
-        deck.sort(() => Math.random() - 0.5);
-
-        this.cards = deck;
-
-        const board =
-            document.getElementById("gameBoard");
-
-        board.innerHTML = "";
-
-        deck.forEach((symbol, index) => {
-
-            board.innerHTML += `
-                <div
-                    class="card"
-                    data-index="${index}"
-                    onclick="window.app.flipCard(${index})"
-                >
-                    ?
-                </div>
-            `;
-        });
-    }
-
-    flipCard(index) {
-
-        const card =
-            document.querySelector(
-                '[data-index="' + index + '"]'
-            );
-
-        if (
-            card.classList.contains("matched")
-        ) {
-            return;
-        }
-
-        if (
-            this.flippedCards.length >= 2
-        ) {
-            return;
-        }
-
-        card.textContent =
-            this.cards[index];
-
-        this.flippedCards.push({
-            index,
-            value: this.cards[index]
-        });
-
-        if (
-            this.flippedCards.length === 2
-        ) {
-
-            this.moves++;
-
-            document.getElementById(
-                "moveCounter"
-            ).textContent = this.moves;
-
-            this.checkMatch();
-        }
-    }
-
-    checkMatch() {
-
-        const first =
-            this.flippedCards[0];
-
-        const second =
-            this.flippedCards[1];
-
-        if (
-            first.value === second.value
-        ) {
-
-            document
-                .querySelector(
-                    '[data-index="' +
-                    first.index +
-                    '"]'
-                )
-                .classList.add("matched");
-
-            document
-                .querySelector(
-                    '[data-index="' +
-                    second.index +
-                    '"]'
-                )
-                .classList.add("matched");
-
-            this.matches++;
-
-            this.updateProgress();
-
-            this.flippedCards = [];
-
-            this.checkWin();
-
-        } else {
-
-            setTimeout(() => {
-
-                document.querySelector(
-                    '[data-index="' +
-                    first.index +
-                    '"]'
-                ).textContent = "?";
-
-                document.querySelector(
-                    '[data-index="' +
-                    second.index +
-                    '"]'
-                ).textContent = "?";
-
-                this.flippedCards = [];
-
-            }, 800);
-        }
-    }
-
-    updateProgress() {
-
-        let totalPairs = 6;
-
-        if (this.difficulty === "medium") {
-            totalPairs = 8;
-        }
-
-        if (this.difficulty === "hard") {
-            totalPairs = 10;
-        }
-
-        const percentage =
-            (this.matches / totalPairs) * 100;
-
-        document.getElementById(
-            "progressBar"
-        ).style.width =
-            percentage + "%";
-    }
-
-    startTimer() {
-
-        this.timer = setInterval(() => {
-
-            this.time++;
-
-            document.getElementById(
-                "timer"
-            ).textContent =
-                this.time;
-
-        }, 1000);
-    }
-
-    checkWin() {
-
-        let totalPairs = 6;
-
-        if (this.difficulty === "medium") {
-            totalPairs = 8;
-        }
-
-        if (this.difficulty === "hard") {
-            totalPairs = 10;
-        }
-
-        if (
-            this.matches === totalPairs
-        ) {
-
-            clearInterval(this.timer);
-
-            document
-                .getElementById("gameArea")
-                .classList.add("hidden");
-
-            document
-                .getElementById("winScreen")
-                .classList.remove("hidden");
-
-            document.getElementById(
-                "finalStats"
-            ).textContent =
-                "Completed in " +
-                this.moves +
-                " moves and " +
-                this.time +
-                " seconds.";
-        }
-    }
-
-    restartGame() {
-        this.moves = 0;
-        this.matches = 0;
-        this.time = 0;
-        this.flippedCards = [];
-        clearInterval(this.timer);
-    
-        this.renderHTML();
-        this.setupEventListeners();
-    }
-
-    selectDifficulty(level) {
-        this.difficulty = level;
-    }
-
-    selectTheme(theme) {
-        this.theme = theme;
-    }
-
-    .hidden {
-        display: none !important;
-    }
-
-    setupEventListeners() {
-    
-        const difficultyButtons = document.querySelectorAll(".difficulty");
-        const themeButtons = document.querySelectorAll(".theme");
-        const startBtn = document.querySelector(".start-btn");
-    
-        if (!startBtn) return;
-    
-        difficultyButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-    
-                difficultyButtons.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-    
-                const text = btn.querySelector("h3").textContent.toLowerCase();
-    
-                this.selectDifficulty(text);
-            });
-        });
-    
-        themeButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-    
-                themeButtons.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-    
-                const text = btn.textContent.trim().toLowerCase();
-    
-                this.selectTheme(text.includes("animals") ? "animals" : "nature");
-            });
-        });
-    
-        startBtn.addEventListener("click", () => {
-            this.startGame();
-        });
-    }
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        () => {
-            window.app =
-                new MemoryMatchMania();
-        }
-    );
+  }
+
+  showWinScreen() {
+    const app = document.getElementById("app");
+    app.innerHTML = `
+      <section class="win-screen">
+        <div class="win-icon">🎉</div>
+        <h1 class="win-title">You Won!</h1>
+        <p class="win-sub">${this.capitalize(this.difficulty)} · ${this.theme}</p>
+
+        <div class="stars">${this.getStars()}</div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">⚡ Moves</div>
+            <div class="value">${this.moves}</div>
+          </div>
+          <div class="stat">
+            <div class="label">🕒 Time</div>
+            <div class="value">${this.formatTime(this.time)}</div>
+          </div>
+        </div>
+
+        <p class="message">👏 Great job! A few more tries and you'll be perfect.</p>
+
+        <button id="playAgainBtn" class="primary-btn">↻ Play Again</button>
+        <button id="newSetupBtn" class="secondary-btn">New Game Setup</button>
+      </section>
+    `;
+
+    document.getElementById("playAgainBtn")?.addEventListener("click", () => this.startGame());
+    document.getElementById("newSetupBtn")?.addEventListener("click", () => {
+      clearInterval(this.timer);
+      this.mount();
+    });
+  }
+
+  getStars() {
+    if (this.moves <= this.pairsByDifficulty[this.difficulty] + 2) return "⭐⭐⭐";
+    if (this.moves <= this.pairsByDifficulty[this.difficulty] + 6) return "⭐⭐";
+    return "⭐";
+  }
+
+  capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  window.app = new MemoryMatchMania();
+});
