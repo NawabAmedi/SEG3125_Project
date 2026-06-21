@@ -27,12 +27,12 @@ body{
 .setup-screen{
   max-width: 700px;
   margin: 0 auto;
-  padding: 70px 20px 50px;
+  padding: 56px 20px 50px;
 }
 
 .logo{
   width:84px;height:84px;border-radius:22px;
-  margin:0 auto 28px;
+  margin:0 auto 34px;
   background: linear-gradient(135deg,#2468ff,#1ad6db);
   display:flex;align-items:center;justify-content:center;
   font-size:34px; box-shadow:0 0 28px rgba(47,130,255,.45);
@@ -40,7 +40,10 @@ body{
 
 .title{
   text-align:center;
-  font-size:78px; line-height:.95; font-weight:800;
+  font-size:66px;
+  line-height:1.06;
+  font-weight:800;
+  letter-spacing:-1.5px;
 }
 .title .accent{
   background: linear-gradient(90deg,#2f82ff,#13d6da);
@@ -48,14 +51,14 @@ body{
 }
 .subtitle{
   text-align:center;
-  margin-top:22px;
+  margin-top:28px;
   color:var(--muted);
-  font-size:34px;
+  font-size:26px;
   white-space:nowrap;
 }
 
 .section-title{
-  margin:54px 0 16px;
+  margin:60px 0 16px;
   color:#64a4de;
   letter-spacing:3px;
   font-size:26px;
@@ -160,14 +163,51 @@ body{
 /* Game */
 .game-screen{min-height:100vh}
 .top-bar{
-  height:80px;
+  min-height:84px;
+  padding:0 28px;
   border-bottom:1px solid #143a6c;
-  display:flex;align-items:center;justify-content:center;
-  gap:38px;
+  display:grid;
+  grid-template-columns:56px 1fr 56px;
+  align-items:center;
   color:#87b4d8;
   font-size:36px;
+  background:rgba(6,18,40,.88);
 }
 .top-bar strong{color:#d4ebff}
+.top-stats{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:34px;
+}
+.stat-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:18px;
+  color:#86accd;
+}
+.stat-item strong{
+  font-size:22px;
+  font-weight:800;
+}
+.stat-item.moves{color:#7fc3ef;}
+.stat-item.time{color:#4f84ff;}
+.stat-item.matches{color:#f0cb3a;}
+.icon-btn{
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  color:#7fb4dc;
+  font-size:32px;
+  cursor:pointer;
+  width:56px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.icon-btn:hover{color:#cfe6ff}
 
 .progress-wrap{
   height:4px;
@@ -201,10 +241,10 @@ body{
 .memory-card:hover{transform:translateY(-1px)}
 
 .memory-card.flipped{
-  color:#b7dbff;
-  background:#0f2a4e;
-  border:2px solid #1e4f86;
-  box-shadow:0 0 14px rgba(30,79,134,.25);
+  color:#dfe8f4;
+  background:#5f6978;
+  border:2px solid #7a8494;
+  box-shadow:0 0 14px rgba(95,105,120,.22);
 }
 
 .memory-card.matched{
@@ -243,14 +283,18 @@ body{
 .message{color:#6ea8d8;font-size:34px;margin-bottom:22px}
 
 @media (max-width:900px){
-  .title{font-size:60px}
-  .subtitle{font-size:26px; white-space:normal;}
+  .title{font-size:54px; line-height:1.08;}
+  .subtitle{font-size:22px; white-space:normal;}
   .card-option h3{font-size:30px}
   .card-option p{font-size:24px}
   .theme-btn{font-size:30px}
   .primary-btn,.secondary-btn{font-size:32px}
   .memory-card{height:108px;font-size:42px}
-  .top-bar{font-size:24px}
+  .top-bar{padding:0 16px; grid-template-columns:44px 1fr 44px;}
+  .top-stats{gap:16px;}
+  .stat-item{font-size:14px; gap:6px;}
+  .stat-item strong{font-size:18px;}
+  .icon-btn{width:44px; height:44px; font-size:24px;}
   .win-title{font-size:62px}
   .win-sub,.message{font-size:28px}
   .stat .label{font-size:24px}
