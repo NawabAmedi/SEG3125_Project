@@ -5,10 +5,6 @@ class MemoryMatchMania {
         this.difficulty = "easy";
         this.theme = "animals";
 
-        this.injectStyles();
-        this.renderHTML();
-        this.setupEventListeners();
-        
         this.cards = [];
         this.flippedCards = [];
 
@@ -464,13 +460,15 @@ class MemoryMatchMania {
         }
 
         let pairCount = 6;
-
-        if (this.difficulty === "medium") {
-            pairCount = 8;
-        }
-
-        if (this.difficulty === "hard") {
-            pairCount = 10;
+        
+        if (this.difficulty === "easy") {
+            board.style.gridTemplateColumns = "repeat(3, 1fr)";
+        } 
+        else if (this.difficulty === "medium") {
+            board.style.gridTemplateColumns = "repeat(4, 1fr)";
+        } 
+        else {
+            board.style.gridTemplateColumns = "repeat(5, 1fr)";
         }
 
         let chosen = symbols.slice(0, pairCount);
@@ -672,7 +670,14 @@ class MemoryMatchMania {
     }
 
     restartGame() {
-        location.reload();
+        this.moves = 0;
+        this.matches = 0;
+        this.time = 0;
+        this.flippedCards = [];
+        clearInterval(this.timer);
+    
+        this.renderHTML();
+        this.setupEventListeners();
     }
 
     selectDifficulty(level) {
@@ -683,13 +688,53 @@ class MemoryMatchMania {
         this.theme = theme;
     }
 
-    setupEventListeners() {}
-}
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-        window.app =
-            new MemoryMatchMania();
+    .hidden {
+        display: none !important;
     }
-);
+
+    setupEventListeners() {
+
+        const difficultyButtons = document.querySelectorAll(".difficulty");
+        const themeButtons = document.querySelectorAll(".theme");
+        const startBtn = document.querySelector(".start-btn");
+    
+        difficultyButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+    
+                difficultyButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+    
+                const text = btn.querySelector("h3").textContent.toLowerCase();
+    
+                this.selectDifficulty(text);
+            });
+        });
+    
+        themeButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+    
+                themeButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+    
+                const text = btn.textContent.trim().toLowerCase();
+    
+                if (text.includes("animals")) {
+                    this.selectTheme("animals");
+                } else {
+                    this.selectTheme("nature");
+                }
+            });
+        });
+    
+        startBtn.addEventListener("click", () => {
+            this.startGame();
+        });
+    }
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+            window.app =
+                new MemoryMatchMania();
+        }
+    );
