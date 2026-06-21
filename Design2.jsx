@@ -129,6 +129,7 @@ export default function Design2() {
           ].map(([value, label, desc]) => (
             <button
               key={value}
+              data-difficulty={value}
               className={`card-option difficulty ${difficulty === value ? "active" : ""}`}
               onClick={() => setDifficulty(value)}
             >
