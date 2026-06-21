@@ -18,8 +18,13 @@ class MemoryMatchMania {
 
     init() {
         this.injectStyles();
+    
         this.renderHTML();
-        this.setupEventListeners();
+    
+        // wait ONE tick so DOM exists
+        setTimeout(() => {
+            this.setupEventListeners();
+        }, 0);
     }
 
     injectStyles() {
@@ -693,10 +698,12 @@ class MemoryMatchMania {
     }
 
     setupEventListeners() {
-
+    
         const difficultyButtons = document.querySelectorAll(".difficulty");
         const themeButtons = document.querySelectorAll(".theme");
         const startBtn = document.querySelector(".start-btn");
+    
+        if (!startBtn) return;
     
         difficultyButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
@@ -718,11 +725,7 @@ class MemoryMatchMania {
     
                 const text = btn.textContent.trim().toLowerCase();
     
-                if (text.includes("animals")) {
-                    this.selectTheme("animals");
-                } else {
-                    this.selectTheme("nature");
-                }
+                this.selectTheme(text.includes("animals") ? "animals" : "nature");
             });
         });
     
