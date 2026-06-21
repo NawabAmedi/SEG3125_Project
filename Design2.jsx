@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './Design2.js';
+import './Design2.css';
 
 export default function Design2() {
 
