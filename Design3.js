@@ -34,7 +34,7 @@ class TechNestDesign3 {
     this.products = this.seedProducts();
 
     // starts empty
-    this.cart = [()];
+    this.cart = [];
 
     this.mount();
   }
@@ -536,23 +536,45 @@ class TechNestDesign3 {
     const shipping = subtotal >= this.freeShippingThreshold || subtotal === 0 ? 0 : 12.99;
     const total = subtotal + shipping;
 
-    const stepCls = (s) => (this.checkoutStep === s ? "active" : "");
+    const stepCls = (s) => {
+      const order = ["cart", "shipping", "payment", "confirmed"];
+      const current = order.indexOf(this.checkoutStep);
+      const idx = order.indexOf(s);
+      if (idx < current) return "done";
+      if (idx === current) return "active";
+      return "";
+    };
+
+    const stepDot = (s) => {
+      if (s === "cart") return "🛒";
+      if (s === "shipping") return "🚚";
+      if (s === "payment") return "💳";
+      return "✔";
+    };
 
     return `
       <main class="page page-cart">
         <h1 class="center-title">Checkout</h1>
-        <div class="steps">
-          <span class="${stepCls("cart")}">🛒 Cart</span>
-          <span class="${stepCls("shipping")}">🚚 Shipping</span>
-          <span class="${stepCls("payment")}">💳 Payment</span>
-          <span class="${stepCls("confirmed")}">✔ Confirmed</span>
+
+        <div class="steps-pro">
+          ${["cart", "shipping", "payment", "confirmed"]
+            .map(
+              (s, i, arr) => `
+              <div class="step-wrap ${stepCls(s)}">
+                <div class="step-dot">${stepDot(s)}</div>
+                <span class="step-label">${s[0].toUpperCase() + s.slice(1)}</span>
+              </div>
+              ${i < arr.length - 1 ? `<div class="step-line ${stepCls(arr[i + 1]) === "done" || stepCls(arr[i + 1]) === "active" ? "on" : ""}"></div>` : ""}
+            `
+            )
+            .join("")}
         </div>
 
         ${
           this.checkoutStep === "cart"
             ? `
-          <div class="cart-layout">
-            <section>
+          <div class="cart-layout pro">
+            <section class="panel">
               ${
                 items.length === 0
                   ? `<p class="empty">Your cart is empty.</p>`
@@ -561,9 +583,17 @@ class TechNestDesign3 {
                         ({ product, qty }) => `
                 <article class="cart-item">
                   <div class="cart-thumb" style="background:${product.bg}">${product.icon}</div>
-                  <div class="cart-info"><h3>${product.name}</h3><small>${product.brand}</small><p>$${product.price.toFixed(2)}</p></div>
+                  <div class="cart-info">
+                    <h3>${product.name}</h3>
+                    <small>${product.brand}</small>
+                    <p>$${product.price.toFixed(2)}</p>
+                  </div>
                   <div class="cart-actions">
-                    <div class="qty-box"><button data-cart-qty="${product.id}|-1">−</button><strong>${qty}</strong><button data-cart-qty="${product.id}|1">+</button></div>
+                    <div class="qty-box">
+                      <button data-cart-qty="${product.id}|-1">−</button>
+                      <strong>${qty}</strong>
+                      <button data-cart-qty="${product.id}|1">+</button>
+                    </div>
                     <button class="trash-btn" data-remove="${product.id}">🗑️</button>
                   </div>
                 </article>
@@ -573,23 +603,23 @@ class TechNestDesign3 {
               }
             </section>
 
-            <aside class="summary">
+            <aside class="summary pro-summary">
               <h3>Order Summary</h3>
-              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
+              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name} × ${qty}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
               <hr />
               <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
               <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
               <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
               ${subtotal >= this.freeShippingThreshold ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
-              <button class="primary-btn wide" id="goShipping" ${items.length ? "" : "disabled"}>Proceed to Shipping →</button>
+              <button class="primary-btn wide lg" id="goShipping" ${items.length ? "" : "disabled"}>Proceed to Shipping →</button>
             </aside>
           </div>
         `
             : `
-          <div class="cart-layout">
-            <section>
+          <div class="cart-layout pro">
+            <section class="panel">
               <h2>Shipping Information</h2>
-              <div class="filter-group shipping-form" style="border-top:none;padding-top:0">
+              <div class="shipping-form">
                 <label>Full Name *</label>
                 <input id="shipFullName" type="text" value="${this.escape(this.shippingInfo.fullName)}" placeholder="Jane Smith" />
 
@@ -613,15 +643,16 @@ class TechNestDesign3 {
                 <label>Postal Code *</label>
                 <input id="shipPostal" type="text" value="${this.escape(this.shippingInfo.postalCode)}" placeholder="K1A 0A1" />
               </div>
-              <div class="buy-row">
-                <button class="secondary-btn" id="backToCart">← Back</button>
-                <button class="primary-btn wide" id="toPayment">Continue to Payment →</button>
+
+              <div class="checkout-actions">
+                <button class="ghost-btn" id="backToCart">← Back</button>
+                <button class="primary-btn wide lg" id="toPayment">Continue to Payment →</button>
               </div>
             </section>
 
-            <aside class="summary">
+            <aside class="summary pro-summary">
               <h3>Order Summary</h3>
-              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
+              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name} × ${qty}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
               <hr />
               <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
               <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
@@ -634,7 +665,7 @@ class TechNestDesign3 {
       </main>
     `;
   }
-
+  
   renderFooter() {
     return `
       <footer class="tn-footer">
@@ -818,9 +849,16 @@ class TechNestDesign3 {
     });
 
     document.getElementById("toPayment")?.addEventListener("click", () => {
+      const required = ["fullName", "email", "address", "city", "province", "postalCode"];
+      const missing = required.some((k) => !String(this.shippingInfo[k] || "").trim());
+      if (missing) {
+        alert("Please fill in all required shipping fields.");
+        return;
+      }
       this.checkoutStep = "payment";
       this.mount();
     });
+
 
     const bindShipInput = (id, key) => {
       const el = document.getElementById(id);
