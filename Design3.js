@@ -1,9 +1,11 @@
 class TechNestDesign3 {
   constructor() {
-    this.route = "home"; // home | shop | product | cart
+    this.route = "home"; // home | shop | product | cart | shipping | payment | confirmed
     this.search = "";
     this.sortBy = "featured";
-    this.searchTimer = null;
+    this.selectedProductId = null;
+    this.detailQty = 1;
+    this.showDealsOnly = false;
 
     this.filters = {
       categories: new Set(),
@@ -12,12 +14,28 @@ class TechNestDesign3 {
       minRating: 0
     };
 
-    this.freeShippingThreshold = 100;
-    this.selectedProductId = null;
-    this.detailQty = 1;
+    this.shippingForm = {
+      fullName: "",
+      email: "",
+      address: "",
+      city: "",
+      province: "",
+      postalCode: ""
+    };
+
+    this.paymentForm = {
+      cardName: "",
+      cardNumber: "",
+      expiry: "",
+      cvv: ""
+    };
+
+    this.shippingErrors = {};
+    this.paymentErrors = {};
+    this.orderNumber = "";
 
     this.products = this.seedProducts();
-    this.cart = [];
+    this.cart = [{ productId: "asus-pg279qm", qty: 3 }];
 
     this.mount();
   }
@@ -345,7 +363,7 @@ class TechNestDesign3 {
           <nav class="menu">
             <button class="nav-link ${active("home")}" data-nav="home">Home</button>
             <button class="nav-link ${active("shop")}" data-nav="shop">Shop All</button>
-            <button class="nav-link ${active("shop")}" data-nav="shop">🔥 Deals</button>
+            <button class="nav-link ${active("shop")}" data-nav="deals">🔥 Deals</button>
             <button class="cart-btn" data-nav="cart">🛒 Cart ${cartCount ? `<span class="badge">${cartCount}</span>` : ""}</button>
           </nav>
         </div>
@@ -357,13 +375,17 @@ class TechNestDesign3 {
     if (this.route === "home") return this.renderHome();
     if (this.route === "shop") return this.renderShop();
     if (this.route === "product") return this.renderProduct();
-    return this.renderCart();
+    if (this.route === "cart") return this.renderCart();
+    if (this.route === "shipping") return this.renderShipping();
+    if (this.route === "payment") return this.renderPayment();
+    if (this.route === "confirmed") return this.renderConfirmed();
+    return this.renderHome();
   }
 
   renderHome() {
-    const deals = this.products.filter(p => p.tag === "Deal").slice(0, 4);
+    const deals = this.products.filter(p => (p.discount ?? 0) > 0).slice(0, 4);
     const popular = this.products.filter(p => p.tag === "Popular").slice(0, 4);
-    const categories = ["Laptops", "Monitors", "Computer Parts", "Keyboards", "Mice", "Headphones", "Gaming Accessories"];
+    const categories = CATEGORIES;
 
     return `
       <main class="page page-home">
@@ -374,7 +396,7 @@ class TechNestDesign3 {
             <p class="hero-sub">Your one-stop shop for laptops, GPUs, monitors, keyboards, and more. Free shipping on orders over $100.</p>
             <div class="hero-actions">
               <button class="primary-btn" data-go-shop="1">Shop Now →</button>
-              <button class="secondary-btn" data-go-shop="1">View Deals 🔥</button>
+              <button class="secondary-btn" data-go-deals="1">View Deals 🔥</button>
             </div>
           </div>
           <div class="hero-icons">
@@ -392,7 +414,7 @@ class TechNestDesign3 {
         </section>
 
         <section class="section">
-          <div class="section-head"><h2>🔥 Today's Deals</h2><button class="link-btn" data-go-shop="1">See all deals</button></div>
+          <div class="section-head"><h2>🔥 Today's Deals</h2><button class="link-btn" data-go-deals="1">See all deals</button></div>
           <div class="product-grid four">${deals.map(p => this.card(p)).join("")}</div>
         </section>
 
@@ -406,36 +428,33 @@ class TechNestDesign3 {
 
   renderShop() {
     const filtered = this.filteredProducts();
-    const categories = ["Laptops", "Monitors", "Computer Parts", "Keyboards", "Mice", "Headphones", "Gaming Accessories"];
-    const brands = [...new Set(this.products.map(p => p.brand))].sort();
-
     const activeCount = this.filters.categories.size + this.filters.brands.size + (this.filters.minRating ? 1 : 0);
 
     return `
       <main class="page page-shop">
         <section class="shop-layout">
           <aside class="sidebar">
-            <h2>All Products</h2>
+            <h2>${this.showDealsOnly ? "Deals" : "All Products"}</h2>
             <p>${filtered.length} products found</p>
             ${activeCount ? `<button class="clear-filters" id="clearFilters">↺ Clear all filters</button>` : ""}
 
             <div class="filter-group">
               <h4>CATEGORY</h4>
-              ${categories.map(c => `
+              ${CATEGORIES.map(c => `
                 <label><input type="checkbox" data-filter-cat="${c}" ${this.filters.categories.has(c) ? "checked" : ""}/> ${c}</label>
               `).join("")}
             </div>
 
             <div class="filter-group">
               <h4>BRAND</h4>
-              ${brands.map(b => `
+              ${this.brands.map(b => `
                 <label><input type="checkbox" data-filter-brand="${b}" ${this.filters.brands.has(b) ? "checked" : ""}/> ${b}</label>
               `).join("")}
             </div>
 
             <div class="filter-group">
               <h4>MAX PRICE</h4>
-              <input id="priceRange" type="range" min="0" max="2500" step="50" value="${this.filters.maxPrice}" />
+              <input class="price-range" type="range" min="0" max="2500" step="50" value="${this.filters.maxPrice}" />
               <div class="range-labels"><span>$0</span><span>$${this.filters.maxPrice.toFixed(2)}</span></div>
             </div>
 
@@ -508,10 +527,6 @@ class TechNestDesign3 {
 
   renderCart() {
     const items = this.cartItems();
-    const subtotal = this.subtotal();
-    const shipping = subtotal >= this.freeShippingThreshold || subtotal === 0 ? 0 : 12.99;
-    const total = subtotal + shipping;
-
     return `
       <main class="page page-cart">
         <h1 class="center-title">Checkout</h1>
@@ -535,82 +550,158 @@ class TechNestDesign3 {
             <h3>Order Summary</h3>
             ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
             <hr />
-            <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
-            <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
-            <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
-            ${subtotal >= this.freeShippingThreshold ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
-            <button class="primary-btn wide">Proceed to Shipping →</button>
+            <div class="summary-row"><span>Subtotal</span><strong>$${this.subtotal().toFixed(2)}</strong></div>
+            <div class="summary-row"><span>Shipping</span><strong>${this.subtotal() >= 100 || this.subtotal() === 0 ? "FREE" : `$${(12.99).toFixed(2)}`}</strong></div>
+            <div class="summary-row total"><span>Total</span><strong>$${(this.subtotal() + (this.subtotal() >= 100 || this.subtotal() === 0 ? 0 : 12.99)).toFixed(2)}</strong></div>
+            ${this.subtotal() >= 100 ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
+            <button class="primary-btn wide" data-to-shipping ${items.length === 0 ? "disabled" : ""}>Proceed to Shipping →</button>
           </aside>
         </div>
       </main>
     `;
   }
 
-  renderFooter() {
+  renderShipping() {
     return `
-      <footer class="tn-footer">
-        <div class="foot-grid">
-          <div><h4>⚡ TechNest</h4><p>Your one-stop shop for the latest electronics and tech accessories.</p></div>
-          <div><h5>Shop</h5><p>Laptops</p><p>Monitors</p><p>Computer Parts</p><p>Keyboards</p></div>
-          <div><h5>Support</h5><p>Help Centre</p><p>Returns & Refunds</p><p>Order Tracking</p><p>Contact Us</p></div>
-          <div><h5>Policies</h5><p>Privacy Policy</p><p>Terms of Service</p><p>Warranty Info</p><p>Accessibility</p></div>
+      <main class="page page-checkout">
+        <h1 class="center-title">Checkout</h1>
+        <div class="steps"><span class="done">🛒 Cart</span><span class="active">🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span></div>
+
+        <div class="checkout-layout">
+          <section class="checkout-form">
+            <h2>Shipping Information</h2>
+            ${this.inputField("Full Name *", "fullName", "Jane Smith", this.shippingForm.fullName, this.shippingErrors.fullName, "shipping")}
+            ${this.inputField("Email Address *", "email", "jane@example.com", this.shippingForm.email, this.shippingErrors.email, "shipping")}
+            ${this.inputField("Street Address *", "address", "123 Main Street", this.shippingForm.address, this.shippingErrors.address, "shipping")}
+
+            <div class="form-row">
+              ${this.inputField("City *", "city", "Ottawa", this.shippingForm.city, this.shippingErrors.city, "shipping")}
+              ${this.inputField("Province *", "province", "Ontario", this.shippingForm.province, this.shippingErrors.province, "shipping")}
+            </div>
+
+            ${this.inputField("Postal Code *", "postalCode", "K1A 0A1", this.shippingForm.postalCode, this.shippingErrors.postalCode, "shipping")}
+
+            <div class="checkout-actions">
+              <button class="secondary-btn" data-back-cart>← Back</button>
+              <button class="primary-btn" data-continue-payment>Continue to Payment →</button>
+            </div>
+          </section>
+
+          ${this.renderSummaryPanel()}
         </div>
-        <div class="copy">© 2025 TechNest Electronics. All rights reserved. | Made with ♥ in Canada</div>
-      </footer>
+      </main>
     `;
   }
 
-  card(p) {
-    const out = p.stock <= 0;
+  renderPayment() {
     return `
-      <article class="product-card" data-open-product="${p.id}">
-        <div class="thumb" style="background:${p.bg}">
-          ${p.tag ? `<span class="tag">${p.tag}</span>` : ""}
-          <span class="icon">${p.icon}</span>
-          ${out ? `<span class="stock-badge">Out of Stock</span>` : ""}
+      <main class="page page-checkout">
+        <h1 class="center-title">Checkout</h1>
+        <div class="steps"><span class="done">🛒 Cart</span><span class="done">🚚 Shipping</span><span class="active">💳 Payment</span><span>✔ Confirmed</span></div>
+
+        <div class="checkout-layout">
+          <section class="checkout-form">
+            <h2>Payment Information</h2>
+            ${this.inputField("Cardholder Name *", "cardName", "Jane Smith", this.paymentForm.cardName, this.paymentErrors.cardName, "payment")}
+            ${this.inputField("Card Number *", "cardNumber", "4242 4242 4242 4242", this.paymentForm.cardNumber, this.paymentErrors.cardNumber, "payment")}
+
+            <div class="form-row">
+              ${this.inputField("Expiry (MM/YY) *", "expiry", "12/29", this.paymentForm.expiry, this.paymentErrors.expiry, "payment")}
+              ${this.inputField("CVV *", "cvv", "123", this.paymentForm.cvv, this.paymentErrors.cvv, "payment")}
+            </div>
+
+            <div class="checkout-actions">
+              <button class="secondary-btn" data-back-shipping>← Back</button>
+              <button class="primary-btn" data-place-order>Place Order ✔</button>
+            </div>
+          </section>
+
+          ${this.renderSummaryPanel()}
         </div>
-        <div class="card-body">
-          <small>${p.brand}</small>
-          <h3>${p.name}</h3>
-          <div class="rating">${"⭐".repeat(p.rating)} <span>(${p.reviews})</span></div>
-          <div class="price">
-            <strong>$${p.price.toFixed(2)}</strong>
-            ${p.oldPrice ? `<s>$${p.oldPrice.toFixed(2)}</s>` : ""}
-            ${p.discount ? `<em>-${p.discount}%</em>` : ""}
+      </main>
+    `;
+  }
+
+  renderConfirmed() {
+    return `
+      <main class="page page-checkout">
+        <h1 class="center-title">Checkout</h1>
+        <div class="steps"><span class="done">🛒 Cart</span><span class="done">🚚 Shipping</span><span class="done">💳 Payment</span><span class="active">✔ Confirmed</span></div>
+
+        <section class="confirm-card">
+          <h2>✅ Order Confirmed</h2>
+          <p>Thank you, ${this.escape(this.shippingForm.fullName || "Customer")}! Your order has been placed successfully.</p>
+          <p><strong>Order #:</strong> ${this.orderNumber || "TN-00000000"}</p>
+          <p>A confirmation email was sent to <strong>${this.escape(this.shippingForm.email || "your email")}</strong>.</p>
+          <div class="checkout-actions">
+            <button class="secondary-btn" data-nav="shop">Continue Shopping</button>
+            <button class="primary-btn" data-nav="home">Go Home</button>
           </div>
-          <button class="add-btn" data-add="${p.id}" ${out ? "disabled" : ""}>🛒 Add to Cart</button>
-        </div>
-      </article>
+        </section>
+      </main>
+    `;
+  }
+
+  renderSummaryPanel() {
+    const items = this.cartItems();
+    const subtotal = this.subtotal();
+    const shipping = subtotal >= 100 || subtotal === 0 ? 0 : 12.99;
+    const total = subtotal + shipping;
+
+    return `
+      <aside class="summary">
+        <h3>Order Summary</h3>
+        ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name} × ${qty}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
+        <hr />
+        <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
+        <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
+        <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
+        ${subtotal >= 100 ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
+      </aside>
+    `;
+  }
+
+  inputField(label, name, placeholder, value, error, scope) {
+    return `
+      <div class="field ${error ? "has-error" : ""}">
+        <label>${label}</label>
+        <input data-${scope}-field="${name}" value="${this.escape(value || "")}" placeholder="${placeholder}" />
+        ${error ? `<small class="error-text">${error}</small>` : ""}
+      </div>
     `;
   }
 
   bindEvents() {
     document.querySelectorAll("[data-nav]").forEach(btn => {
       btn.addEventListener("click", () => {
-        this.route = btn.dataset.nav;
+        if (btn.dataset.nav === "deals") {
+          this.showDealsOnly = true;
+          this.route = "shop";
+        } else {
+          this.route = btn.dataset.nav;
+        }
         this.mount();
       });
     });
 
     document.getElementById("globalSearch")?.addEventListener("input", (e) => {
-      const value = e.target.value || "";
-      clearTimeout(this.searchTimer);
-
-      this.searchTimer = setTimeout(() => {
-        this.search = value;
-        this.route = "shop";
-        this.mount();
-
-        const input = document.getElementById("globalSearch");
-        if (input) {
-          input.focus();
-          input.setSelectionRange(value.length, value.length);
-        }
-      }, 120);
+      this.search = e.target.value || "";
+      this.route = "shop";
+      this.showDealsOnly = false;
+      this.mount();
     });
 
     document.querySelectorAll("[data-go-shop]").forEach(btn =>
       btn.addEventListener("click", () => {
+        this.showDealsOnly = false;
+        this.route = "shop";
+        this.mount();
+      })
+    );
+
+    document.querySelectorAll("[data-go-deals]").forEach(btn =>
+      btn.addEventListener("click", () => {
+        this.showDealsOnly = true;
         this.route = "shop";
         this.mount();
       })
@@ -619,6 +710,7 @@ class TechNestDesign3 {
     document.querySelectorAll("[data-cat]").forEach(btn =>
       btn.addEventListener("click", () => {
         this.route = "shop";
+        this.showDealsOnly = false;
         this.filters.categories = new Set([btn.dataset.cat]);
         this.mount();
       })
@@ -668,7 +760,7 @@ class TechNestDesign3 {
       })
     );
 
-    document.getElementById("priceRange")?.addEventListener("input", (e) => {
+    document.querySelector(".price-range")?.addEventListener("input", (e) => {
       this.filters.maxPrice = Number(e.target.value);
       this.mount();
     });
@@ -700,6 +792,50 @@ class TechNestDesign3 {
     document.querySelectorAll("[data-remove]").forEach(btn =>
       btn.addEventListener("click", () => this.removeFromCart(btn.dataset.remove))
     );
+
+    document.querySelector("[data-to-shipping]")?.addEventListener("click", () => {
+      if (!this.cartItems().length) return;
+      this.route = "shipping";
+      this.mount();
+    });
+
+    document.querySelector("[data-back-cart]")?.addEventListener("click", () => {
+      this.route = "cart";
+      this.mount();
+    });
+
+    document.querySelector("[data-continue-payment]")?.addEventListener("click", () => {
+      if (this.validateShipping()) {
+        this.route = "payment";
+        this.mount();
+      }
+    });
+
+    document.querySelector("[data-back-shipping]")?.addEventListener("click", () => {
+      this.route = "shipping";
+      this.mount();
+    });
+
+    document.querySelector("[data-place-order]")?.addEventListener("click", () => {
+      if (this.validatePayment()) {
+        this.orderNumber = `TN-${Date.now().toString().slice(-8)}`;
+        this.cart = [];
+        this.route = "confirmed";
+        this.mount();
+      }
+    });
+
+    document.querySelectorAll("[data-shipping-field]").forEach(input => {
+      input.addEventListener("input", () => {
+        this.shippingForm[input.dataset.shippingField] = input.value;
+      });
+    });
+
+    document.querySelectorAll("[data-payment-field]").forEach(input => {
+      input.addEventListener("input", () => {
+        this.paymentForm[input.dataset.paymentField] = input.value;
+      });
+    });
   }
 
   filteredProducts() {
@@ -707,11 +843,16 @@ class TechNestDesign3 {
     const q = this.search.trim().toLowerCase();
 
     if (q) {
-      list = list.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
+      list = list.filter(
+        p =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
       );
+    }
+
+    if (this.showDealsOnly) {
+      list = list.filter(p => (p.discount ?? 0) > 0);
     }
 
     if (this.filters.categories.size) list = list.filter(p => this.filters.categories.has(p.category));
@@ -723,11 +864,34 @@ class TechNestDesign3 {
     if (this.sortBy === "price-high") list.sort((a, b) => b.price - a.price);
     if (this.sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
     if (this.sortBy === "reviews") list.sort((a, b) => b.reviews - a.reviews);
-    if (this.sortBy === "featured") {
-      list.sort((a, b) => (b.tag === "Deal") - (a.tag === "Deal"));
-    }
+    if (this.sortBy === "featured") list.sort((a, b) => (b.tag === "Deal") - (a.tag === "Deal"));
 
     return list;
+  }
+
+  validateShipping() {
+    const e = {};
+    const f = this.shippingForm;
+    if (!f.fullName.trim()) e.fullName = "Full name is required";
+    if (!/^\S+@\S+\.\S+$/.test(f.email.trim())) e.email = "Valid email is required";
+    if (!f.address.trim()) e.address = "Address is required";
+    if (!f.city.trim()) e.city = "City is required";
+    if (!f.province.trim()) e.province = "Province is required";
+    if (!f.postalCode.trim()) e.postalCode = "Postal code is required";
+    this.shippingErrors = e;
+    return Object.keys(e).length === 0;
+  }
+
+  validatePayment() {
+    const e = {};
+    const f = this.paymentForm;
+    const card = f.cardNumber.replace(/\s/g, "");
+    if (!f.cardName.trim()) e.cardName = "Cardholder name is required";
+    if (!/^\d{16}$/.test(card)) e.cardNumber = "Card number must be 16 digits";
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(f.expiry.trim())) e.expiry = "Use MM/YY format";
+    if (!/^\d{3,4}$/.test(f.cvv.trim())) e.cvv = "CVV must be 3 or 4 digits";
+    this.paymentErrors = e;
+    return Object.keys(e).length === 0;
   }
 
   addToCart(id, qty) {
@@ -761,6 +925,52 @@ class TechNestDesign3 {
     return this.cartItems().reduce((sum, x) => sum + x.product.price * x.qty, 0);
   }
 
+  renderFooter() {
+    return `
+      <footer class="tn-footer">
+        <div class="foot-grid">
+          <div><h4>⚡ TechNest</h4><p>Your one-stop shop for the latest electronics and tech accessories.</p></div>
+          <div><h5>Shop</h5><p>Laptops</p><p>Monitors</p><p>Computer Parts</p><p>Keyboards</p></div>
+          <div><h5>Support</h5><p>Help Centre</p><p>Returns & Refunds</p><p>Order Tracking</p><p>Contact Us</p></div>
+          <div><h5>Policies</h5><p>Privacy Policy</p><p>Terms of Service</p><p>Warranty Info</p><p>Accessibility</p></div>
+        </div>
+        <div class="copy">© 2025 TechNest Electronics. All rights reserved. | Made with ♥ in Canada</div>
+      </footer>
+    `;
+  }
+
+  card(p) {
+    const out = p.stock <= 0;
+    return `
+      <article class="product-card" data-open-product="${p.id}">
+        <div class="thumb" style="background:${p.bg}">
+          ${p.tag ? `<span class="tag">${p.tag}</span>` : ""}
+          <span class="icon">${p.icon}</span>
+          ${out ? `<span class="stock-badge">Out of Stock</span>` : ""}
+        </div>
+        <div class="card-body">
+          <small>${p.brand}</small>
+          <h3>${p.name}</h3>
+          <div class="rating">${"⭐".repeat(p.rating)} <span>(${p.reviews})</span></div>
+          <div class="price">
+            <strong>$${p.price.toFixed(2)}</strong>
+            ${p.oldPrice ? `<s>$${p.oldPrice.toFixed(2)}</s>` : ""}
+            ${p.discount ? `<em>-${p.discount}%</em>` : ""}
+          </div>
+          <button class="add-btn" data-add="${p.id}" ${out ? "disabled" : ""}>🛒 Add to Cart</button>
+        </div>
+      </article>
+    `;
+  }
+
+  escape(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  }
+
   catEmoji(c) {
     const m = {
       Laptops: "💻",
@@ -772,10 +982,6 @@ class TechNestDesign3 {
       "Gaming Accessories": "🎮"
     };
     return m[c] || "🧩";
-  }
-
-  escape(str) {
-    return String(str).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
 }
 
