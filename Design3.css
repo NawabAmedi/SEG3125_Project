@@ -373,3 +373,142 @@ button,input,select{font:inherit}
     width: 40px;
   }
 }
+
+/* ===== FILTER SIDEBAR EXACT COMPACT TUNING (add at end of file) ===== */
+.page-shop .shop-layout{
+  grid-template-columns: 270px 1fr;
+  gap: 26px;
+}
+
+.page-shop .sidebar{
+  border-right: 1px solid #13335f;
+  padding-right: 18px;
+}
+
+.page-shop .sidebar h2{
+  margin: 0;
+  font-size: 42px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.page-shop .sidebar > p{
+  margin: 8px 0 18px;
+  color: #6f8eb9;
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+.page-shop .filter-group{
+  padding: 14px 0 12px;
+  border-top: 1px solid #13335f;
+}
+
+.page-shop .filter-group h4{
+  margin: 0 0 12px;
+  font-size: 29px;
+  line-height: 1;
+  letter-spacing: .12em;
+  font-weight: 800;
+  color: #7d9fce;
+}
+
+/* row spacing + compact text */
+.page-shop .filter-group label{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 9px 0;
+  color: #7ea0cf;
+  font-size: 34px;
+  line-height: 1.15;
+}
+
+/* compact checkbox/radio (kills giant white boxes) */
+.page-shop .filter-group input[type="checkbox"],
+.page-shop .filter-group input[type="radio"]{
+  width: 13px !important;
+  height: 13px !important;
+  min-width: 13px;
+  min-height: 13px;
+  margin: 0;
+  padding: 0;
+  border-radius: 2px;
+  accent-color: #2f6bff;
+  flex: 0 0 auto;
+  appearance: auto;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* make radio circular */
+.page-shop .filter-group input[type="radio"]{
+  border-radius: 999px;
+}
+
+/* slider line and thumb compact */
+.page-shop .filter-group input[type="range"]{
+  width: 100%;
+  height: 4px !important;
+  margin: 6px 0 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #1a4f95;
+  appearance: none;
+}
+
+.page-shop .filter-group input[type="range"]::-webkit-slider-runnable-track{
+  height: 4px;
+  border-radius: 999px;
+  background: #1a4f95;
+}
+.page-shop .filter-group input[type="range"]::-webkit-slider-thumb{
+  appearance: none;
+  margin-top: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #2f6bff;
+  border: 2px solid #cfe0ff;
+}
+
+.page-shop .filter-group input[type="range"]::-moz-range-track{
+  height: 4px;
+  border-radius: 999px;
+  background: #1a4f95;
+}
+.page-shop .filter-group input[type="range"]::-moz-range-thumb{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #2f6bff;
+  border: 2px solid #cfe0ff;
+}
+
+/* compact price labels */
+.page-shop .range-labels{
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 700;
+  color: #87a8d8;
+}
+
+/* remove old broad input style effect in sidebar only */
+.page-shop .filter-group input{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+/* keep clear filters tiny */
+.page-shop .clear-filters{
+  padding: 0 0 10px;
+  font-size: 31px;
+  line-height: 1.1;
+}
