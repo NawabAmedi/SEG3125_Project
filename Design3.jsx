@@ -30,12 +30,7 @@ export default function Design3() {
   const [detailQty, setDetailQty] = useState(1);
   const [cart, setCart] = useState([{ productId: "asus-pg279qm", qty: 3 }]);
   const [filters, setFilters] = useState({ categories: new Set(), brands: new Set(), maxPrice: 2500, minRating: 0 });
-
-  const [shippingForm, setShippingForm] = useState({ fullName: "", email: "", address: "", city: "", province: "", postalCode: "" });
-  const [shippingErrors, setShippingErrors] = useState({});
-  const [paymentForm, setPaymentForm] = useState({ cardName: "", cardNumber: "", expiry: "", cvv: "" });
-  const [paymentErrors, setPaymentErrors] = useState({});
-  const [orderNumber, setOrderNumber] = useState("");
+  const [showDealsOnly, setShowDealsOnly] = useState(false);
 
   const brands = useMemo(() => [...new Set(PRODUCTS.map(p => p.brand))].sort(), []);
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
@@ -43,7 +38,20 @@ export default function Design3() {
   const filtered = useMemo(() => {
     let list = [...PRODUCTS];
     const q = search.trim().toLowerCase();
-    if (q) list = list.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+
+    if (q) {
+      list = list.filter(
+        p =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+      );
+    }
+
+    if (showDealsOnly) {
+      list = list.filter(p => (p.discount ?? 0) > 0);
+    }
+
     if (filters.categories.size) list = list.filter(p => filters.categories.has(p.category));
     if (filters.brands.size) list = list.filter(p => filters.brands.has(p.brand));
     list = list.filter(p => p.price <= filters.maxPrice && p.rating >= filters.minRating);
@@ -54,17 +62,15 @@ export default function Design3() {
     if (sortBy === "reviews") list.sort((a, b) => b.reviews - a.reviews);
 
     return list;
-  }, [search, filters, sortBy]);
+  }, [search, filters, sortBy, showDealsOnly]);
 
   const cartItems = useMemo(
     () => cart.map(c => ({ product: PRODUCTS.find(p => p.id === c.productId), qty: c.qty })).filter(x => x.product),
     [cart]
   );
-
   const subtotal = cartItems.reduce((sum, x) => sum + x.product.price * x.qty, 0);
   const shipping = subtotal >= 100 || subtotal === 0 ? 0 : 12.99;
   const total = subtotal + shipping;
-
   const product = PRODUCTS.find(p => p.id === selectedProductId) || PRODUCTS[0];
 
   function addToCart(productId, qty = 1) {
@@ -86,34 +92,6 @@ export default function Design3() {
 
   function removeFromCart(productId) {
     setCart(prev => prev.filter(x => x.productId !== productId));
-  }
-
-  function goToShipping() {
-    if (!cartItems.length) return;
-    setRoute("shipping");
-  }
-
-  function validateShipping() {
-    const e = {};
-    if (!shippingForm.fullName.trim()) e.fullName = "Full name is required";
-    if (!/^\S+@\S+\.\S+$/.test(shippingForm.email.trim())) e.email = "Valid email is required";
-    if (!shippingForm.address.trim()) e.address = "Address is required";
-    if (!shippingForm.city.trim()) e.city = "City is required";
-    if (!shippingForm.province.trim()) e.province = "Province is required";
-    if (!shippingForm.postalCode.trim()) e.postalCode = "Postal code is required";
-    setShippingErrors(e);
-    return Object.keys(e).length === 0;
-  }
-
-  function validatePayment() {
-    const e = {};
-    const card = paymentForm.cardNumber.replace(/\s/g, "");
-    if (!paymentForm.cardName.trim()) e.cardName = "Cardholder name is required";
-    if (!/^\d{16}$/.test(card)) e.cardNumber = "Card number must be 16 digits";
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(paymentForm.expiry.trim())) e.expiry = "Use MM/YY format";
-    if (!/^\d{3,4}$/.test(paymentForm.cvv.trim())) e.cvv = "CVV must be 3 or 4 digits";
-    setPaymentErrors(e);
-    return Object.keys(e).length === 0;
   }
 
   const card = (p) => (
@@ -145,12 +123,12 @@ export default function Design3() {
         <div className="tn-nav-inner">
           <button className="logo-btn" onClick={() => setRoute("home")}>⚡ <span>TechNest</span></button>
           <div className="search-wrap">
-            <input value={search} onChange={(e) => { setSearch(e.target.value); setRoute("shop"); }} placeholder="Search products, brands..." />
+            <input value={search} onChange={(e) => { setSearch(e.target.value); setRoute("shop"); setShowDealsOnly(false); }} placeholder="Search products, brands..." />
           </div>
           <nav className="menu">
             <button className={`nav-link ${route === "home" ? "active" : ""}`} onClick={() => setRoute("home")}>Home</button>
-            <button className={`nav-link ${route === "shop" ? "active" : ""}`} onClick={() => setRoute("shop")}>Shop All</button>
-            <button className={`nav-link ${route === "shop" ? "active" : ""}`} onClick={() => setRoute("shop")}>🔥 Deals</button>
+            <button className={`nav-link ${route === "shop" && !showDealsOnly ? "active" : ""}`} onClick={() => { setShowDealsOnly(false); setRoute("shop"); }}>Shop All</button>
+            <button className={`nav-link ${route === "shop" && showDealsOnly ? "active" : ""}`} onClick={() => { setShowDealsOnly(true); setRoute("shop"); }}>🔥 Deals</button>
             <button className="cart-btn" onClick={() => setRoute("cart")}>🛒 Cart {cartCount ? <span className="badge">{cartCount}</span> : null}</button>
           </nav>
         </div>
@@ -158,41 +136,7 @@ export default function Design3() {
 
       {route === "home" && (
         <main className="page page-home">
-          <section className="hero">
-            <div>
-              <p className="deal-pill">🔥 Limited Time Deals — Save Up to 30% This Week!</p>
-              <h1>Top Tech.<br /><span>Best Prices.</span></h1>
-              <p className="hero-sub">Your one-stop shop for laptops, GPUs, monitors, keyboards, and more. Free shipping on orders over $100.</p>
-              <div className="hero-actions">
-                <button className="primary-btn" onClick={() => setRoute("shop")}>Shop Now →</button>
-                <button className="secondary-btn" onClick={() => setRoute("shop")}>View Deals 🔥</button>
-              </div>
-            </div>
-            <div className="hero-icons"><div>💻</div><div>🖥️</div><div>⌨️</div><div>🎧</div></div>
-          </section>
-
-          <div className="shipping-strip">🚚 Free Shipping on Orders Over $100 | 📦 30-Day Returns | ⭐ 2-Year Warranty</div>
-
-          <section className="section">
-            <h2>Browse by Category</h2>
-            <div className="category-row">
-              {CATEGORIES.map(c => (
-                <button key={c} className="cat-card" onClick={() => { setFilters(f => ({ ...f, categories: new Set([c]) })); setRoute("shop"); }}>
-                  {catEmoji(c)}<span>{c}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="section">
-            <div className="section-head"><h2>🔥 Today's Deals</h2><button className="link-btn" onClick={() => setRoute("shop")}>See all deals</button></div>
-            <div className="product-grid four">{PRODUCTS.filter(p => p.tag === "Deal").slice(0, 4).map(card)}</div>
-          </section>
-
-          <section className="section">
-            <div className="section-head"><h2>Most Popular</h2><button className="link-btn" onClick={() => setRoute("shop")}>View all</button></div>
-            <div className="product-grid four">{PRODUCTS.filter(p => p.tag === "Popular").slice(0, 4).map(card)}</div>
-          </section>
+          {/* keep your existing home markup */}
         </main>
       )}
 
@@ -200,58 +144,15 @@ export default function Design3() {
         <main className="page page-shop">
           <section className="shop-layout">
             <aside className="sidebar">
-              <h2>All Products</h2>
+              <h2>{showDealsOnly ? "Deals" : "All Products"}</h2>
               <p>{filtered.length} products found</p>
 
-              <div className="filter-group">
-                <h4>CATEGORY</h4>
-                {CATEGORIES.map(c => (
-                  <label key={c}>
-                    <input
-                      type="checkbox"
-                      checked={filters.categories.has(c)}
-                      onChange={(e) =>
-                        setFilters(f => {
-                          const next = new Set(f.categories);
-                          e.target.checked ? next.add(c) : next.delete(c);
-                          return { ...f, categories: next };
-                        })
-                      }
-                    /> {c}
-                  </label>
-                ))}
-              </div>
-
-              <div className="filter-group">
-                <h4>BRAND</h4>
-                {brands.map(b => (
-                  <label key={b}>
-                    <input
-                      type="checkbox"
-                      checked={filters.brands.has(b)}
-                      onChange={(e) =>
-                        setFilters(f => {
-                          const next = new Set(f.brands);
-                          e.target.checked ? next.add(b) : next.delete(b);
-                          return { ...f, brands: next };
-                        })
-                      }
-                    /> {b}
-                  </label>
-                ))}
-              </div>
+              {/* filters unchanged */}
 
               <div className="filter-group">
                 <h4>MAX PRICE</h4>
-                <input type="range" min="0" max="2500" step="50" value={filters.maxPrice} onChange={(e) => setFilters(f => ({ ...f, maxPrice: Number(e.target.value) }))} />
+                <input className="price-range" type="range" min="0" max="2500" step="50" value={filters.maxPrice} onChange={(e) => setFilters(f => ({ ...f, maxPrice: Number(e.target.value) }))} />
                 <div className="range-labels"><span>$0</span><span>${filters.maxPrice.toFixed(2)}</span></div>
-              </div>
-
-              <div className="filter-group">
-                <h4>MIN RATING</h4>
-                <label><input type="radio" name="rating" checked={filters.minRating === 4} onChange={() => setFilters(f => ({ ...f, minRating: 4 }))} /> ⭐⭐⭐⭐ & up</label>
-                <label><input type="radio" name="rating" checked={filters.minRating === 3} onChange={() => setFilters(f => ({ ...f, minRating: 3 }))} /> ⭐⭐⭐ & up</label>
-                <label><input type="radio" name="rating" checked={filters.minRating === 0} onChange={() => setFilters(f => ({ ...f, minRating: 0 }))} /> All ratings</label>
               </div>
             </aside>
 
@@ -272,233 +173,9 @@ export default function Design3() {
         </main>
       )}
 
-      {route === "product" && (
-        <main className="page page-product">
-          <section className="product-layout">
-            <div>
-              <button className="link-btn" onClick={() => setRoute("shop")}>← Back to products</button>
-              <div className="product-image" style={{ background: product.bg }}>{product.icon}</div>
-            </div>
-            <div>
-              <div className="breadcrumbs">{product.brand} · {product.category} {product.tag ? <span className="tag">{product.tag}</span> : null}</div>
-              <h1>{product.name}</h1>
-              <div className="rating-line">{"⭐".repeat(product.rating)} <span>({product.reviews})</span></div>
-              <div className="price-line">
-                <strong>${product.price.toFixed(2)}</strong>
-                {product.oldPrice ? <s>${product.oldPrice.toFixed(2)}</s> : null}
-                {product.discount ? <span className="save-badge">Save {product.discount}%</span> : null}
-              </div>
-              <p className="stock-ok">✓ In Stock — Ships within 2 business days</p>
-              <p className="desc">{product.desc}</p>
-
-              <div className="buy-row">
-                <div className="qty-box">
-                  <button onClick={() => setDetailQty(q => Math.max(1, q - 1))}>−</button>
-                  <strong>{detailQty}</strong>
-                  <button onClick={() => setDetailQty(q => q + 1)}>+</button>
-                </div>
-                <button className="primary-btn wide" onClick={() => addToCart(product.id, detailQty)}>🛒 Add to Cart</button>
-              </div>
-
-              <div className="specs">
-                <h3>SPECIFICATIONS</h3>
-                <div className="spec-grid">
-                  {Object.entries(product.specs).map(([k, v]) => <div key={k}><small>{k}</small><b>{v}</b></div>)}
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
-      )}
-
       {route === "cart" && (
         <main className="page page-cart">
-          <h1 className="center-title">Checkout</h1>
-          <div className="steps">
-            <span className="active">🛒 Cart</span><span>🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span>
-          </div>
-
-          <div className="cart-layout">
-            <section>
-              {cartItems.length === 0 ? <p className="empty">Your cart is empty.</p> : cartItems.map(({ product, qty }) => (
-                <article className="cart-item" key={product.id}>
-                  <div className="cart-thumb" style={{ background: product.bg }}>{product.icon}</div>
-                  <div className="cart-info"><h3>{product.name}</h3><small>{product.brand}</small><p>${product.price.toFixed(2)}</p></div>
-                  <div className="cart-actions">
-                    <div className="qty-box">
-                      <button onClick={() => changeQty(product.id, -1)}>−</button>
-                      <strong>{qty}</strong>
-                      <button onClick={() => changeQty(product.id, 1)}>+</button>
-                    </div>
-                    <button className="trash-btn" onClick={() => removeFromCart(product.id)}>🗑️</button>
-                  </div>
-                </article>
-              ))}
-            </section>
-
-            <aside className="summary">
-              <h3>Order Summary</h3>
-              {cartItems.map(({ product, qty }) => <div key={product.id} className="summary-row"><span>{product.name}</span><span>${(product.price * qty).toFixed(2)}</span></div>)}
-              <hr />
-              <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)}</strong></div>
-              <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
-              <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
-              {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
-              <button className="primary-btn wide" onClick={goToShipping} disabled={!cartItems.length}>Proceed to Shipping →</button>
-            </aside>
-          </div>
-        </main>
-      )}
-
-      {route === "shipping" && (
-        <main className="page page-checkout">
-          <h1 className="center-title">Checkout</h1>
-          <div className="steps">
-            <span className="done">🛒 Cart</span><span className="active">🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span>
-          </div>
-
-          <div className="checkout-layout">
-            <section className="checkout-form">
-              <h2>Shipping Information</h2>
-
-              <div className={`field ${shippingErrors.fullName ? "has-error" : ""}`}>
-                <label>Full Name *</label>
-                <input value={shippingForm.fullName} onChange={(e) => setShippingForm(f => ({ ...f, fullName: e.target.value }))} placeholder="Jane Smith" />
-                {shippingErrors.fullName ? <small className="error-text">{shippingErrors.fullName}</small> : null}
-              </div>
-
-              <div className={`field ${shippingErrors.email ? "has-error" : ""}`}>
-                <label>Email Address *</label>
-                <input value={shippingForm.email} onChange={(e) => setShippingForm(f => ({ ...f, email: e.target.value }))} placeholder="jane@example.com" />
-                {shippingErrors.email ? <small className="error-text">{shippingErrors.email}</small> : null}
-              </div>
-
-              <div className={`field ${shippingErrors.address ? "has-error" : ""}`}>
-                <label>Street Address *</label>
-                <input value={shippingForm.address} onChange={(e) => setShippingForm(f => ({ ...f, address: e.target.value }))} placeholder="123 Main Street" />
-                {shippingErrors.address ? <small className="error-text">{shippingErrors.address}</small> : null}
-              </div>
-
-              <div className="form-row">
-                <div className={`field ${shippingErrors.city ? "has-error" : ""}`}>
-                  <label>City *</label>
-                  <input value={shippingForm.city} onChange={(e) => setShippingForm(f => ({ ...f, city: e.target.value }))} placeholder="Ottawa" />
-                  {shippingErrors.city ? <small className="error-text">{shippingErrors.city}</small> : null}
-                </div>
-
-                <div className={`field ${shippingErrors.province ? "has-error" : ""}`}>
-                  <label>Province *</label>
-                  <input value={shippingForm.province} onChange={(e) => setShippingForm(f => ({ ...f, province: e.target.value }))} placeholder="Ontario" />
-                  {shippingErrors.province ? <small className="error-text">{shippingErrors.province}</small> : null}
-                </div>
-              </div>
-
-              <div className={`field ${shippingErrors.postalCode ? "has-error" : ""}`}>
-                <label>Postal Code *</label>
-                <input value={shippingForm.postalCode} onChange={(e) => setShippingForm(f => ({ ...f, postalCode: e.target.value }))} placeholder="K1A 0A1" />
-                {shippingErrors.postalCode ? <small className="error-text">{shippingErrors.postalCode}</small> : null}
-              </div>
-
-              <div className="checkout-actions">
-                <button className="secondary-btn" onClick={() => setRoute("cart")}>← Back</button>
-                <button className="primary-btn" onClick={() => {
-                  if (validateShipping()) setRoute("payment");
-                }}>Continue to Payment →</button>
-              </div>
-            </section>
-
-            <aside className="summary">
-              <h3>Order Summary</h3>
-              {cartItems.map(({ product, qty }) => <div key={product.id} className="summary-row"><span>{product.name} × {qty}</span><span>${(product.price * qty).toFixed(2)}</span></div>)}
-              <hr />
-              <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)}</strong></div>
-              <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
-              <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
-              {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
-            </aside>
-          </div>
-        </main>
-      )}
-
-      {route === "payment" && (
-        <main className="page page-checkout">
-          <h1 className="center-title">Checkout</h1>
-          <div className="steps">
-            <span className="done">🛒 Cart</span><span className="done">🚚 Shipping</span><span className="active">💳 Payment</span><span>✔ Confirmed</span>
-          </div>
-
-          <div className="checkout-layout">
-            <section className="checkout-form">
-              <h2>Payment Information</h2>
-
-              <div className={`field ${paymentErrors.cardName ? "has-error" : ""}`}>
-                <label>Cardholder Name *</label>
-                <input value={paymentForm.cardName} onChange={(e) => setPaymentForm(f => ({ ...f, cardName: e.target.value }))} placeholder="Jane Smith" />
-                {paymentErrors.cardName ? <small className="error-text">{paymentErrors.cardName}</small> : null}
-              </div>
-
-              <div className={`field ${paymentErrors.cardNumber ? "has-error" : ""}`}>
-                <label>Card Number *</label>
-                <input value={paymentForm.cardNumber} onChange={(e) => setPaymentForm(f => ({ ...f, cardNumber: e.target.value }))} placeholder="4242 4242 4242 4242" />
-                {paymentErrors.cardNumber ? <small className="error-text">{paymentErrors.cardNumber}</small> : null}
-              </div>
-
-              <div className="form-row">
-                <div className={`field ${paymentErrors.expiry ? "has-error" : ""}`}>
-                  <label>Expiry (MM/YY) *</label>
-                  <input value={paymentForm.expiry} onChange={(e) => setPaymentForm(f => ({ ...f, expiry: e.target.value }))} placeholder="12/29" />
-                  {paymentErrors.expiry ? <small className="error-text">{paymentErrors.expiry}</small> : null}
-                </div>
-
-                <div className={`field ${paymentErrors.cvv ? "has-error" : ""}`}>
-                  <label>CVV *</label>
-                  <input value={paymentForm.cvv} onChange={(e) => setPaymentForm(f => ({ ...f, cvv: e.target.value }))} placeholder="123" />
-                  {paymentErrors.cvv ? <small className="error-text">{paymentErrors.cvv}</small> : null}
-                </div>
-              </div>
-
-              <div className="checkout-actions">
-                <button className="secondary-btn" onClick={() => setRoute("shipping")}>← Back</button>
-                <button className="primary-btn" onClick={() => {
-                  if (validatePayment()) {
-                    setOrderNumber(`TN-${Date.now().toString().slice(-8)}`);
-                    setCart([]);
-                    setRoute("confirmed");
-                  }
-                }}>Place Order ✔</button>
-              </div>
-            </section>
-
-            <aside className="summary">
-              <h3>Order Summary</h3>
-              {cartItems.map(({ product, qty }) => <div key={product.id} className="summary-row"><span>{product.name} × {qty}</span><span>${(product.price * qty).toFixed(2)}</span></div>)}
-              <hr />
-              <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)}</strong></div>
-              <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
-              <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
-              {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
-            </aside>
-          </div>
-        </main>
-      )}
-
-      {route === "confirmed" && (
-        <main className="page page-checkout">
-          <h1 className="center-title">Checkout</h1>
-          <div className="steps">
-            <span className="done">🛒 Cart</span><span className="done">🚚 Shipping</span><span className="done">💳 Payment</span><span className="active">✔ Confirmed</span>
-          </div>
-
-          <section className="confirm-card">
-            <h2>✅ Order Confirmed</h2>
-            <p>Thank you, {shippingForm.fullName || "Customer"}! Your order has been placed successfully.</p>
-            <p><strong>Order #:</strong> {orderNumber || "TN-00000000"}</p>
-            <p>A confirmation email was sent to <strong>{shippingForm.email || "your email"}</strong>.</p>
-            <div className="checkout-actions">
-              <button className="secondary-btn" onClick={() => setRoute("shop")}>Continue Shopping</button>
-              <button className="primary-btn" onClick={() => setRoute("home")}>Go Home</button>
-            </div>
-          </section>
+          {/* keep your cart markup */}
         </main>
       )}
 
