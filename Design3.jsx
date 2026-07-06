@@ -13,13 +13,13 @@ const PRODUCTS = [
   { id:"logitech-g502x", name:"Logitech G502 X Plus", brand:"Logitech", category:"Mice", price:159.99, oldPrice:189.99, rating:5, reviews:178, tag:"Deal", discount:16, icon:"🖱️", bg:"linear-gradient(135deg,#292d52,#20274b)", stock:9, desc:"High-precision wireless gaming mouse with customizable controls.", specs:{ Sensor:"HERO 25K", Weight:"106g", Wireless:"LIGHTSPEED", Battery:"120h", Buttons:"13", Switches:"Hybrid Optical" } },
   { id:"razer-deathadder-v3", name:"Razer DeathAdder V3 HyperSpeed", brand:"Razer", category:"Mice", price:89.99, oldPrice:null, rating:5, reviews:234, tag:"Popular", discount:0, icon:"🖱️", bg:"linear-gradient(135deg,#022e1f,#01331f)", stock:11, desc:"Ergonomic esports mouse built for speed and precision.", specs:{ Sensor:"Focus Pro 30K", Weight:"55g", Wireless:"2.4GHz", Battery:"100h", Polling:"1000Hz", Switches:"Optical Gen-3" } },
   { id:"sony-wh1000xm5", name:"Sony WH-1000XM5", brand:"Sony", category:"Headphones", price:349.99, oldPrice:399.99, rating:5, reviews:256, tag:null, discount:13, icon:"🎧", bg:"linear-gradient(135deg,#16243e,#202d47)", stock:13, desc:"Industry-leading noise cancellation headphones.", specs:{ Type:"Over-ear", ANC:"Yes", Battery:"30h", Codec:"LDAC", Mic:"Beamforming", Weight:"250g" } },
-  { id:"corsair-rm850x", name:"Corsair RM850x PSU", brand:"Corsair", category:"Computer Parts", price:149.99, oldPrice:null, rating:4, reviews:74, tag:null, discount:0, icon:"🔧", bg:"linear-gradient(135deg,#101b35,#162444)", stock:0, desc:"Reliable 850W fully modular power supply.", specs:{ Wattage:"850W", Efficiency:"80+ Gold", Modular:"Fully", Fan:"135mm", ATX:"3.0 ready", Warranty:"10 years" } }
+  { id:"corsair-rm850x", name:"Corsair RM850x PSU", brand:"Corsair", category:"Computer Parts", price:149.99, oldPrice:null, rating:4, reviews:74, tag:null, discount:0, icon:"🔧", bg:"linear-gradient(135deg,#101b35,#162444)", stock:0, desc:"Reliable 850W fully modular power supply.", specs:{ Wattage:"850W", Efficiency:"80+ Gold", Modular:"Fully", Fan:"135mm", ATX:"3.0 ready", Warranty:"10 years" } },
 ];
 
 const CATEGORIES = ["Laptops", "Monitors", "Computer Parts", "Keyboards", "Mice", "Headphones", "Gaming Accessories"];
 
 const catEmoji = (c) => ({
-  Laptops: "💻", Monitors: "🖥️", "Computer Parts": "⚙️", Keyboards: "⌨️", Mice: "🖱️", Headphones: "🎧", "Gaming Accessories": "🎮"
+  Laptops:"💻", Monitors:"🖥️", "Computer Parts":"⚙️", Keyboards:"⌨️", Mice:"🖱️", Headphones:"🎧", "Gaming Accessories":"🎮"
 }[c] || "🧩");
 
 export default function Design3() {
@@ -30,6 +30,12 @@ export default function Design3() {
   const [detailQty, setDetailQty] = useState(1);
   const [cart, setCart] = useState([{ productId: "asus-pg279qm", qty: 3 }]);
   const [filters, setFilters] = useState({ categories: new Set(), brands: new Set(), maxPrice: 2500, minRating: 0 });
+
+  const [shippingForm, setShippingForm] = useState({ fullName: "", email: "", address: "", city: "", province: "", postalCode: "" });
+  const [shippingErrors, setShippingErrors] = useState({});
+  const [paymentForm, setPaymentForm] = useState({ cardName: "", cardNumber: "", expiry: "", cvv: "" });
+  const [paymentErrors, setPaymentErrors] = useState({});
+  const [orderNumber, setOrderNumber] = useState("");
 
   const brands = useMemo(() => [...new Set(PRODUCTS.map(p => p.brand))].sort(), []);
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
@@ -54,6 +60,7 @@ export default function Design3() {
     () => cart.map(c => ({ product: PRODUCTS.find(p => p.id === c.productId), qty: c.qty })).filter(x => x.product),
     [cart]
   );
+
   const subtotal = cartItems.reduce((sum, x) => sum + x.product.price * x.qty, 0);
   const shipping = subtotal >= 100 || subtotal === 0 ? 0 : 12.99;
   const total = subtotal + shipping;
@@ -79,6 +86,34 @@ export default function Design3() {
 
   function removeFromCart(productId) {
     setCart(prev => prev.filter(x => x.productId !== productId));
+  }
+
+  function goToShipping() {
+    if (!cartItems.length) return;
+    setRoute("shipping");
+  }
+
+  function validateShipping() {
+    const e = {};
+    if (!shippingForm.fullName.trim()) e.fullName = "Full name is required";
+    if (!/^\S+@\S+\.\S+$/.test(shippingForm.email.trim())) e.email = "Valid email is required";
+    if (!shippingForm.address.trim()) e.address = "Address is required";
+    if (!shippingForm.city.trim()) e.city = "City is required";
+    if (!shippingForm.province.trim()) e.province = "Province is required";
+    if (!shippingForm.postalCode.trim()) e.postalCode = "Postal code is required";
+    setShippingErrors(e);
+    return Object.keys(e).length === 0;
+  }
+
+  function validatePayment() {
+    const e = {};
+    const card = paymentForm.cardNumber.replace(/\s/g, "");
+    if (!paymentForm.cardName.trim()) e.cardName = "Cardholder name is required";
+    if (!/^\d{16}$/.test(card)) e.cardNumber = "Card number must be 16 digits";
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(paymentForm.expiry.trim())) e.expiry = "Use MM/YY format";
+    if (!/^\d{3,4}$/.test(paymentForm.cvv.trim())) e.cvv = "CVV must be 3 or 4 digits";
+    setPaymentErrors(e);
+    return Object.keys(e).length === 0;
   }
 
   const card = (p) => (
@@ -279,7 +314,9 @@ export default function Design3() {
       {route === "cart" && (
         <main className="page page-cart">
           <h1 className="center-title">Checkout</h1>
-          <div className="steps"><span className="active">🛒 Cart</span><span>🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span></div>
+          <div className="steps">
+            <span className="active">🛒 Cart</span><span>🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span>
+          </div>
 
           <div className="cart-layout">
             <section>
@@ -307,9 +344,161 @@ export default function Design3() {
               <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
               <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
               {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
-              <button className="primary-btn wide">Proceed to Shipping →</button>
+              <button className="primary-btn wide" onClick={goToShipping} disabled={!cartItems.length}>Proceed to Shipping →</button>
             </aside>
           </div>
+        </main>
+      )}
+
+      {route === "shipping" && (
+        <main className="page page-checkout">
+          <h1 className="center-title">Checkout</h1>
+          <div className="steps">
+            <span className="done">🛒 Cart</span><span className="active">🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span>
+          </div>
+
+          <div className="checkout-layout">
+            <section className="checkout-form">
+              <h2>Shipping Information</h2>
+
+              <div className={`field ${shippingErrors.fullName ? "has-error" : ""}`}>
+                <label>Full Name *</label>
+                <input value={shippingForm.fullName} onChange={(e) => setShippingForm(f => ({ ...f, fullName: e.target.value }))} placeholder="Jane Smith" />
+                {shippingErrors.fullName ? <small className="error-text">{shippingErrors.fullName}</small> : null}
+              </div>
+
+              <div className={`field ${shippingErrors.email ? "has-error" : ""}`}>
+                <label>Email Address *</label>
+                <input value={shippingForm.email} onChange={(e) => setShippingForm(f => ({ ...f, email: e.target.value }))} placeholder="jane@example.com" />
+                {shippingErrors.email ? <small className="error-text">{shippingErrors.email}</small> : null}
+              </div>
+
+              <div className={`field ${shippingErrors.address ? "has-error" : ""}`}>
+                <label>Street Address *</label>
+                <input value={shippingForm.address} onChange={(e) => setShippingForm(f => ({ ...f, address: e.target.value }))} placeholder="123 Main Street" />
+                {shippingErrors.address ? <small className="error-text">{shippingErrors.address}</small> : null}
+              </div>
+
+              <div className="form-row">
+                <div className={`field ${shippingErrors.city ? "has-error" : ""}`}>
+                  <label>City *</label>
+                  <input value={shippingForm.city} onChange={(e) => setShippingForm(f => ({ ...f, city: e.target.value }))} placeholder="Ottawa" />
+                  {shippingErrors.city ? <small className="error-text">{shippingErrors.city}</small> : null}
+                </div>
+
+                <div className={`field ${shippingErrors.province ? "has-error" : ""}`}>
+                  <label>Province *</label>
+                  <input value={shippingForm.province} onChange={(e) => setShippingForm(f => ({ ...f, province: e.target.value }))} placeholder="Ontario" />
+                  {shippingErrors.province ? <small className="error-text">{shippingErrors.province}</small> : null}
+                </div>
+              </div>
+
+              <div className={`field ${shippingErrors.postalCode ? "has-error" : ""}`}>
+                <label>Postal Code *</label>
+                <input value={shippingForm.postalCode} onChange={(e) => setShippingForm(f => ({ ...f, postalCode: e.target.value }))} placeholder="K1A 0A1" />
+                {shippingErrors.postalCode ? <small className="error-text">{shippingErrors.postalCode}</small> : null}
+              </div>
+
+              <div className="checkout-actions">
+                <button className="secondary-btn" onClick={() => setRoute("cart")}>← Back</button>
+                <button className="primary-btn" onClick={() => {
+                  if (validateShipping()) setRoute("payment");
+                }}>Continue to Payment →</button>
+              </div>
+            </section>
+
+            <aside className="summary">
+              <h3>Order Summary</h3>
+              {cartItems.map(({ product, qty }) => <div key={product.id} className="summary-row"><span>{product.name} × {qty}</span><span>${(product.price * qty).toFixed(2)}</span></div>)}
+              <hr />
+              <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)}</strong></div>
+              <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
+              <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
+              {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
+            </aside>
+          </div>
+        </main>
+      )}
+
+      {route === "payment" && (
+        <main className="page page-checkout">
+          <h1 className="center-title">Checkout</h1>
+          <div className="steps">
+            <span className="done">🛒 Cart</span><span className="done">🚚 Shipping</span><span className="active">💳 Payment</span><span>✔ Confirmed</span>
+          </div>
+
+          <div className="checkout-layout">
+            <section className="checkout-form">
+              <h2>Payment Information</h2>
+
+              <div className={`field ${paymentErrors.cardName ? "has-error" : ""}`}>
+                <label>Cardholder Name *</label>
+                <input value={paymentForm.cardName} onChange={(e) => setPaymentForm(f => ({ ...f, cardName: e.target.value }))} placeholder="Jane Smith" />
+                {paymentErrors.cardName ? <small className="error-text">{paymentErrors.cardName}</small> : null}
+              </div>
+
+              <div className={`field ${paymentErrors.cardNumber ? "has-error" : ""}`}>
+                <label>Card Number *</label>
+                <input value={paymentForm.cardNumber} onChange={(e) => setPaymentForm(f => ({ ...f, cardNumber: e.target.value }))} placeholder="4242 4242 4242 4242" />
+                {paymentErrors.cardNumber ? <small className="error-text">{paymentErrors.cardNumber}</small> : null}
+              </div>
+
+              <div className="form-row">
+                <div className={`field ${paymentErrors.expiry ? "has-error" : ""}`}>
+                  <label>Expiry (MM/YY) *</label>
+                  <input value={paymentForm.expiry} onChange={(e) => setPaymentForm(f => ({ ...f, expiry: e.target.value }))} placeholder="12/29" />
+                  {paymentErrors.expiry ? <small className="error-text">{paymentErrors.expiry}</small> : null}
+                </div>
+
+                <div className={`field ${paymentErrors.cvv ? "has-error" : ""}`}>
+                  <label>CVV *</label>
+                  <input value={paymentForm.cvv} onChange={(e) => setPaymentForm(f => ({ ...f, cvv: e.target.value }))} placeholder="123" />
+                  {paymentErrors.cvv ? <small className="error-text">{paymentErrors.cvv}</small> : null}
+                </div>
+              </div>
+
+              <div className="checkout-actions">
+                <button className="secondary-btn" onClick={() => setRoute("shipping")}>← Back</button>
+                <button className="primary-btn" onClick={() => {
+                  if (validatePayment()) {
+                    setOrderNumber(`TN-${Date.now().toString().slice(-8)}`);
+                    setCart([]);
+                    setRoute("confirmed");
+                  }
+                }}>Place Order ✔</button>
+              </div>
+            </section>
+
+            <aside className="summary">
+              <h3>Order Summary</h3>
+              {cartItems.map(({ product, qty }) => <div key={product.id} className="summary-row"><span>{product.name} × {qty}</span><span>${(product.price * qty).toFixed(2)}</span></div>)}
+              <hr />
+              <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)}</strong></div>
+              <div className="summary-row"><span>Shipping</span><strong>{shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
+              <div className="summary-row total"><span>Total</span><strong>${total.toFixed(2)}</strong></div>
+              {subtotal >= 100 ? <p className="green">✓ You qualify for free shipping!</p> : null}
+            </aside>
+          </div>
+        </main>
+      )}
+
+      {route === "confirmed" && (
+        <main className="page page-checkout">
+          <h1 className="center-title">Checkout</h1>
+          <div className="steps">
+            <span className="done">🛒 Cart</span><span className="done">🚚 Shipping</span><span className="done">💳 Payment</span><span className="active">✔ Confirmed</span>
+          </div>
+
+          <section className="confirm-card">
+            <h2>✅ Order Confirmed</h2>
+            <p>Thank you, {shippingForm.fullName || "Customer"}! Your order has been placed successfully.</p>
+            <p><strong>Order #:</strong> {orderNumber || "TN-00000000"}</p>
+            <p>A confirmation email was sent to <strong>{shippingForm.email || "your email"}</strong>.</p>
+            <div className="checkout-actions">
+              <button className="secondary-btn" onClick={() => setRoute("shop")}>Continue Shopping</button>
+              <button className="primary-btn" onClick={() => setRoute("home")}>Go Home</button>
+            </div>
+          </section>
         </main>
       )}
 
