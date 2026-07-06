@@ -34,7 +34,7 @@ class TechNestDesign3 {
     this.products = this.seedProducts();
 
     // starts empty
-    this.cart = [];
+    this.cart = [()];
 
     this.mount();
   }
