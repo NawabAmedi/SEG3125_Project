@@ -42,294 +42,18 @@ class TechNestDesign3 {
 
   seedProducts() {
     return [
-      {
-        id: "asus-rog-g16",
-        name: "ASUS ROG Zephyrus G16",
-        brand: "ASUS",
-        category: "Laptops",
-        price: 2199.99,
-        oldPrice: 2499.99,
-        rating: 5,
-        reviews: 124,
-        tag: "Deal",
-        discount: 12,
-        icon: "💻",
-        bg: "linear-gradient(135deg,#1a3858,#1f3f62)",
-        stock: 7,
-        desc: "The ultimate gaming laptop. RTX 4090 GPU, 240Hz OLED display, and all-day battery — built for players who demand the best.",
-        specs: {
-          CPU: "Intel Core i9-14900HX",
-          GPU: "NVIDIA RTX 4090 16GB",
-          RAM: "32GB DDR5",
-          Storage: "2TB NVMe SSD",
-          Display: '16" OLED 240Hz',
-          Battery: "90Wh"
-        }
-      },
-      {
-        id: "dell-xps-15",
-        name: "Dell XPS 15 (2024)",
-        brand: "Dell",
-        category: "Laptops",
-        price: 1899.99,
-        oldPrice: null,
-        rating: 5,
-        reviews: 89,
-        tag: "Popular",
-        discount: 0,
-        icon: "💻",
-        bg: "linear-gradient(135deg,#272d50,#2d345b)",
-        stock: 6,
-        desc: "Premium ultrabook with stunning display and excellent battery life.",
-        specs: {
-          CPU: "Intel Core Ultra 7",
-          GPU: "NVIDIA RTX 4060",
-          RAM: "16GB DDR5",
-          Storage: "1TB NVMe SSD",
-          Display: '15.6" OLED 120Hz',
-          Battery: "86Wh"
-        }
-      },
-      {
-        id: "lenovo-x1-carbon",
-        name: "Lenovo ThinkPad X1 Carbon",
-        brand: "Lenovo",
-        category: "Laptops",
-        price: 1699.99,
-        oldPrice: null,
-        rating: 5,
-        reviews: 203,
-        tag: null,
-        discount: 0,
-        icon: "💻",
-        bg: "linear-gradient(135deg,#111c37,#1e2a49)",
-        stock: 8,
-        desc: "Business-class ultralight laptop with legendary keyboard and reliability.",
-        specs: {
-          CPU: "Intel Core Ultra 7",
-          GPU: "Intel Arc iGPU",
-          RAM: "16GB LPDDR5X",
-          Storage: "1TB NVMe SSD",
-          Display: '14" 2.8K OLED',
-          Battery: "57Wh"
-        }
-      },
-      {
-        id: "asus-pg279qm",
-        name: "ASUS ROG Swift PG279QM",
-        brand: "ASUS",
-        category: "Monitors",
-        price: 849.99,
-        oldPrice: 1099.99,
-        rating: 5,
-        reviews: 67,
-        tag: "Deal",
-        discount: 23,
-        icon: "🖥️",
-        bg: "linear-gradient(135deg,#143253,#16375a)",
-        stock: 10,
-        desc: "High-refresh QHD gaming monitor with ultra-low latency.",
-        specs: {
-          Panel: '27" IPS',
-          Resolution: "2560×1440",
-          Refresh: "240Hz",
-          Response: "1ms",
-          HDR: "DisplayHDR 400",
-          Ports: "HDMI, DisplayPort"
-        }
-      },
-      {
-        id: "lg-34wp65c",
-        name: "LG UltraWide 34WP65C",
-        brand: "LG",
-        category: "Monitors",
-        price: 599.99,
-        oldPrice: null,
-        rating: 5,
-        reviews: 145,
-        tag: null,
-        discount: 0,
-        icon: "🖥️",
-        bg: "linear-gradient(135deg,#252f4a,#303a58)",
-        stock: 5,
-        desc: "Immersive ultrawide monitor for productivity and gaming.",
-        specs: {
-          Panel: '34" VA',
-          Resolution: "3440×1440",
-          Refresh: "160Hz",
-          Response: "1ms MBR",
-          HDR: "HDR10",
-          Ports: "HDMI, DP, USB-C"
-        }
-      },
-      {
-        id: "nvidia-4070ti",
-        name: "NVIDIA GeForce RTX 4070 Ti",
-        brand: "NVIDIA",
-        category: "Computer Parts",
-        price: 799.99,
-        oldPrice: 849.99,
-        rating: 5,
-        reviews: 312,
-        tag: "Popular",
-        discount: 6,
-        icon: "🎮",
-        bg: "linear-gradient(135deg,#022e1f,#01331f)",
-        stock: 4,
-        desc: "Powerful GPU for high-FPS gaming and creator workflows.",
-        specs: {
-          VRAM: "12GB GDDR6X",
-          Boost: "2.61GHz",
-          TDP: "285W",
-          RayTracing: "3rd Gen",
-          DLSS: "DLSS 3",
-          PCIe: "Gen 4"
-        }
-      },
-      {
-        id: "samsung-990-pro",
-        name: "Samsung 990 Pro 2TB SSD",
-        brand: "Samsung",
-        category: "Computer Parts",
-        price: 189.99,
-        oldPrice: 249.99,
-        rating: 5,
-        reviews: 421,
-        tag: "Deal",
-        discount: 24,
-        icon: "💾",
-        bg: "linear-gradient(135deg,#132b49,#242d4a)",
-        stock: 12,
-        desc: "Top-tier NVMe SSD for blazing fast performance.",
-        specs: {
-          Interface: "PCIe 4.0",
-          Read: "7450MB/s",
-          Write: "6900MB/s",
-          Capacity: "2TB",
-          NAND: "V-NAND",
-          Warranty: "5 years"
-        }
-      },
-      {
-        id: "razer-blackwidow-v4",
-        name: "Razer BlackWidow V4 Pro",
-        brand: "Razer",
-        category: "Keyboards",
-        price: 229.99,
-        oldPrice: 279.99,
-        rating: 5,
-        reviews: 98,
-        tag: "Popular",
-        discount: 18,
-        icon: "⌨️",
-        bg: "linear-gradient(135deg,#032c1a,#012516)",
-        stock: 14,
-        desc: "Flagship mechanical keyboard for performance and customization.",
-        specs: {
-          Switch: "Razer Green/Yellow",
-          Layout: "Full-size",
-          Lighting: "RGB",
-          Connection: "USB-C",
-          Macro: "Dedicated keys",
-          WristRest: "Magnetic"
-        }
-      },
-      {
-        id: "logitech-g502x",
-        name: "Logitech G502 X Plus",
-        brand: "Logitech",
-        category: "Mice",
-        price: 159.99,
-        oldPrice: 189.99,
-        rating: 5,
-        reviews: 178,
-        tag: "Deal",
-        discount: 16,
-        icon: "🖱️",
-        bg: "linear-gradient(135deg,#292d52,#20274b)",
-        stock: 9,
-        desc: "High-precision wireless gaming mouse with customizable controls.",
-        specs: {
-          Sensor: "HERO 25K",
-          Weight: "106g",
-          Wireless: "LIGHTSPEED",
-          Battery: "120h",
-          Buttons: "13",
-          Switches: "Hybrid Optical"
-        }
-      },
-      {
-        id: "razer-deathadder-v3",
-        name: "Razer DeathAdder V3 HyperSpeed",
-        brand: "Razer",
-        category: "Mice",
-        price: 89.99,
-        oldPrice: null,
-        rating: 5,
-        reviews: 234,
-        tag: "Popular",
-        discount: 0,
-        icon: "🖱️",
-        bg: "linear-gradient(135deg,#022e1f,#01331f)",
-        stock: 11,
-        desc: "Ergonomic esports mouse built for speed and precision.",
-        specs: {
-          Sensor: "Focus Pro 30K",
-          Weight: "55g",
-          Wireless: "2.4GHz",
-          Battery: "100h",
-          Polling: "1000Hz",
-          Switches: "Optical Gen-3"
-        }
-      },
-      {
-        id: "sony-wh1000xm5",
-        name: "Sony WH-1000XM5",
-        brand: "Sony",
-        category: "Headphones",
-        price: 349.99,
-        oldPrice: 399.99,
-        rating: 5,
-        reviews: 256,
-        tag: null,
-        discount: 13,
-        icon: "🎧",
-        bg: "linear-gradient(135deg,#16243e,#202d47)",
-        stock: 13,
-        desc: "Industry-leading noise cancellation headphones.",
-        specs: {
-          Type: "Over-ear",
-          ANC: "Yes",
-          Battery: "30h",
-          Codec: "LDAC",
-          Mic: "Beamforming",
-          Weight: "250g"
-        }
-      },
-      {
-        id: "corsair-rm850x",
-        name: "Corsair RM850x PSU",
-        brand: "Corsair",
-        category: "Computer Parts",
-        price: 149.99,
-        oldPrice: null,
-        rating: 4,
-        reviews: 74,
-        tag: null,
-        discount: 0,
-        icon: "🔧",
-        bg: "linear-gradient(135deg,#101b35,#162444)",
-        stock: 0,
-        desc: "Reliable 850W fully modular power supply.",
-        specs: {
-          Wattage: "850W",
-          Efficiency: "80+ Gold",
-          Modular: "Fully",
-          Fan: "135mm",
-          ATX: "3.0 ready",
-          Warranty: "10 years"
-        }
-      }
+      { id: "asus-rog-g16", name: "ASUS ROG Zephyrus G16", brand: "ASUS", category: "Laptops", price: 2199.99, oldPrice: 2499.99, rating: 5, reviews: 124, tag: "Deal", discount: 12, icon: "💻", bg: "linear-gradient(135deg,#1a3858,#1f3f62)", stock: 7, desc: "The ultimate gaming laptop. RTX 4090 GPU, 240Hz OLED display, and all-day battery — built for players who demand the best.", specs: { CPU: "Intel Core i9-14900HX", GPU: "NVIDIA RTX 4090 16GB", RAM: "32GB DDR5", Storage: "2TB NVMe SSD", Display: '16" OLED 240Hz', Battery: "90Wh" } },
+      { id: "dell-xps-15", name: "Dell XPS 15 (2024)", brand: "Dell", category: "Laptops", price: 1899.99, oldPrice: null, rating: 5, reviews: 89, tag: "Popular", discount: 0, icon: "💻", bg: "linear-gradient(135deg,#272d50,#2d345b)", stock: 6, desc: "Premium ultrabook with stunning display and excellent battery life.", specs: { CPU: "Intel Core Ultra 7", GPU: "NVIDIA RTX 4060", RAM: "16GB DDR5", Storage: "1TB NVMe SSD", Display: '15.6" OLED 120Hz', Battery: "86Wh" } },
+      { id: "lenovo-x1-carbon", name: "Lenovo ThinkPad X1 Carbon", brand: "Lenovo", category: "Laptops", price: 1699.99, oldPrice: null, rating: 5, reviews: 203, tag: null, discount: 0, icon: "💻", bg: "linear-gradient(135deg,#111c37,#1e2a49)", stock: 8, desc: "Business-class ultralight laptop with legendary keyboard and reliability.", specs: { CPU: "Intel Core Ultra 7", GPU: "Intel Arc iGPU", RAM: "16GB LPDDR5X", Storage: "1TB NVMe SSD", Display: '14" 2.8K OLED', Battery: "57Wh" } },
+      { id: "asus-pg279qm", name: "ASUS ROG Swift PG279QM", brand: "ASUS", category: "Monitors", price: 849.99, oldPrice: 1099.99, rating: 5, reviews: 67, tag: "Deal", discount: 23, icon: "🖥️", bg: "linear-gradient(135deg,#143253,#16375a)", stock: 10, desc: "High-refresh QHD gaming monitor with ultra-low latency.", specs: { Panel: '27" IPS', Resolution: "2560×1440", Refresh: "240Hz", Response: "1ms", HDR: "DisplayHDR 400", Ports: "HDMI, DisplayPort" } },
+      { id: "lg-34wp65c", name: "LG UltraWide 34WP65C", brand: "LG", category: "Monitors", price: 599.99, oldPrice: null, rating: 5, reviews: 145, tag: null, discount: 0, icon: "🖥️", bg: "linear-gradient(135deg,#252f4a,#303a58)", stock: 5, desc: "Immersive ultrawide monitor for productivity and gaming.", specs: { Panel: '34" VA', Resolution: "3440×1440", Refresh: "160Hz", Response: "1ms MBR", HDR: "HDR10", Ports: "HDMI, DP, USB-C" } },
+      { id: "nvidia-4070ti", name: "NVIDIA GeForce RTX 4070 Ti", brand: "NVIDIA", category: "Computer Parts", price: 799.99, oldPrice: 849.99, rating: 5, reviews: 312, tag: "Popular", discount: 6, icon: "🎮", bg: "linear-gradient(135deg,#022e1f,#01331f)", stock: 4, desc: "Powerful GPU for high-FPS gaming and creator workflows.", specs: { VRAM: "12GB GDDR6X", Boost: "2.61GHz", TDP: "285W", RayTracing: "3rd Gen", DLSS: "DLSS 3", PCIe: "Gen 4" } },
+      { id: "samsung-990-pro", name: "Samsung 990 Pro 2TB SSD", brand: "Samsung", category: "Computer Parts", price: 189.99, oldPrice: 249.99, rating: 5, reviews: 421, tag: "Deal", discount: 24, icon: "💾", bg: "linear-gradient(135deg,#132b49,#242d4a)", stock: 12, desc: "Top-tier NVMe SSD for blazing fast performance.", specs: { Interface: "PCIe 4.0", Read: "7450MB/s", Write: "6900MB/s", Capacity: "2TB", NAND: "V-NAND", Warranty: "5 years" } },
+      { id: "razer-blackwidow-v4", name: "Razer BlackWidow V4 Pro", brand: "Razer", category: "Keyboards", price: 229.99, oldPrice: 279.99, rating: 5, reviews: 98, tag: "Popular", discount: 18, icon: "⌨️", bg: "linear-gradient(135deg,#032c1a,#012516)", stock: 14, desc: "Flagship mechanical keyboard for performance and customization.", specs: { Switch: "Razer Green/Yellow", Layout: "Full-size", Lighting: "RGB", Connection: "USB-C", Macro: "Dedicated keys", WristRest: "Magnetic" } },
+      { id: "logitech-g502x", name: "Logitech G502 X Plus", brand: "Logitech", category: "Mice", price: 159.99, oldPrice: 189.99, rating: 5, reviews: 178, tag: "Deal", discount: 16, icon: "🖱️", bg: "linear-gradient(135deg,#292d52,#20274b)", stock: 9, desc: "High-precision wireless gaming mouse with customizable controls.", specs: { Sensor: "HERO 25K", Weight: "106g", Wireless: "LIGHTSPEED", Battery: "120h", Buttons: "13", Switches: "Hybrid Optical" } },
+      { id: "razer-deathadder-v3", name: "Razer DeathAdder V3 HyperSpeed", brand: "Razer", category: "Mice", price: 89.99, oldPrice: null, rating: 5, reviews: 234, tag: "Popular", discount: 0, icon: "🖱️", bg: "linear-gradient(135deg,#022e1f,#01331f)", stock: 11, desc: "Ergonomic esports mouse built for speed and precision.", specs: { Sensor: "Focus Pro 30K", Weight: "55g", Wireless: "2.4GHz", Battery: "100h", Polling: "1000Hz", Switches: "Optical Gen-3" } },
+      { id: "sony-wh1000xm5", name: "Sony WH-1000XM5", brand: "Sony", category: "Headphones", price: 349.99, oldPrice: 399.99, rating: 5, reviews: 256, tag: null, discount: 13, icon: "🎧", bg: "linear-gradient(135deg,#16243e,#202d47)", stock: 13, desc: "Industry-leading noise cancellation headphones.", specs: { Type: "Over-ear", ANC: "Yes", Battery: "30h", Codec: "LDAC", Mic: "Beamforming", Weight: "250g" } },
+      { id: "corsair-rm850x", name: "Corsair RM850x PSU", brand: "Corsair", category: "Computer Parts", price: 149.99, oldPrice: null, rating: 4, reviews: 74, tag: null, discount: 0, icon: "🔧", bg: "linear-gradient(135deg,#101b35,#162444)", stock: 0, desc: "Reliable 850W fully modular power supply.", specs: { Wattage: "850W", Efficiency: "80+ Gold", Modular: "Fully", Fan: "135mm", ATX: "3.0 ready", Warranty: "10 years" } }
     ];
   }
 
@@ -528,7 +252,7 @@ class TechNestDesign3 {
   renderCart() {
     const items = this.cartItems();
     return `
-      <main class="page page-cart">
+      <main class="page page-cart page-cart-full">
         <h1 class="center-title">Checkout</h1>
         <div class="steps"><span class="active">🛒 Cart</span><span>🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span></div>
 
@@ -972,15 +696,7 @@ class TechNestDesign3 {
   }
 
   catEmoji(c) {
-    const m = {
-      Laptops: "💻",
-      Monitors: "🖥️",
-      "Computer Parts": "⚙️",
-      Keyboards: "⌨️",
-      Mice: "🖱️",
-      Headphones: "🎧",
-      "Gaming Accessories": "🎮"
-    };
+    const m = { Laptops: "💻", Monitors: "🖥️", "Computer Parts": "⚙️", Keyboards: "⌨️", Mice: "🖱️", Headphones: "🎧", "Gaming Accessories": "🎮" };
     return m[c] || "🧩";
   }
 }
