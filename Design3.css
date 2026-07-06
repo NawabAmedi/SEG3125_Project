@@ -147,3 +147,150 @@ button,input,select{font:inherit}
   .product-grid.three,.product-grid.four,.category-row{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
 }
+
+/* --- Checkout polish (Design 3 shipping screen) --- */
+.cart-layout.pro {
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+.panel {
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+}
+
+.steps-pro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 26px;
+  flex-wrap: wrap;
+}
+
+.step-wrap {
+  display: grid;
+  place-items: center;
+  min-width: 86px;
+}
+
+.step-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid #1c3f6d;
+  display: grid;
+  place-items: center;
+  color: #6f8eb9;
+  background: #071b3a;
+  font-size: 18px;
+}
+
+.step-label {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #6f8eb9;
+}
+
+.step-wrap.active .step-dot {
+  background: #2f6bff;
+  border-color: #5f8eff;
+  color: #fff;
+}
+.step-wrap.active .step-label {
+  color: #5ca1ff;
+}
+
+.step-wrap.done .step-dot {
+  background: #0cc58a;
+  border-color: #18d39a;
+  color: #fff;
+}
+.step-wrap.done .step-label {
+  color: #18d39a;
+}
+
+.step-line {
+  width: 72px;
+  height: 2px;
+  background: #163a65;
+  border-radius: 99px;
+}
+.step-line.on {
+  background: linear-gradient(90deg, #10c990, #2f6bff);
+}
+
+.pro-summary {
+  border-radius: 18px;
+  padding: 18px;
+  background: #0b2143;
+  border: 1px solid #18497b;
+}
+
+.shipping-form {
+  margin-top: 8px;
+}
+.shipping-form label {
+  display: block;
+  margin: 14px 0 8px;
+  color: #8ab0e3;
+  font-weight: 600;
+}
+.shipping-form input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid #1d3f70;
+  background: #162c50;
+  color: #dbe9ff;
+  padding: 0 14px;
+  outline: none;
+}
+.shipping-form input:focus {
+  border-color: #2f6bff;
+  box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.2);
+}
+
+.checkout-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.ghost-btn {
+  border: 1px solid #19467d;
+  background: transparent;
+  color: #8eb8ea;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ghost-btn:hover {
+  border-color: #2f6bff;
+  color: #cfe3ff;
+}
+
+.primary-btn.lg {
+  height: 48px;
+  border-radius: 14px;
+  font-size: 22px;
+}
+
+.shipping-form .ship-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 980px) {
+  .cart-layout.pro {
+    grid-template-columns: 1fr;
+  }
+  .step-line {
+    width: 40px;
+  }
+}
