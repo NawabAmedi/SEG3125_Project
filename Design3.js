@@ -3,6 +3,7 @@ class TechNestDesign3 {
     this.route = "home"; // home | shop | product | cart
     this.search = "";
     this.sortBy = "featured";
+    this.searchTimer = null;
 
     this.filters = {
       categories: new Set(),
@@ -16,7 +17,7 @@ class TechNestDesign3 {
     this.detailQty = 1;
 
     this.products = this.seedProducts();
-    this.cart = [{ productId: "asus-pg279qm", qty: 3 }];
+    this.cart = [];
 
     this.mount();
   }
@@ -592,9 +593,20 @@ class TechNestDesign3 {
     });
 
     document.getElementById("globalSearch")?.addEventListener("input", (e) => {
-      this.search = e.target.value || "";
-      this.route = "shop";
-      this.mount();
+      const value = e.target.value || "";
+      clearTimeout(this.searchTimer);
+
+      this.searchTimer = setTimeout(() => {
+        this.search = value;
+        this.route = "shop";
+        this.mount();
+
+        const input = document.getElementById("globalSearch");
+        if (input) {
+          input.focus();
+          input.setSelectionRange(value.length, value.length);
+        }
+      }, 120);
     });
 
     document.querySelectorAll("[data-go-shop]").forEach(btn =>
