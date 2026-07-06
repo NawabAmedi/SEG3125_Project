@@ -1,15 +1,30 @@
 class TechNestDesign3 {
   constructor() {
     this.route = "home"; // home | shop | product | cart
+    this.checkoutStep = "cart"; // cart | shipping | payment | confirmed
+
+    // Smooth typing: keep immediate input + debounced search query
+    this.searchInput = "";
     this.search = "";
+    this.searchDebounce = null;
+
     this.sortBy = "featured";
-    this.searchTimer = null;
 
     this.filters = {
       categories: new Set(),
       brands: new Set(),
       maxPrice: 2500,
-      minRating: 0
+      minRating: 0,
+      dealsOnly: false
+    };
+
+    this.shippingInfo = {
+      fullName: "",
+      email: "",
+      address: "",
+      city: "",
+      province: "",
+      postalCode: ""
     };
 
     this.freeShippingThreshold = 100;
@@ -17,6 +32,8 @@ class TechNestDesign3 {
     this.detailQty = 1;
 
     this.products = this.seedProducts();
+
+    // starts empty
     this.cart = [];
 
     this.mount();
@@ -334,18 +351,21 @@ class TechNestDesign3 {
 
   renderNav() {
     const cartCount = this.cart.reduce((a, b) => a + b.qty, 0);
-    const active = (r) => (this.route === r ? "active" : "");
+    const homeActive = this.route === "home" ? "active" : "";
+    const shopActive = this.route === "shop" && !this.filters.dealsOnly ? "active" : "";
+    const dealsActive = this.route === "shop" && this.filters.dealsOnly ? "active" : "";
+
     return `
       <header class="tn-nav">
         <div class="tn-nav-inner">
           <button class="logo-btn" data-nav="home">⚡ <span>TechNest</span></button>
           <div class="search-wrap">
-            <input id="globalSearch" value="${this.escape(this.search)}" placeholder="Search products, brands..." />
+            <input id="globalSearch" value="${this.escape(this.searchInput)}" placeholder="Search products, brands..." />
           </div>
           <nav class="menu">
-            <button class="nav-link ${active("home")}" data-nav="home">Home</button>
-            <button class="nav-link ${active("shop")}" data-nav="shop">Shop All</button>
-            <button class="nav-link ${active("shop")}" data-nav="shop">🔥 Deals</button>
+            <button class="nav-link ${homeActive}" data-nav="home">Home</button>
+            <button class="nav-link ${shopActive}" data-nav-shop-all="1">Shop All</button>
+            <button class="nav-link ${dealsActive}" data-nav-deals="1">🔥 Deals</button>
             <button class="cart-btn" data-nav="cart">🛒 Cart ${cartCount ? `<span class="badge">${cartCount}</span>` : ""}</button>
           </nav>
         </div>
@@ -361,8 +381,8 @@ class TechNestDesign3 {
   }
 
   renderHome() {
-    const deals = this.products.filter(p => p.tag === "Deal").slice(0, 4);
-    const popular = this.products.filter(p => p.tag === "Popular").slice(0, 4);
+    const deals = this.products.filter((p) => (p.discount ?? 0) > 0 || p.tag === "Deal").slice(0, 4);
+    const popular = this.products.filter((p) => p.tag === "Popular").slice(0, 4);
     const categories = ["Laptops", "Monitors", "Computer Parts", "Keyboards", "Mice", "Headphones", "Gaming Accessories"];
 
     return `
@@ -374,7 +394,7 @@ class TechNestDesign3 {
             <p class="hero-sub">Your one-stop shop for laptops, GPUs, monitors, keyboards, and more. Free shipping on orders over $100.</p>
             <div class="hero-actions">
               <button class="primary-btn" data-go-shop="1">Shop Now →</button>
-              <button class="secondary-btn" data-go-shop="1">View Deals 🔥</button>
+              <button class="secondary-btn" data-go-deals="1">View Deals 🔥</button>
             </div>
           </div>
           <div class="hero-icons">
@@ -387,18 +407,18 @@ class TechNestDesign3 {
         <section class="section">
           <h2>Browse by Category</h2>
           <div class="category-row">
-            ${categories.map(c => `<button class="cat-card" data-cat="${c}">${this.catEmoji(c)}<span>${c}</span></button>`).join("")}
+            ${categories.map((c) => `<button class="cat-card" data-cat="${c}">${this.catEmoji(c)}<span>${c}</span></button>`).join("")}
           </div>
         </section>
 
         <section class="section">
-          <div class="section-head"><h2>🔥 Today's Deals</h2><button class="link-btn" data-go-shop="1">See all deals</button></div>
-          <div class="product-grid four">${deals.map(p => this.card(p)).join("")}</div>
+          <div class="section-head"><h2>🔥 Today's Deals</h2><button class="link-btn" data-go-deals="1">See all deals</button></div>
+          <div class="product-grid four">${deals.map((p) => this.card(p)).join("")}</div>
         </section>
 
         <section class="section">
           <div class="section-head"><h2>Most Popular</h2><button class="link-btn" data-go-shop="1">View all</button></div>
-          <div class="product-grid four">${popular.map(p => this.card(p)).join("")}</div>
+          <div class="product-grid four">${popular.map((p) => this.card(p)).join("")}</div>
         </section>
       </main>
     `;
@@ -407,9 +427,13 @@ class TechNestDesign3 {
   renderShop() {
     const filtered = this.filteredProducts();
     const categories = ["Laptops", "Monitors", "Computer Parts", "Keyboards", "Mice", "Headphones", "Gaming Accessories"];
-    const brands = [...new Set(this.products.map(p => p.brand))].sort();
+    const brands = [...new Set(this.products.map((p) => p.brand))].sort();
 
-    const activeCount = this.filters.categories.size + this.filters.brands.size + (this.filters.minRating ? 1 : 0);
+    const activeCount =
+      this.filters.categories.size +
+      this.filters.brands.size +
+      (this.filters.minRating ? 1 : 0) +
+      (this.filters.dealsOnly ? 1 : 0);
 
     return `
       <main class="page page-shop">
@@ -421,14 +445,14 @@ class TechNestDesign3 {
 
             <div class="filter-group">
               <h4>CATEGORY</h4>
-              ${categories.map(c => `
+              ${categories.map((c) => `
                 <label><input type="checkbox" data-filter-cat="${c}" ${this.filters.categories.has(c) ? "checked" : ""}/> ${c}</label>
               `).join("")}
             </div>
 
             <div class="filter-group">
               <h4>BRAND</h4>
-              ${brands.map(b => `
+              ${brands.map((b) => `
                 <label><input type="checkbox" data-filter-brand="${b}" ${this.filters.brands.has(b) ? "checked" : ""}/> ${b}</label>
               `).join("")}
             </div>
@@ -458,7 +482,7 @@ class TechNestDesign3 {
                 <option value="reviews" ${this.sortBy === "reviews" ? "selected" : ""}>Most Reviewed</option>
               </select>
             </div>
-            <div class="product-grid three">${filtered.map(p => this.card(p)).join("")}</div>
+            <div class="product-grid three">${filtered.map((p) => this.card(p)).join("")}</div>
           </section>
         </section>
       </main>
@@ -466,7 +490,7 @@ class TechNestDesign3 {
   }
 
   renderProduct() {
-    const p = this.products.find(x => x.id === this.selectedProductId) || this.products[0];
+    const p = this.products.find((x) => x.id === this.selectedProductId) || this.products[0];
 
     return `
       <main class="page page-product">
@@ -512,36 +536,101 @@ class TechNestDesign3 {
     const shipping = subtotal >= this.freeShippingThreshold || subtotal === 0 ? 0 : 12.99;
     const total = subtotal + shipping;
 
+    const stepCls = (s) => (this.checkoutStep === s ? "active" : "");
+
     return `
       <main class="page page-cart">
         <h1 class="center-title">Checkout</h1>
-        <div class="steps"><span class="active">🛒 Cart</span><span>🚚 Shipping</span><span>💳 Payment</span><span>✔ Confirmed</span></div>
-
-        <div class="cart-layout">
-          <section>
-            ${items.length === 0 ? `<p class="empty">Your cart is empty.</p>` : items.map(({ product, qty }) => `
-              <article class="cart-item">
-                <div class="cart-thumb" style="background:${product.bg}">${product.icon}</div>
-                <div class="cart-info"><h3>${product.name}</h3><small>${product.brand}</small><p>$${product.price.toFixed(2)}</p></div>
-                <div class="cart-actions">
-                  <div class="qty-box"><button data-cart-qty="${product.id}|-1">−</button><strong>${qty}</strong><button data-cart-qty="${product.id}|1">+</button></div>
-                  <button class="trash-btn" data-remove="${product.id}">🗑️</button>
-                </div>
-              </article>
-            `).join("")}
-          </section>
-
-          <aside class="summary">
-            <h3>Order Summary</h3>
-            ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
-            <hr />
-            <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
-            <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
-            <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
-            ${subtotal >= this.freeShippingThreshold ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
-            <button class="primary-btn wide">Proceed to Shipping →</button>
-          </aside>
+        <div class="steps">
+          <span class="${stepCls("cart")}">🛒 Cart</span>
+          <span class="${stepCls("shipping")}">🚚 Shipping</span>
+          <span class="${stepCls("payment")}">💳 Payment</span>
+          <span class="${stepCls("confirmed")}">✔ Confirmed</span>
         </div>
+
+        ${
+          this.checkoutStep === "cart"
+            ? `
+          <div class="cart-layout">
+            <section>
+              ${
+                items.length === 0
+                  ? `<p class="empty">Your cart is empty.</p>`
+                  : items
+                      .map(
+                        ({ product, qty }) => `
+                <article class="cart-item">
+                  <div class="cart-thumb" style="background:${product.bg}">${product.icon}</div>
+                  <div class="cart-info"><h3>${product.name}</h3><small>${product.brand}</small><p>$${product.price.toFixed(2)}</p></div>
+                  <div class="cart-actions">
+                    <div class="qty-box"><button data-cart-qty="${product.id}|-1">−</button><strong>${qty}</strong><button data-cart-qty="${product.id}|1">+</button></div>
+                    <button class="trash-btn" data-remove="${product.id}">🗑️</button>
+                  </div>
+                </article>
+              `
+                      )
+                      .join("")
+              }
+            </section>
+
+            <aside class="summary">
+              <h3>Order Summary</h3>
+              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
+              <hr />
+              <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
+              <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
+              <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
+              ${subtotal >= this.freeShippingThreshold ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
+              <button class="primary-btn wide" id="goShipping" ${items.length ? "" : "disabled"}>Proceed to Shipping →</button>
+            </aside>
+          </div>
+        `
+            : `
+          <div class="cart-layout">
+            <section>
+              <h2>Shipping Information</h2>
+              <div class="filter-group shipping-form" style="border-top:none;padding-top:0">
+                <label>Full Name *</label>
+                <input id="shipFullName" type="text" value="${this.escape(this.shippingInfo.fullName)}" placeholder="Jane Smith" />
+
+                <label>Email Address *</label>
+                <input id="shipEmail" type="email" value="${this.escape(this.shippingInfo.email)}" placeholder="jane@example.com" />
+
+                <label>Street Address *</label>
+                <input id="shipAddress" type="text" value="${this.escape(this.shippingInfo.address)}" placeholder="123 Main Street" />
+
+                <div class="ship-grid">
+                  <div>
+                    <label>City *</label>
+                    <input id="shipCity" type="text" value="${this.escape(this.shippingInfo.city)}" placeholder="Ottawa" />
+                  </div>
+                  <div>
+                    <label>Province *</label>
+                    <input id="shipProvince" type="text" value="${this.escape(this.shippingInfo.province)}" placeholder="Ontario" />
+                  </div>
+                </div>
+
+                <label>Postal Code *</label>
+                <input id="shipPostal" type="text" value="${this.escape(this.shippingInfo.postalCode)}" placeholder="K1A 0A1" />
+              </div>
+              <div class="buy-row">
+                <button class="secondary-btn" id="backToCart">← Back</button>
+                <button class="primary-btn wide" id="toPayment">Continue to Payment →</button>
+              </div>
+            </section>
+
+            <aside class="summary">
+              <h3>Order Summary</h3>
+              ${items.map(({ product, qty }) => `<div class="summary-row"><span>${product.name}</span><span>$${(product.price * qty).toFixed(2)}</span></div>`).join("")}
+              <hr />
+              <div class="summary-row"><span>Subtotal</span><strong>$${subtotal.toFixed(2)}</strong></div>
+              <div class="summary-row"><span>Shipping</span><strong>${shipping ? `$${shipping.toFixed(2)}` : "FREE"}</strong></div>
+              <div class="summary-row total"><span>Total</span><strong>$${total.toFixed(2)}</strong></div>
+              ${subtotal >= this.freeShippingThreshold ? `<p class="green">✓ You qualify for free shipping!</p>` : ""}
+            </aside>
+          </div>
+        `
+        }
       </main>
     `;
   }
@@ -584,39 +673,55 @@ class TechNestDesign3 {
     `;
   }
 
+  goDeals() {
+    this.filters.dealsOnly = true;
+    this.route = "shop";
+    this.mount();
+  }
+
   bindEvents() {
-    document.querySelectorAll("[data-nav]").forEach(btn => {
+    document.querySelectorAll("[data-nav]").forEach((btn) => {
       btn.addEventListener("click", () => {
         this.route = btn.dataset.nav;
+        if (this.route !== "cart") this.checkoutStep = "cart";
         this.mount();
       });
     });
 
-    document.getElementById("globalSearch")?.addEventListener("input", (e) => {
-      const value = e.target.value || "";
-      clearTimeout(this.searchTimer);
-
-      this.searchTimer = setTimeout(() => {
-        this.search = value;
-        this.route = "shop";
-        this.mount();
-
-        const input = document.getElementById("globalSearch");
-        if (input) {
-          input.focus();
-          input.setSelectionRange(value.length, value.length);
-        }
-      }, 120);
-    });
-
-    document.querySelectorAll("[data-go-shop]").forEach(btn =>
+    document.querySelectorAll("[data-nav-shop-all]").forEach((btn) =>
       btn.addEventListener("click", () => {
+        this.filters.dealsOnly = false;
         this.route = "shop";
         this.mount();
       })
     );
 
-    document.querySelectorAll("[data-cat]").forEach(btn =>
+    document.querySelectorAll("[data-nav-deals], [data-go-deals]").forEach((btn) =>
+      btn.addEventListener("click", () => this.goDeals())
+    );
+
+    document.getElementById("globalSearch")?.addEventListener("input", (e) => {
+      this.searchInput = e.target.value || "";
+      this.route = "shop";
+
+      clearTimeout(this.searchDebounce);
+      this.searchDebounce = setTimeout(() => {
+        this.search = this.searchInput;
+        this.mount();
+      }, 180);
+
+      // do not remount immediately -> prevents typing lag/focus jumps
+    });
+
+    document.querySelectorAll("[data-go-shop]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        this.filters.dealsOnly = false;
+        this.route = "shop";
+        this.mount();
+      })
+    );
+
+    document.querySelectorAll("[data-cat]").forEach((btn) =>
       btn.addEventListener("click", () => {
         this.route = "shop";
         this.filters.categories = new Set([btn.dataset.cat]);
@@ -624,7 +729,7 @@ class TechNestDesign3 {
       })
     );
 
-    document.querySelectorAll("[data-open-product]").forEach(card =>
+    document.querySelectorAll("[data-open-product]").forEach((card) =>
       card.addEventListener("click", (e) => {
         if (e.target.closest("[data-add]")) return;
         this.selectedProductId = card.dataset.openProduct;
@@ -634,25 +739,25 @@ class TechNestDesign3 {
       })
     );
 
-    document.querySelectorAll("[data-add]").forEach(btn =>
+    document.querySelectorAll("[data-add]").forEach((btn) =>
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         this.addToCart(btn.dataset.add, 1);
       })
     );
 
-    document.querySelectorAll("[data-add-detail]").forEach(btn =>
+    document.querySelectorAll("[data-add-detail]").forEach((btn) =>
       btn.addEventListener("click", () => this.addToCart(btn.dataset.addDetail, this.detailQty))
     );
 
-    document.querySelectorAll("[data-detail-qty]").forEach(btn =>
+    document.querySelectorAll("[data-detail-qty]").forEach((btn) =>
       btn.addEventListener("click", () => {
         this.detailQty = Math.max(1, this.detailQty + Number(btn.dataset.detailQty));
         this.mount();
       })
     );
 
-    document.querySelectorAll("[data-filter-cat]").forEach(input =>
+    document.querySelectorAll("[data-filter-cat]").forEach((input) =>
       input.addEventListener("change", () => {
         const c = input.dataset.filterCat;
         input.checked ? this.filters.categories.add(c) : this.filters.categories.delete(c);
@@ -660,7 +765,7 @@ class TechNestDesign3 {
       })
     );
 
-    document.querySelectorAll("[data-filter-brand]").forEach(input =>
+    document.querySelectorAll("[data-filter-brand]").forEach((input) =>
       input.addEventListener("change", () => {
         const b = input.dataset.filterBrand;
         input.checked ? this.filters.brands.add(b) : this.filters.brands.delete(b);
@@ -673,7 +778,7 @@ class TechNestDesign3 {
       this.mount();
     });
 
-    document.querySelectorAll("input[name='minRating']").forEach(r =>
+    document.querySelectorAll("input[name='minRating']").forEach((r) =>
       r.addEventListener("change", () => {
         this.filters.minRating = Number(r.value);
         this.mount();
@@ -686,20 +791,50 @@ class TechNestDesign3 {
     });
 
     document.getElementById("clearFilters")?.addEventListener("click", () => {
-      this.filters = { categories: new Set(), brands: new Set(), maxPrice: 2500, minRating: 0 };
+      this.filters = { categories: new Set(), brands: new Set(), maxPrice: 2500, minRating: 0, dealsOnly: false };
       this.mount();
     });
 
-    document.querySelectorAll("[data-cart-qty]").forEach(btn =>
+    document.querySelectorAll("[data-cart-qty]").forEach((btn) =>
       btn.addEventListener("click", () => {
         const [id, d] = btn.dataset.cartQty.split("|");
         this.changeQty(id, Number(d));
       })
     );
 
-    document.querySelectorAll("[data-remove]").forEach(btn =>
+    document.querySelectorAll("[data-remove]").forEach((btn) =>
       btn.addEventListener("click", () => this.removeFromCart(btn.dataset.remove))
     );
+
+    document.getElementById("goShipping")?.addEventListener("click", () => {
+      if (!this.cart.length) return;
+      this.checkoutStep = "shipping";
+      this.mount();
+    });
+
+    document.getElementById("backToCart")?.addEventListener("click", () => {
+      this.checkoutStep = "cart";
+      this.mount();
+    });
+
+    document.getElementById("toPayment")?.addEventListener("click", () => {
+      this.checkoutStep = "payment";
+      this.mount();
+    });
+
+    const bindShipInput = (id, key) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("input", (e) => {
+        this.shippingInfo[key] = e.target.value;
+      });
+    };
+    bindShipInput("shipFullName", "fullName");
+    bindShipInput("shipEmail", "email");
+    bindShipInput("shipAddress", "address");
+    bindShipInput("shipCity", "city");
+    bindShipInput("shipProvince", "province");
+    bindShipInput("shipPostal", "postalCode");
   }
 
   filteredProducts() {
@@ -707,54 +842,58 @@ class TechNestDesign3 {
     const q = this.search.trim().toLowerCase();
 
     if (q) {
-      list = list.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
+      list = list.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
       );
     }
 
-    if (this.filters.categories.size) list = list.filter(p => this.filters.categories.has(p.category));
-    if (this.filters.brands.size) list = list.filter(p => this.filters.brands.has(p.brand));
-    list = list.filter(p => p.price <= this.filters.maxPrice);
-    list = list.filter(p => p.rating >= this.filters.minRating);
+    if (this.filters.categories.size) list = list.filter((p) => this.filters.categories.has(p.category));
+    if (this.filters.brands.size) list = list.filter((p) => this.filters.brands.has(p.brand));
+    list = list.filter((p) => p.price <= this.filters.maxPrice);
+    list = list.filter((p) => p.rating >= this.filters.minRating);
+
+    if (this.filters.dealsOnly) {
+      list = list.filter((p) => (p.discount ?? 0) > 0 || p.tag === "Deal");
+    }
 
     if (this.sortBy === "price-low") list.sort((a, b) => a.price - b.price);
     if (this.sortBy === "price-high") list.sort((a, b) => b.price - a.price);
     if (this.sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
     if (this.sortBy === "reviews") list.sort((a, b) => b.reviews - a.reviews);
-    if (this.sortBy === "featured") {
-      list.sort((a, b) => (b.tag === "Deal") - (a.tag === "Deal"));
-    }
+    if (this.sortBy === "featured") list.sort((a, b) => (b.tag === "Deal") - (a.tag === "Deal"));
 
     return list;
   }
 
   addToCart(id, qty) {
-    const found = this.cart.find(x => x.productId === id);
+    const found = this.cart.find((x) => x.productId === id);
     if (found) found.qty += qty;
     else this.cart.push({ productId: id, qty });
+    this.checkoutStep = "cart";
     this.route = "cart";
     this.mount();
   }
 
   changeQty(id, delta) {
-    const item = this.cart.find(x => x.productId === id);
+    const item = this.cart.find((x) => x.productId === id);
     if (!item) return;
     item.qty += delta;
-    if (item.qty <= 0) this.cart = this.cart.filter(x => x.productId !== id);
+    if (item.qty <= 0) this.cart = this.cart.filter((x) => x.productId !== id);
     this.mount();
   }
 
   removeFromCart(id) {
-    this.cart = this.cart.filter(x => x.productId !== id);
+    this.cart = this.cart.filter((x) => x.productId !== id);
     this.mount();
   }
 
   cartItems() {
     return this.cart
-      .map(c => ({ product: this.products.find(p => p.id === c.productId), qty: c.qty }))
-      .filter(x => x.product);
+      .map((c) => ({ product: this.products.find((p) => p.id === c.productId), qty: c.qty }))
+      .filter((x) => x.product);
   }
 
   subtotal() {
@@ -775,7 +914,11 @@ class TechNestDesign3 {
   }
 
   escape(str) {
-    return String(str).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
   }
 }
 
