@@ -26,6 +26,8 @@ export default function Design4() {
   const [year, setYear] = useState("2022-23");
   const [selectedTrend, setSelectedTrend] = useState("uoft");
   const [selected, setSelected] = useState(new Set(["mcgill", "uottawa", "queens", "mcmaster", "waterloo"]));
+  const [helpCollapsed, setHelpCollapsed] = useState(false);
+  const [sourceCollapsed, setSourceCollapsed] = useState(false);
 
   const selectedArray = useMemo(
     () => UNIVERSITIES.filter((u) => selected.has(u.id)),
@@ -66,6 +68,10 @@ export default function Design4() {
       if (!next.size) next.add(id);
       return next;
     });
+  };
+
+  const clearAll = () => {
+    setSelected(new Set([selectedTrend || "uoft"]));
   };
 
   return (
@@ -136,7 +142,7 @@ export default function Design4() {
               <span>
                 <button className="text-btn" onClick={() => setSelected(new Set(UNIVERSITIES.map((u) => u.id)))}>Select all</button>
                 <span className="dot">·</span>
-                <button className="text-btn" onClick={() => setSelected(new Set([selectedTrend]))}>Clear all</button>
+                <button className="text-btn" onClick={clearAll}>Clear all</button>
               </span>
             </div>
             <p className="muted">Select universities to display in the bar chart:</p>
@@ -186,7 +192,6 @@ export default function Design4() {
         </div>
       </section>
 
-      {/* Simple SVG bar chart */}
       <section className="charts-grid">
         <article className="card chart-card">
           <h3>Enrollment Comparison by University</h3>
@@ -214,7 +219,6 @@ export default function Design4() {
           </svg>
         </article>
 
-        {/* Simple SVG line chart */}
         <article className="card chart-card">
           <div className="line-head">
             <h3>Enrollment Trend Over Time</h3>
@@ -252,17 +256,25 @@ export default function Design4() {
       </section>
 
       <section className="bottom-grid">
-        <article className="card info-card">
-          <div className="info-head">ⓘ <strong>How to use CampusStats</strong><span>⌄</span></div>
-          <p>
-            Use the checkboxes to add or remove universities from the bar chart. Change the academic year
-            using the Year buttons to see enrollment data for that year. Select a single university from
-            the Trend Chart controls to update the line chart below.
-          </p>
+        <article className={`card info-card ${helpCollapsed ? "collapsed" : ""}`}>
+          <button className="info-head" onClick={() => setHelpCollapsed((v) => !v)} aria-expanded={!helpCollapsed}>
+            <span>ⓘ <strong>How to use CampusStats</strong></span>
+            <span>{helpCollapsed ? "▸" : "⌄"}</span>
+          </button>
+          {!helpCollapsed && (
+            <p>
+              Use the checkboxes to add or remove universities from the bar chart. Change the academic year
+              using the Year buttons to see enrollment data for that year. Select a single university from
+              the Trend Chart controls to update the line chart below.
+            </p>
+          )}
         </article>
-        <article className="card info-card">
-          <div className="source-head"><span className="source-icon">ℹ</span><strong>Data source: Universities Canada</strong></div>
-          <p>Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.</p>
+        <article className={`card info-card ${sourceCollapsed ? "collapsed" : ""}`}>
+          <button className="source-head" onClick={() => setSourceCollapsed((v) => !v)} aria-expanded={!sourceCollapsed}>
+            <span><span className="source-icon">ℹ</span><strong>Data source: Universities Canada</strong></span>
+            <span>{sourceCollapsed ? "▸" : "⌄"}</span>
+          </button>
+          {!sourceCollapsed && <p>Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.</p>}
         </article>
       </section>
     </div>
