@@ -35,8 +35,8 @@ class CampusStatsDesign4 {
       langBtn: "🌐 Français",
       subtitle: "Canadian University Enrollment Dashboard",
       heroPill: "🎓 Canadian University Data",
-      heroMain: "Compare student enrollment across major Canadian universities. Select universities and years to explore the data interactively.",
-      heroNote: "Note: Enrollment figures are approximate values derived from publicly available Universities Canada data.",
+      heroMain: "Compare student enrollment across major Canadian universities.",
+      heroNote: "Enrollment values are approximate.",
       totalStudents: "Total Students (selected)",
       largestUniversity: "Largest University",
       averageEnrollment: "Average Enrollment",
@@ -46,49 +46,31 @@ class CampusStatsDesign4 {
       compareUniversities: "Compare Universities",
       selectAll: "Select all",
       clearAll: "Clear all",
-      selectUniversitiesToDisplay: "Select universities to display in the bar chart:",
+      selectUniversitiesToDisplay: "Select universities to display:",
       academicYear: "Academic Year",
-      totalByYear: (y) => `Total student enrollment by university — ${y} academic year.`,
+      totalByYear: (y) => `Total enrollment by university — ${y}.`,
       uniTrendChart: "University — Trend Chart",
-      selectUniTrend: "Select a university to view its 5-year enrollment trend:",
+      selectUniTrend: "Select a university to view 5-year trend:",
       enrollmentComparison: "Enrollment Comparison by University",
-      enrollmentComparisonDesc: (y) => `Total student enrollment by university — ${y} academic year.`,
+      enrollmentComparisonDesc: (y) => `Total enrollment by university — ${y}.`,
       enrollmentTrendTitle: "Enrollment Trend Over Time",
-      enrollmentTrendDesc: (name) => `Year-over-year enrollment change for ${name} from 2018–19 to 2022–23.`,
+      enrollmentTrendDesc: (name) => `Year-over-year enrollment change for ${name}.`,
       avg5yr: "5-yr average",
       howToUse: "How to use CampusStats",
-      howToBody: "Use the controls to explore the charts and filter universities.",
+      howToBody: "Use filters and year chips to compare universities.",
       dataSource: "Data source: Universities Canada",
-      dataSourceBody: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
+      dataSourceBody: "Figures represent full-time equivalent students.",
       universitiesCount: (count, total) => `${count} of ${total} universities`,
-      emptySelectionMessage: "No universities selected. Please select at least one university using the checkboxes above.",
+      emptySelectionMessage: "No universities selected.",
 
       home: "Home",
       dashboard: "Dashboard",
       homePill: "🍁 Canadian University Data · 2018–2023",
       homeTitle: "Explore Canadian University Enrollment",
-      homeSub: "An interactive bilingual dashboard comparing student enrollment across major Canadian universities.",
+      homeSub: "An interactive bilingual dashboard comparing student enrollment.",
       openDashboard: "Open Dashboard →",
       learnMore: "Learn more",
-      kpiTracked: "universities tracked",
-      kpiYears: "years of data",
-      kpiStudents: "students in dataset",
-      kpiPoints: "enrollment data points",
-      whatExplore: "What you can explore",
-      whatExploreBody: "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
-      feat1t: "Bar Chart Comparison",
-      feat1d: "Compare enrollment side by side across multiple universities for each academic year.",
-      feat2t: "Trend Analysis",
-      feat2d: "Track how enrollment changed year over year with a 5-year line chart.",
-      feat3t: "Bilingual Interface",
-      feat3d: "Switch between English and French at any time.",
-      feat4t: "Live Filters",
-      feat4d: "Select universities and update both charts instantly.",
-      included: "8 UNIVERSITIES INCLUDED",
-      aboutData: "About the data",
-      aboutDataBody: "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca).",
-      ready: "Ready to explore the data?",
-      readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages."
+      backHome: "← Home"
     };
 
     const fr = {
@@ -96,7 +78,7 @@ class CampusStatsDesign4 {
       subtitle: "Tableau de bord des inscriptions universitaires canadiennes",
       heroPill: "🎓 Données universitaires canadiennes",
       heroMain: "Comparez les inscriptions étudiantes dans les principales universités canadiennes.",
-      heroNote: "Remarque : Les chiffres d'inscription sont approximatifs et proviennent de données publiques d'Universités Canada.",
+      heroNote: "Les valeurs sont approximatives.",
       totalStudents: "Total des étudiants (sélection)",
       largestUniversity: "Plus grande université",
       averageEnrollment: "Inscription moyenne",
@@ -106,49 +88,31 @@ class CampusStatsDesign4 {
       compareUniversities: "Comparer les universités",
       selectAll: "Tout sélectionner",
       clearAll: "Tout effacer",
-      selectUniversitiesToDisplay: "Sélectionnez les universités à afficher dans l'histogramme :",
+      selectUniversitiesToDisplay: "Sélectionnez les universités à afficher :",
       academicYear: "Année universitaire",
-      totalByYear: (y) => `Total des inscriptions par université — année ${y}.`,
+      totalByYear: (y) => `Total des inscriptions par université — ${y}.`,
       uniTrendChart: "Université — Graphique de tendance",
-      selectUniTrend: "Sélectionnez une université pour voir sa tendance d'inscription sur 5 ans :",
-      enrollmentComparison: "Comparaison des inscriptions par université",
-      enrollmentComparisonDesc: (y) => `Total des inscriptions par université — année ${y}.`,
-      enrollmentTrendTitle: "Tendance des inscriptions au fil du temps",
-      enrollmentTrendDesc: (name) => `Variation annuelle des inscriptions pour ${name} de 2018–19 à 2022–23.`,
+      selectUniTrend: "Sélectionnez une université pour voir la tendance :",
+      enrollmentComparison: "Comparaison des inscriptions",
+      enrollmentComparisonDesc: (y) => `Total des inscriptions par université — ${y}.`,
+      enrollmentTrendTitle: "Tendance des inscriptions",
+      enrollmentTrendDesc: (name) => `Variation annuelle pour ${name}.`,
       avg5yr: "moyenne sur 5 ans",
       howToUse: "Comment utiliser CampusStats",
-      howToBody: "Utilisez les contrôles pour explorer les graphiques et filtrer les universités.",
+      howToBody: "Utilisez les filtres et les années pour comparer.",
       dataSource: "Source des données : Universités Canada",
-      dataSourceBody: "Données provenant d'Universités Canada (univcan.ca).",
+      dataSourceBody: "Chiffres en équivalent temps plein.",
       universitiesCount: (count, total) => `${count} sur ${total} universités`,
-      emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une.",
+      emptySelectionMessage: "Aucune université sélectionnée.",
 
       home: "Accueil",
       dashboard: "Tableau de bord",
       homePill: "🍁 Données universitaires canadiennes · 2018–2023",
       homeTitle: "Explorez les inscriptions universitaires canadiennes",
-      homeSub: "Un tableau de bord bilingue interactif comparant les inscriptions étudiantes.",
+      homeSub: "Un tableau de bord bilingue interactif comparant les inscriptions.",
       openDashboard: "Ouvrir le tableau de bord →",
       learnMore: "En savoir plus",
-      kpiTracked: "universités suivies",
-      kpiYears: "années de données",
-      kpiStudents: "étudiants dans le jeu de données",
-      kpiPoints: "points de données",
-      whatExplore: "Ce que vous pouvez explorer",
-      whatExploreBody: "CampusStats rend les données claires, interactives et accessibles dans les deux langues officielles.",
-      feat1t: "Comparaison en histogramme",
-      feat1d: "Comparez les inscriptions entre plusieurs universités.",
-      feat2t: "Analyse des tendances",
-      feat2d: "Suivez l'évolution des inscriptions année par année.",
-      feat3t: "Interface bilingue",
-      feat3d: "Basculez entre l'anglais et le français à tout moment.",
-      feat4t: "Filtres en direct",
-      feat4d: "Sélectionnez les universités et mettez à jour les graphiques instantanément.",
-      included: "8 UNIVERSITÉS INCLUSES",
-      aboutData: "À propos des données",
-      aboutDataBody: "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca).",
-      ready: "Prêt à explorer les données ?",
-      readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités."
+      backHome: "← Accueil"
     };
 
     return this.locale === "fr" ? fr : en;
@@ -197,7 +161,6 @@ class CampusStatsDesign4 {
 
   renderHome() {
     const tr = this.t();
-    const totalAll = this.universities.reduce((sum, u) => sum + this.value(u.id), 0);
     return `
       <div class="hp-page">
         <div class="hp-container">
@@ -209,10 +172,8 @@ class CampusStatsDesign4 {
             </div>
             <button id="langBtn" class="hp-lang">${tr.langBtn}</button>
           </nav>
-        </div>
 
-        <div class="hp-hero-wrap">
-          <section class="hp-hero hp-container">
+          <section class="hp-hero">
             <div class="hp-pill">${tr.homePill}</div>
             <h1 class="hp-title">${tr.homeTitle}</h1>
             <p class="hp-sub">${tr.homeSub}</p>
@@ -220,62 +181,8 @@ class CampusStatsDesign4 {
               <button class="hp-btn primary" id="goDashHero">${tr.openDashboard}</button>
               <button class="hp-btn ghost">${tr.learnMore}</button>
             </div>
-
-            <div class="hp-kpis">
-              <div class="hp-kpi"><b>${this.universities.length}</b><span>${tr.kpiTracked}</span></div>
-              <div class="hp-kpi"><b>${this.years().length}</b><span>${tr.kpiYears}</span></div>
-              <div class="hp-kpi"><b>${this.formatNum(totalAll)}</b><span>${tr.kpiStudents}</span></div>
-              <div class="hp-kpi"><b>${this.universities.length * this.years().length}</b><span>${tr.kpiPoints}</span></div>
-            </div>
           </section>
         </div>
-
-        <section class="hp-section">
-          <div class="hp-container">
-            <h2>${tr.whatExplore}</h2>
-            <p class="lead">${tr.whatExploreBody}</p>
-            <div class="hp-cards">
-              <article class="hp-card"><h3>${tr.feat1t}</h3><p>${tr.feat1d}</p></article>
-              <article class="hp-card"><h3>${tr.feat2t}</h3><p>${tr.feat2d}</p></article>
-              <article class="hp-card"><h3>${tr.feat3t}</h3><p>${tr.feat3d}</p></article>
-              <article class="hp-card"><h3>${tr.feat4t}</h3><p>${tr.feat4d}</p></article>
-            </div>
-          </div>
-        </section>
-
-        <section class="hp-unis">
-          <div class="hp-container">
-            <h4>${tr.included}</h4>
-            <div class="hp-chip-row">
-              ${this.universities.map((u) => `<span class="hp-chip"><i style="background:${u.color}"></i>${this.displayUniName(u)}</span>`).join("")}
-            </div>
-          </div>
-        </section>
-
-        <section class="hp-data">
-          <div class="hp-container">
-            <div class="hp-data-box">
-              <div>
-                <h2 style="margin:0 0 10px;">${tr.aboutData}</h2>
-                <p class="lead" style="font-size:18px; margin:0;">${tr.aboutDataBody}</p>
-              </div>
-              <div>
-                <p><strong>Data range:</strong> 2018-19 → 2022-23</p>
-                <p><strong>Universities:</strong> ${this.universities.length}</p>
-                <p><strong>Data type:</strong> Full-time equivalent</p>
-                <p><strong>Source:</strong> univcan.ca</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="hp-cta-bottom">
-          <div class="hp-container">
-            <h3>${tr.ready}</h3>
-            <p>${tr.readyBody}</p>
-            <button class="hp-btn primary" id="goDashBottom">${tr.openDashboard}</button>
-          </div>
-        </section>
       </div>
     `;
   }
@@ -286,7 +193,6 @@ class CampusStatsDesign4 {
     const growth = this.growthFor(this.selectedTrend);
     const largest = this.largestSelected();
     const selectedArr = this.selectedArray();
-    const totalText = tr.totalByYear(this.year);
 
     return `
       <div class="cs-page">
@@ -300,6 +206,10 @@ class CampusStatsDesign4 {
           </div>
           <button id="langBtn" class="lang-btn">${tr.langBtn}</button>
         </header>
+
+        <section class="controls card" style="margin-bottom:12px;">
+          <button class="text-btn" id="goHome">${tr.backHome}</button>
+        </section>
 
         <section class="hero card-hero">
           <div class="pill">${tr.heroPill}</div>
@@ -334,7 +244,6 @@ class CampusStatsDesign4 {
             <div>
               <strong>${tr.academicYear}</strong>
               <div class="year-row">${this.years().map((y) => `<button class="chip ${y === this.year ? "active" : ""}" data-year="${y}">${y}</button>`).join("")}</div>
-              <p class="muted">${totalText}</p>
 
               <strong class="trend-title">${tr.uniTrendChart}</strong>
               <p class="muted">${tr.selectUniTrend}</p>
@@ -348,7 +257,6 @@ class CampusStatsDesign4 {
         <section class="charts-grid">
           <article class="card chart-card">
             <h3>${tr.enrollmentComparison}</h3>
-            <p class="muted">${tr.enrollmentComparisonDesc(this.year)}</p>
             <div class="legend">${selectedArr.map((u) => `<span><i style="background:${u.color}"></i>${this.displayUniShort(u)}</span>`).join("")}</div>
             ${selectedArr.length ? `<canvas id="barCanvas" width="640" height="320"></canvas>` : `<div class="empty-chart">${tr.emptySelectionMessage}</div>`}
           </article>
@@ -365,23 +273,6 @@ class CampusStatsDesign4 {
               <span>— ${this.formatNum(Math.round(this.trendValues().reduce((a, b) => a + b, 0) / this.trendValues().length))} ${tr.avg5yr}</span>
             </div>
             <canvas id="lineCanvas" width="640" height="320"></canvas>
-          </article>
-        </section>
-
-        <section class="bottom-grid">
-          <article class="card info-card ${this.helpCollapsed ? "collapsed" : ""}">
-            <button class="info-head" id="toggleHelp">
-              <span>ⓘ <strong>${tr.howToUse}</strong></span>
-              <span>${this.helpCollapsed ? "▸" : "⌄"}</span>
-            </button>
-            ${this.helpCollapsed ? "" : `<p>${tr.howToBody}</p>`}
-          </article>
-          <article class="card info-card ${this.sourceCollapsed ? "collapsed" : ""}">
-            <button class="source-head" id="toggleSource">
-              <span><span class="source-icon">ℹ</span><strong>${tr.dataSource}</strong></span>
-              <span>${this.sourceCollapsed ? "▸" : "⌄"}</span>
-            </button>
-            ${this.sourceCollapsed ? "" : `<p>${tr.dataSourceBody}</p>`}
           </article>
         </section>
       </div>
@@ -409,7 +300,7 @@ class CampusStatsDesign4 {
 
     document.getElementById("goDashTop")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
     document.getElementById("goDashHero")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
-    document.getElementById("goDashBottom")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
+    document.getElementById("goHome")?.addEventListener("click", () => { this.page = "home"; this.mount(); });
 
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
@@ -435,16 +326,6 @@ class CampusStatsDesign4 {
 
     document.getElementById("clearAll")?.addEventListener("click", () => {
       this.selected = new Set();
-      this.mount();
-    });
-
-    document.getElementById("toggleHelp")?.addEventListener("click", () => {
-      this.helpCollapsed = !this.helpCollapsed;
-      this.mount();
-    });
-
-    document.getElementById("toggleSource")?.addEventListener("click", () => {
-      this.sourceCollapsed = !this.sourceCollapsed;
       this.mount();
     });
   }
@@ -495,14 +376,6 @@ class CampusStatsDesign4 {
       ctx.fillText(this.displayUniShort(u), 0, 0);
       ctx.restore();
     });
-
-    ctx.save();
-    ctx.translate(18, h / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = "#8b9db6";
-    ctx.textAlign = "center";
-    ctx.fillText(this.locale === "fr" ? "Étudiants" : "Students", 0, 0);
-    ctx.restore();
   }
 
   drawLine() {
@@ -525,13 +398,15 @@ class CampusStatsDesign4 {
     const pad = Math.max(1500, Math.round((max - min) * 0.2));
     const yMin = min - pad, yMax = max + pad;
 
-    const yTicks = 4;
-    ctx.strokeStyle = "#d7deea"; ctx.fillStyle = "#7a8ca8"; ctx.font = "12px Inter, Arial";
-    for (let i = 0; i <= yTicks; i++) {
-      const y = margin.t + (plotH * i) / yTicks;
-      ctx.setLineDash(i === yTicks ? [] : [4, 4]);
+    ctx.strokeStyle = "#d7deea";
+    ctx.fillStyle = "#7a8ca8";
+    ctx.font = "12px Inter, Arial";
+
+    for (let i = 0; i <= 4; i++) {
+      const y = margin.t + (plotH * i) / 4;
+      ctx.setLineDash(i === 4 ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(margin.l, y); ctx.lineTo(w - margin.r, y); ctx.stroke();
-      const v = Math.round(yMax - ((yMax - yMin) * i) / yTicks);
+      const v = Math.round(yMax - ((yMax - yMin) * i) / 4);
       ctx.setLineDash([]); ctx.fillText(`${Math.round(v / 1000)}K`, 20, y + 4);
     }
 
@@ -545,7 +420,8 @@ class CampusStatsDesign4 {
     ctx.stroke();
 
     points.forEach((p) => {
-      ctx.fillStyle = uni.color; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = uni.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
     });
 
@@ -554,14 +430,6 @@ class CampusStatsDesign4 {
       const x = margin.l + (i * plotW) / (years.length - 1);
       ctx.fillText(yr, x, h - 12);
     });
-
-    ctx.save();
-    ctx.translate(18, h / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = "#8b9db6";
-    ctx.textAlign = "center";
-    ctx.fillText(this.locale === "fr" ? "Étudiants" : "Students", 0, 0);
-    ctx.restore();
   }
 }
 
