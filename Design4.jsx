@@ -52,9 +52,43 @@ const STRINGS = {
     avg5: "5-yr average",
     howTo: "How to use CampusStats",
     howToText:
-      "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the Year buttons to see enrollment data for that year. Select a single university from the Trend Chart controls to update the line chart below.",
+      "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the year buttons. Select a university in the trend section to view its 5-year line chart. Switch languages at any time.",
     sourceTitle: "Data source: Universities Canada",
-    sourceText: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students."
+    sourceText: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
+
+    homeNavHome: "Home",
+    homeNavDash: "Dashboard",
+    homePill: "🍁 Canadian University Data · 2018–2023",
+    homeTitle: "Explore Canadian University Enrollment",
+    homeSub:
+      "An interactive bilingual dashboard comparing student enrollment across major Canadian universities. Select institutions, filter by year, and switch languages.",
+    openDashboard: "Open Dashboard →",
+    learnMore: "Learn more",
+    kpiTracked: "universities tracked",
+    kpiYears: "years of data",
+    kpiStudents: "students in dataset",
+    kpiPoints: "enrollment data points",
+    whatExplore: "What you can explore",
+    whatExploreBody:
+      "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
+    feat1t: "Bar Chart Comparison",
+    feat1d: "Compare enrollment side by side across multiple universities for any academic year from 2018–19 to 2022–23.",
+    feat2t: "Trend Analysis",
+    feat2d: "Track how enrollment changed year over year with a 5-year line chart and average reference.",
+    feat3t: "Bilingual Interface",
+    feat3d: "Switch between English and French at any time. All labels, chart text, and number formats update instantly.",
+    feat4t: "Live Filters",
+    feat4d: "Select universities with color-coded checkboxes and update both charts simultaneously.",
+    included: "8 UNIVERSITIES INCLUDED",
+    aboutData: "About the data",
+    aboutDataBody:
+      "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca). This dashboard uses a synthetic educational dataset for demonstration.",
+    ready: "Ready to explore the data?",
+    readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages.",
+    footerLeft: "CampusStats · University of Ottawa · SEG3125 Assignment 5",
+    footerHome: "Home",
+    footerDash: "Dashboard",
+    footerSource: "univcan.ca"
   },
   fr: {
     langBtn: "🌐 English",
@@ -85,13 +119,48 @@ const STRINGS = {
     avg5: "moyenne sur 5 ans",
     howTo: "Comment utiliser CampusStats",
     howToText:
-      "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université dans les contrôles de tendance pour mettre à jour le graphique linéaire.",
+      "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université pour voir sa courbe sur 5 ans. Changez de langue à tout moment.",
     sourceTitle: "Source des données : Universités Canada",
-    sourceText: "Données provenant d'Universités Canada (univcan.ca). Les chiffres représentent les étudiants équivalents temps plein."
+    sourceText: "Données provenant d'Universités Canada (univcan.ca). Les chiffres représentent les étudiants équivalents temps plein.",
+
+    homeNavHome: "Accueil",
+    homeNavDash: "Tableau de bord",
+    homePill: "🍁 Données universitaires canadiennes · 2018–2023",
+    homeTitle: "Explorez les inscriptions universitaires canadiennes",
+    homeSub:
+      "Un tableau de bord bilingue interactif comparant les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les institutions, filtrez par année et changez de langue.",
+    openDashboard: "Ouvrir le tableau de bord →",
+    learnMore: "En savoir plus",
+    kpiTracked: "universités suivies",
+    kpiYears: "années de données",
+    kpiStudents: "étudiants dans le jeu de données",
+    kpiPoints: "points de données",
+    whatExplore: "Ce que vous pouvez explorer",
+    whatExploreBody:
+      "CampusStats est conçu pour rendre les données d'inscription claires, interactives et accessibles dans les deux langues officielles.",
+    feat1t: "Comparaison en histogramme",
+    feat1d: "Comparez les inscriptions côte à côte entre plusieurs universités pour chaque année de 2018–19 à 2022–23.",
+    feat2t: "Analyse des tendances",
+    feat2d: "Suivez l'évolution des inscriptions année après année avec une courbe sur 5 ans et une moyenne de référence.",
+    feat3t: "Interface bilingue",
+    feat3d: "Basculez entre l'anglais et le français à tout moment. Les libellés, textes et formats numériques se mettent à jour instantanément.",
+    feat4t: "Filtres en direct",
+    feat4d: "Sélectionnez les universités avec des cases à cocher colorées et mettez à jour les deux graphiques simultanément.",
+    included: "8 UNIVERSITÉS INCLUSES",
+    aboutData: "À propos des données",
+    aboutDataBody:
+      "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca). Ce tableau de bord utilise un jeu de données éducatif synthétique.",
+    ready: "Prêt à explorer les données ?",
+    readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités, filtrer par année et changer de langue.",
+    footerLeft: "CampusStats · Université d'Ottawa · SEG3125 Devoir 5",
+    footerHome: "Accueil",
+    footerDash: "Tableau de bord",
+    footerSource: "univcan.ca"
   }
 };
 
 export default function Design4() {
+  const [page, setPage] = useState("home");
   const [locale, setLocale] = useState("en");
   const [year, setYear] = useState("2022-23");
   const [selectedTrend, setSelectedTrend] = useState("uoft");
@@ -101,14 +170,16 @@ export default function Design4() {
 
   const t = STRINGS[locale];
 
-  const selectedArray = useMemo(
-    () => UNIVERSITIES.filter((u) => selected.has(u.id)),
-    [selected]
-  );
+  const selectedArray = useMemo(() => UNIVERSITIES.filter((u) => selected.has(u.id)), [selected]);
 
   const totalSelected = useMemo(
     () => selectedArray.reduce((sum, u) => sum + ENROLLMENT[year][u.id], 0),
     [selectedArray, year]
+  );
+
+  const totalAllCurrentYear = useMemo(
+    () => UNIVERSITIES.reduce((sum, u) => sum + ENROLLMENT[year][u.id], 0),
+    [year]
   );
 
   const largest = useMemo(() => {
@@ -137,13 +208,111 @@ export default function Design4() {
       const next = new Set(prev);
       if (checked) next.add(id);
       else next.delete(id);
-      return next; // allow empty
+      return next;
     });
   };
 
-  const clearAll = () => {
-    setSelected(new Set()); // true clear all
-  };
+  const clearAll = () => setSelected(new Set());
+
+  if (page === "home") {
+    return (
+      <div className="hp-page">
+        <div className="hp-container">
+          <nav className="hp-nav">
+            <div className="hp-brand">
+              <span className="dot">◆</span>
+              <span>CampusStats</span>
+            </div>
+            <div className="hp-links">
+              <button className="hp-tab active">{t.homeNavHome}</button>
+              <button className="hp-tab" onClick={() => setPage("dashboard")}>{t.homeNavDash}</button>
+            </div>
+            <button className="hp-lang" onClick={() => setLocale((v) => (v === "en" ? "fr" : "en"))}>
+              {locale === "fr" ? "🌐 English" : "🌐 Français"}
+            </button>
+          </nav>
+        </div>
+
+        <div className="hp-hero-wrap">
+          <section className="hp-hero hp-container">
+            <div className="hp-pill">{t.homePill}</div>
+            <h1 className="hp-title">{t.homeTitle}</h1>
+            <p className="hp-sub">{t.homeSub}</p>
+            <div className="hp-cta">
+              <button className="hp-btn primary" onClick={() => setPage("dashboard")}>{t.openDashboard}</button>
+              <button className="hp-btn ghost">{t.learnMore}</button>
+            </div>
+
+            <div className="hp-kpis">
+              <div className="hp-kpi"><b>{UNIVERSITIES.length}</b><span>{t.kpiTracked}</span></div>
+              <div className="hp-kpi"><b>{YEARS.length}</b><span>{t.kpiYears}</span></div>
+              <div className="hp-kpi"><b>{totalAllCurrentYear.toLocaleString("en-CA")}</b><span>{t.kpiStudents}</span></div>
+              <div className="hp-kpi"><b>{UNIVERSITIES.length * YEARS.length}</b><span>{t.kpiPoints}</span></div>
+            </div>
+          </section>
+        </div>
+
+        <section className="hp-section">
+          <div className="hp-container">
+            <h2>{t.whatExplore}</h2>
+            <p className="lead">{t.whatExploreBody}</p>
+            <div className="hp-cards">
+              <article className="hp-card"><h3>{t.feat1t}</h3><p>{t.feat1d}</p></article>
+              <article className="hp-card"><h3>{t.feat2t}</h3><p>{t.feat2d}</p></article>
+              <article className="hp-card"><h3>{t.feat3t}</h3><p>{t.feat3d}</p></article>
+              <article className="hp-card"><h3>{t.feat4t}</h3><p>{t.feat4d}</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="hp-unis">
+          <div className="hp-container">
+            <h4>{t.included}</h4>
+            <div className="hp-chip-row">
+              {UNIVERSITIES.map((u) => (
+                <span key={u.id} className="hp-chip">
+                  <i style={{ background: u.color }} />
+                  {locale === "fr" ? u.nameFr : u.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="hp-data">
+          <div className="hp-container">
+            <div className="hp-data-box">
+              <div>
+                <h2 style={{ margin: "0 0 10px" }}>{t.aboutData}</h2>
+                <p className="lead" style={{ fontSize: 18, margin: 0 }}>{t.aboutDataBody}</p>
+              </div>
+              <div>
+                <p><strong>Data range:</strong> 2018-19 → 2022-23</p>
+                <p><strong>Universities:</strong> {UNIVERSITIES.length}</p>
+                <p><strong>Data type:</strong> Full-time equivalent</p>
+                <p><strong>Source:</strong> univcan.ca</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="hp-cta-bottom">
+          <div className="hp-container">
+            <h3>{t.ready}</h3>
+            <p>{t.readyBody}</p>
+            <button className="hp-btn primary" onClick={() => setPage("dashboard")}>{t.openDashboard}</button>
+          </div>
+        </section>
+
+        <footer className="hp-footer">
+          <div className="hp-container">
+            <span>{t.footerLeft}</span>
+            <span>{t.footerHome} · {t.footerDash} · {t.footerSource}</span>
+          </div>
+        </footer>
+      </div>
+    );
+  }
 
   return (
     <div className="cs-page">
