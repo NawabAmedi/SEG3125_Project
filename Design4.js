@@ -215,14 +215,38 @@ class CampusStatsDesign4 {
   mount() {
     const app = document.getElementById("app");
     if (!app) return;
-    app.innerHTML = this.currentPage === "home" ? this.renderHome() : this.renderDashboard();
+    app.innerHTML = this.page === "home" ? this.renderHome() : this.render();
     this.bind();
-    if (this.currentPage === "dashboard") {
+    if (this.page === "dashboard") {
       this.drawBar();
       this.drawLine();
     }
   }
 
+    renderHome() {
+    const isFr = this.locale === "fr";
+    return `
+      <div class="hp-page">
+        <div class="hp-container">
+          <nav class="hp-nav">
+            <div class="hp-brand"><span class="dot">◆</span><span>CampusStats</span></div>
+            <div class="hp-links">
+              <button class="hp-tab active">${isFr ? "Accueil" : "Home"}</button>
+              <button class="hp-tab" id="goDashTop">${isFr ? "Tableau de bord" : "Dashboard"}</button>
+            </div>
+            <button class="hp-lang" id="langBtn">${isFr ? "🌐 English" : "🌐 Français"}</button>
+          </nav>
+  
+          <section class="hp-hero">
+            <h1 class="hp-title">${isFr ? "Explorez les inscriptions universitaires canadiennes" : "Explore Canadian University Enrollment"}</h1>
+            <p class="hp-sub">${isFr ? "Un tableau de bord bilingue interactif." : "An interactive bilingual dashboard."}</p>
+            <button class="hp-btn primary" id="goDashHero">${isFr ? "Ouvrir le tableau de bord →" : "Open Dashboard →"}</button>
+          </section>
+        </div>
+      </div>
+    `;
+  }
+  
   renderHome() {
     const tr = this.t();
     return `
@@ -443,7 +467,17 @@ class CampusStatsDesign4 {
       this.locale = this.locale === "en" ? "fr" : "en";
       this.mount();
     });
-
+    
+    document.getElementById("goDashTop")?.addEventListener("click", () => {
+      this.page = "dashboard";
+      this.mount();
+    });
+    
+    document.getElementById("goDashHero")?.addEventListener("click", () => {
+      this.page = "dashboard";
+      this.mount();
+    });
+    
     document.getElementById("homeBtn")?.addEventListener("click", () => this.goHome());
 
     document.getElementById("dashBtnTop")?.addEventListener("click", () => this.goDashboard());
