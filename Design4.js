@@ -5,6 +5,7 @@ class CampusStatsDesign4 {
     this.selectedTrend = "uoft";
     this.helpCollapsed = false;
     this.sourceCollapsed = false;
+    this.currentPage = "home";
 
     this.universities = [
       { id: "uoft", short: "U of T", shortFr: "U de T", name: "University of Toronto", nameFr: "Université de Toronto", color: "#2d56d4" },
@@ -56,11 +57,46 @@ class CampusStatsDesign4 {
       enrollmentTrendDesc: (name) => `Year-over-year enrollment change for ${name} from 2018–19 to 2022–23.`,
       avg5yr: "5-yr average",
       howToUse: "How to use CampusStats",
-      howToBody: "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the Year buttons to see enrollment data for that year. Select a single university from the Trend Chart controls to update the line chart below.",
+      howToBody:
+        "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the year buttons. Select one university in the trend section to view its 5-year line chart. Use the language button to switch between English and French.",
       dataSource: "Data source: Universities Canada",
       dataSourceBody: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
       universitiesCount: (count, total) => `${count} of ${total} universities`,
-      emptySelectionMessage: "No universities selected. Please select at least one university using the checkboxes above."
+      emptySelectionMessage: "No universities selected. Please select at least one university using the checkboxes above.",
+
+      homeNavHome: "Home",
+      homeNavDash: "Dashboard",
+      homePill: "🍁 Canadian University Data · 2018–2023",
+      homeTitle: "Explore Canadian University Enrollment",
+      homeSub:
+        "An interactive bilingual dashboard comparing student enrollment across major Canadian universities. Select institutions, filter by year, and switch languages.",
+      openDashboard: "Open Dashboard →",
+      learnMore: "Learn more",
+      kpiTracked: "universities tracked",
+      kpiYears: "years of data",
+      kpiStudents: "students in dataset",
+      kpiPoints: "enrollment data points",
+      whatExplore: "What you can explore",
+      whatExploreBody:
+        "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
+      feat1t: "Bar Chart Comparison",
+      feat1d: "Compare enrollment side by side across multiple universities for any academic year from 2018–19 to 2022–23.",
+      feat2t: "Trend Analysis",
+      feat2d: "Track how enrollment changed year over year with a 5-year line chart and average reference.",
+      feat3t: "Bilingual Interface",
+      feat3d: "Switch between English and French at any time. All labels, chart text, and number formats update instantly.",
+      feat4t: "Live Filters",
+      feat4d: "Select universities with color-coded checkboxes and update both charts simultaneously.",
+      included: "8 UNIVERSITIES INCLUDED",
+      aboutData: "About the data",
+      aboutDataBody:
+        "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca). This dashboard uses a synthetic educational dataset for demonstration.",
+      ready: "Ready to explore the data?",
+      readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages.",
+      footerLeft: "CampusStats · University of Ottawa · SEG3125 Assignment 5",
+      footerHome: "Home",
+      footerDash: "Dashboard",
+      footerSource: "univcan.ca"
     };
 
     const fr = {
@@ -89,11 +125,46 @@ class CampusStatsDesign4 {
       enrollmentTrendDesc: (name) => `Variation annuelle des inscriptions pour ${name} de 2018–19 à 2022–23.`,
       avg5yr: "moyenne sur 5 ans",
       howToUse: "Comment utiliser CampusStats",
-      howToBody: "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université dans les contrôles de tendance pour mettre à jour le graphique linéaire.",
+      howToBody:
+        "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université pour afficher sa courbe sur 5 ans. Utilisez le bouton de langue pour basculer entre le français et l'anglais.",
       dataSource: "Source des données : Universités Canada",
       dataSourceBody: "Données provenant d'Universités Canada (univcan.ca). Les chiffres représentent les étudiants équivalents temps plein.",
       universitiesCount: (count, total) => `${count} sur ${total} universités`,
-      emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une à l'aide des cases ci-dessus."
+      emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une à l'aide des cases ci-dessus.",
+
+      homeNavHome: "Accueil",
+      homeNavDash: "Tableau de bord",
+      homePill: "🍁 Données universitaires canadiennes · 2018–2023",
+      homeTitle: "Explorez les inscriptions universitaires canadiennes",
+      homeSub:
+        "Un tableau de bord bilingue interactif qui compare les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les institutions, filtrez par année et changez de langue.",
+      openDashboard: "Ouvrir le tableau de bord →",
+      learnMore: "En savoir plus",
+      kpiTracked: "universités suivies",
+      kpiYears: "années de données",
+      kpiStudents: "étudiants dans le jeu de données",
+      kpiPoints: "points de données",
+      whatExplore: "Ce que vous pouvez explorer",
+      whatExploreBody:
+        "CampusStats est conçu pour rendre les données d'inscription claires, interactives et accessibles dans les deux langues officielles.",
+      feat1t: "Comparaison en histogramme",
+      feat1d: "Comparez les inscriptions côte à côte entre plusieurs universités pour chaque année de 2018–19 à 2022–23.",
+      feat2t: "Analyse des tendances",
+      feat2d: "Suivez l'évolution des inscriptions année après année avec une courbe sur 5 ans et une moyenne de référence.",
+      feat3t: "Interface bilingue",
+      feat3d: "Basculez entre l'anglais et le français à tout moment. Les libellés, textes et formats numériques se mettent à jour instantanément.",
+      feat4t: "Filtres en direct",
+      feat4d: "Sélectionnez les universités avec des cases à cocher colorées et mettez à jour les deux graphiques simultanément.",
+      included: "8 UNIVERSITÉS INCLUSES",
+      aboutData: "À propos des données",
+      aboutDataBody:
+        "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca). Ce tableau de bord utilise un jeu de données éducatif synthétique pour démonstration.",
+      ready: "Prêt à explorer les données ?",
+      readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités, filtrer par année et changer de langue.",
+      footerLeft: "CampusStats · Université d'Ottawa · SEG3125 Devoir 5",
+      footerHome: "Accueil",
+      footerDash: "Tableau de bord",
+      footerSource: "univcan.ca"
     };
 
     return this.locale === "fr" ? fr : en;
@@ -104,6 +175,8 @@ class CampusStatsDesign4 {
   selectedArray() { return this.universities.filter((u) => this.selected.has(u.id)); }
   trendValues() { return this.years().map((y) => this.value(this.selectedTrend, y)); }
   totalSelected() { return this.selectedArray().reduce((sum, u) => sum + this.value(u.id), 0); }
+  totalAllCurrentYear() { return this.universities.reduce((sum, u) => sum + this.value(u.id), 0); }
+  totalPoints() { return this.universities.length * this.years().length; }
 
   largestSelected() {
     const arr = this.selectedArray();
@@ -128,16 +201,122 @@ class CampusStatsDesign4 {
   displayUniName(u) { return this.locale === "fr" ? u.nameFr : u.name; }
   displayUniShort(u) { return this.locale === "fr" ? u.shortFr : u.short; }
 
+  goDashboard() {
+    this.currentPage = "dashboard";
+    this.mount();
+  }
+
+  goHome() {
+    this.currentPage = "home";
+    this.mount();
+  }
+
   mount() {
     const app = document.getElementById("app");
     if (!app) return;
-    app.innerHTML = this.render();
+    app.innerHTML = this.currentPage === "home" ? this.renderHome() : this.renderDashboard();
     this.bind();
-    this.drawBar();
-    this.drawLine();
+    if (this.currentPage === "dashboard") {
+      this.drawBar();
+      this.drawLine();
+    }
   }
 
-  render() {
+  renderHome() {
+    const tr = this.t();
+    return `
+      <div class="hp-page">
+        <div class="hp-container">
+          <nav class="hp-nav">
+            <div class="hp-brand">
+              <span class="dot">◆</span>
+              <span>CampusStats</span>
+            </div>
+            <div class="hp-links">
+              <button class="hp-tab active" id="homeBtn">${tr.homeNavHome}</button>
+              <button class="hp-tab" id="dashBtnTop">${tr.homeNavDash}</button>
+            </div>
+            <button id="langBtn" class="hp-lang">${this.locale === "fr" ? "🌐 English" : "🌐 Français"}</button>
+          </nav>
+        </div>
+
+        <div class="hp-hero-wrap">
+          <section class="hp-hero hp-container">
+            <div class="hp-pill">${tr.homePill}</div>
+            <h1 class="hp-title">${tr.homeTitle}</h1>
+            <p class="hp-sub">${tr.homeSub}</p>
+            <div class="hp-cta">
+              <button class="hp-btn primary" id="dashBtnHero">${tr.openDashboard}</button>
+              <button class="hp-btn ghost">${tr.learnMore}</button>
+            </div>
+
+            <div class="hp-kpis">
+              <div class="hp-kpi"><b>${this.universities.length}</b><span>${tr.kpiTracked}</span></div>
+              <div class="hp-kpi"><b>${this.years().length}</b><span>${tr.kpiYears}</span></div>
+              <div class="hp-kpi"><b>${this.formatNum(this.totalAllCurrentYear())}</b><span>${tr.kpiStudents}</span></div>
+              <div class="hp-kpi"><b>${this.totalPoints()}</b><span>${tr.kpiPoints}</span></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="hp-section">
+          <div class="hp-container">
+            <h2>${tr.whatExplore}</h2>
+            <p class="lead">${tr.whatExploreBody}</p>
+            <div class="hp-cards">
+              <article class="hp-card"><h3>${tr.feat1t}</h3><p>${tr.feat1d}</p></article>
+              <article class="hp-card"><h3>${tr.feat2t}</h3><p>${tr.feat2d}</p></article>
+              <article class="hp-card"><h3>${tr.feat3t}</h3><p>${tr.feat3d}</p></article>
+              <article class="hp-card"><h3>${tr.feat4t}</h3><p>${tr.feat4d}</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="hp-unis">
+          <div class="hp-container">
+            <h4>${tr.included}</h4>
+            <div class="hp-chip-row">
+              ${this.universities.map((u) => `<span class="hp-chip"><i style="background:${u.color}"></i>${this.displayUniName(u)}</span>`).join("")}
+            </div>
+          </div>
+        </section>
+
+        <section class="hp-data">
+          <div class="hp-container">
+            <div class="hp-data-box">
+              <div>
+                <h2 style="margin:0 0 10px;">${tr.aboutData}</h2>
+                <p class="lead" style="font-size:18px; margin:0;">${tr.aboutDataBody}</p>
+              </div>
+              <div>
+                <p><strong>Data range:</strong> 2018-19 → 2022-23</p>
+                <p><strong>Universities:</strong> ${this.universities.length}</p>
+                <p><strong>Data type:</strong> Full-time equivalent</p>
+                <p><strong>Source:</strong> univcan.ca</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="hp-cta-bottom">
+          <div class="hp-container">
+            <h3>${tr.ready}</h3>
+            <p>${tr.readyBody}</p>
+            <button class="hp-btn primary" id="dashBtnBottom">${tr.openDashboard}</button>
+          </div>
+        </section>
+
+        <footer class="hp-footer">
+          <div class="hp-container">
+            <span>${tr.footerLeft}</span>
+            <span>${tr.footerHome} · ${tr.footerDash} · ${tr.footerSource}</span>
+          </div>
+        </footer>
+      </div>
+    `;
+  }
+
+  renderDashboard() {
     const tr = this.t();
     const trUni = this.universities.find((u) => u.id === this.selectedTrend);
     const growth = this.growthFor(this.selectedTrend);
@@ -264,6 +443,12 @@ class CampusStatsDesign4 {
       this.mount();
     });
 
+    document.getElementById("homeBtn")?.addEventListener("click", () => this.goHome());
+
+    document.getElementById("dashBtnTop")?.addEventListener("click", () => this.goDashboard());
+    document.getElementById("dashBtnHero")?.addEventListener("click", () => this.goDashboard());
+    document.getElementById("dashBtnBottom")?.addEventListener("click", () => this.goDashboard());
+
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
       this.mount();
@@ -287,7 +472,7 @@ class CampusStatsDesign4 {
     });
 
     document.getElementById("clearAll")?.addEventListener("click", () => {
-      this.selected = new Set(); // truly empty
+      this.selected = new Set();
       this.mount();
     });
 
@@ -304,7 +489,7 @@ class CampusStatsDesign4 {
 
   drawBar() {
     const canvas = document.getElementById("barCanvas");
-    if (!canvas) return; // no chart when empty
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     const w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
@@ -328,7 +513,8 @@ class CampusStatsDesign4 {
       ctx.setLineDash(i === yTicks ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(margin.l, y); ctx.lineTo(w - margin.r, y); ctx.stroke();
       const v = Math.round(top - (top * i) / yTicks);
-      ctx.setLineDash([]); ctx.fillText(v === 0 ? "0" : `${Math.round(v / 1000)}K`, 16, y + 4);
+      ctx.setLineDash([]);
+      ctx.fillText(v === 0 ? "0" : `${Math.round(v / 1000)}K`, 16, y + 4);
     }
 
     const slot = plotW / list.length;
@@ -339,7 +525,8 @@ class CampusStatsDesign4 {
       const bh = (val / top) * plotH;
       const x = margin.l + idx * slot + (slot - barW) / 2;
       const y = margin.t + plotH - bh;
-      ctx.fillStyle = u.color; ctx.fillRect(x, y, barW, bh);
+      ctx.fillStyle = u.color;
+      ctx.fillRect(x, y, barW, bh);
       ctx.fillStyle = "#62789a";
       ctx.save();
       ctx.translate(x + barW / 2, h - 16);
@@ -379,13 +566,16 @@ class CampusStatsDesign4 {
     const yMin = min - pad, yMax = max + pad;
 
     const yTicks = 4;
-    ctx.strokeStyle = "#d7deea"; ctx.fillStyle = "#7a8ca8"; ctx.font = "12px Inter, Arial";
+    ctx.strokeStyle = "#d7deea";
+    ctx.fillStyle = "#7a8ca8";
+    ctx.font = "12px Inter, Arial";
     for (let i = 0; i <= yTicks; i++) {
       const y = margin.t + (plotH * i) / yTicks;
       ctx.setLineDash(i === yTicks ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(margin.l, y); ctx.lineTo(w - margin.r, y); ctx.stroke();
       const v = Math.round(yMax - ((yMax - yMin) * i) / yTicks);
-      ctx.setLineDash([]); ctx.fillText(`${Math.round(v / 1000)}K`, 20, y + 4);
+      ctx.setLineDash([]);
+      ctx.fillText(`${Math.round(v / 1000)}K`, 20, y + 4);
     }
 
     const points = vals.map((v, i) => ({
@@ -393,16 +583,24 @@ class CampusStatsDesign4 {
       y: margin.t + ((yMax - v) / (yMax - yMin)) * plotH
     }));
 
-    ctx.strokeStyle = uni.color; ctx.lineWidth = 3; ctx.beginPath();
+    ctx.strokeStyle = uni.color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
     points.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
     ctx.stroke();
 
     points.forEach((p) => {
-      ctx.fillStyle = uni.color; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = uni.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
     });
 
-    ctx.fillStyle = "#62789a"; ctx.textAlign = "center";
+    ctx.fillStyle = "#62789a";
+    ctx.textAlign = "center";
     years.forEach((yr, i) => {
       const x = margin.l + (i * plotW) / (years.length - 1);
       ctx.fillText(yr, x, h - 12);
