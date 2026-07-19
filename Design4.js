@@ -6,6 +6,7 @@ class CampusStatsDesign4 {
     this.helpCollapsed = false;
     this.sourceCollapsed = false;
     this.currentPage = "home";
+    this.page = "home";
 
     this.universities = [
       { id: "uoft", short: "U of T", shortFr: "U de T", name: "University of Toronto", nameFr: "Université de Toronto", color: "#2d56d4" },
