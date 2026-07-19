@@ -5,7 +5,6 @@ class CampusStatsDesign4 {
     this.selectedTrend = "uoft";
     this.helpCollapsed = false;
     this.sourceCollapsed = false;
-    this.currentPage = "home";
     this.page = "home";
 
     this.universities = [
@@ -53,24 +52,22 @@ class CampusStatsDesign4 {
       uniTrendChart: "University — Trend Chart",
       selectUniTrend: "Select a university to view its 5-year enrollment trend:",
       enrollmentComparison: "Enrollment Comparison by University",
-      enrollmentComparisonDesc: (y) => `Total student enrollment by university — ${y} academic year. Use the checkboxes to add or remove universities from the comparison.`,
+      enrollmentComparisonDesc: (y) => `Total student enrollment by university — ${y} academic year.`,
       enrollmentTrendTitle: "Enrollment Trend Over Time",
       enrollmentTrendDesc: (name) => `Year-over-year enrollment change for ${name} from 2018–19 to 2022–23.`,
       avg5yr: "5-yr average",
       howToUse: "How to use CampusStats",
-      howToBody:
-        "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the year buttons. Select one university in the trend section to view its 5-year line chart. Use the language button to switch between English and French.",
+      howToBody: "Use the controls to explore the charts and filter universities.",
       dataSource: "Data source: Universities Canada",
       dataSourceBody: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
       universitiesCount: (count, total) => `${count} of ${total} universities`,
       emptySelectionMessage: "No universities selected. Please select at least one university using the checkboxes above.",
 
-      homeNavHome: "Home",
-      homeNavDash: "Dashboard",
+      home: "Home",
+      dashboard: "Dashboard",
       homePill: "🍁 Canadian University Data · 2018–2023",
       homeTitle: "Explore Canadian University Enrollment",
-      homeSub:
-        "An interactive bilingual dashboard comparing student enrollment across major Canadian universities. Select institutions, filter by year, and switch languages.",
+      homeSub: "An interactive bilingual dashboard comparing student enrollment across major Canadian universities.",
       openDashboard: "Open Dashboard →",
       learnMore: "Learn more",
       kpiTracked: "universities tracked",
@@ -78,33 +75,27 @@ class CampusStatsDesign4 {
       kpiStudents: "students in dataset",
       kpiPoints: "enrollment data points",
       whatExplore: "What you can explore",
-      whatExploreBody:
-        "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
+      whatExploreBody: "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
       feat1t: "Bar Chart Comparison",
-      feat1d: "Compare enrollment side by side across multiple universities for any academic year from 2018–19 to 2022–23.",
+      feat1d: "Compare enrollment side by side across multiple universities for each academic year.",
       feat2t: "Trend Analysis",
-      feat2d: "Track how enrollment changed year over year with a 5-year line chart and average reference.",
+      feat2d: "Track how enrollment changed year over year with a 5-year line chart.",
       feat3t: "Bilingual Interface",
-      feat3d: "Switch between English and French at any time. All labels, chart text, and number formats update instantly.",
+      feat3d: "Switch between English and French at any time.",
       feat4t: "Live Filters",
-      feat4d: "Select universities with color-coded checkboxes and update both charts simultaneously.",
+      feat4d: "Select universities and update both charts instantly.",
       included: "8 UNIVERSITIES INCLUDED",
       aboutData: "About the data",
-      aboutDataBody:
-        "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca). This dashboard uses a synthetic educational dataset for demonstration.",
+      aboutDataBody: "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca).",
       ready: "Ready to explore the data?",
-      readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages.",
-      footerLeft: "CampusStats · University of Ottawa · SEG3125 Assignment 5",
-      footerHome: "Home",
-      footerDash: "Dashboard",
-      footerSource: "univcan.ca"
+      readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages."
     };
 
     const fr = {
       langBtn: "🌐 English",
       subtitle: "Tableau de bord des inscriptions universitaires canadiennes",
       heroPill: "🎓 Données universitaires canadiennes",
-      heroMain: "Comparez les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les universités et les années pour explorer les données de façon interactive.",
+      heroMain: "Comparez les inscriptions étudiantes dans les principales universités canadiennes.",
       heroNote: "Remarque : Les chiffres d'inscription sont approximatifs et proviennent de données publiques d'Universités Canada.",
       totalStudents: "Total des étudiants (sélection)",
       largestUniversity: "Plus grande université",
@@ -121,24 +112,22 @@ class CampusStatsDesign4 {
       uniTrendChart: "Université — Graphique de tendance",
       selectUniTrend: "Sélectionnez une université pour voir sa tendance d'inscription sur 5 ans :",
       enrollmentComparison: "Comparaison des inscriptions par université",
-      enrollmentComparisonDesc: (y) => `Total des inscriptions par université — année ${y}. Utilisez les cases à cocher pour ajouter ou retirer des universités de la comparaison.`,
+      enrollmentComparisonDesc: (y) => `Total des inscriptions par université — année ${y}.`,
       enrollmentTrendTitle: "Tendance des inscriptions au fil du temps",
       enrollmentTrendDesc: (name) => `Variation annuelle des inscriptions pour ${name} de 2018–19 à 2022–23.`,
       avg5yr: "moyenne sur 5 ans",
       howToUse: "Comment utiliser CampusStats",
-      howToBody:
-        "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université pour afficher sa courbe sur 5 ans. Utilisez le bouton de langue pour basculer entre le français et l'anglais.",
+      howToBody: "Utilisez les contrôles pour explorer les graphiques et filtrer les universités.",
       dataSource: "Source des données : Universités Canada",
-      dataSourceBody: "Données provenant d'Universités Canada (univcan.ca). Les chiffres représentent les étudiants équivalents temps plein.",
+      dataSourceBody: "Données provenant d'Universités Canada (univcan.ca).",
       universitiesCount: (count, total) => `${count} sur ${total} universités`,
-      emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une à l'aide des cases ci-dessus.",
+      emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une.",
 
-      homeNavHome: "Accueil",
-      homeNavDash: "Tableau de bord",
+      home: "Accueil",
+      dashboard: "Tableau de bord",
       homePill: "🍁 Données universitaires canadiennes · 2018–2023",
       homeTitle: "Explorez les inscriptions universitaires canadiennes",
-      homeSub:
-        "Un tableau de bord bilingue interactif qui compare les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les institutions, filtrez par année et changez de langue.",
+      homeSub: "Un tableau de bord bilingue interactif comparant les inscriptions étudiantes.",
       openDashboard: "Ouvrir le tableau de bord →",
       learnMore: "En savoir plus",
       kpiTracked: "universités suivies",
@@ -146,26 +135,20 @@ class CampusStatsDesign4 {
       kpiStudents: "étudiants dans le jeu de données",
       kpiPoints: "points de données",
       whatExplore: "Ce que vous pouvez explorer",
-      whatExploreBody:
-        "CampusStats est conçu pour rendre les données d'inscription claires, interactives et accessibles dans les deux langues officielles.",
+      whatExploreBody: "CampusStats rend les données claires, interactives et accessibles dans les deux langues officielles.",
       feat1t: "Comparaison en histogramme",
-      feat1d: "Comparez les inscriptions côte à côte entre plusieurs universités pour chaque année de 2018–19 à 2022–23.",
+      feat1d: "Comparez les inscriptions entre plusieurs universités.",
       feat2t: "Analyse des tendances",
-      feat2d: "Suivez l'évolution des inscriptions année après année avec une courbe sur 5 ans et une moyenne de référence.",
+      feat2d: "Suivez l'évolution des inscriptions année par année.",
       feat3t: "Interface bilingue",
-      feat3d: "Basculez entre l'anglais et le français à tout moment. Les libellés, textes et formats numériques se mettent à jour instantanément.",
+      feat3d: "Basculez entre l'anglais et le français à tout moment.",
       feat4t: "Filtres en direct",
-      feat4d: "Sélectionnez les universités avec des cases à cocher colorées et mettez à jour les deux graphiques simultanément.",
+      feat4d: "Sélectionnez les universités et mettez à jour les graphiques instantanément.",
       included: "8 UNIVERSITÉS INCLUSES",
       aboutData: "À propos des données",
-      aboutDataBody:
-        "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca). Ce tableau de bord utilise un jeu de données éducatif synthétique pour démonstration.",
+      aboutDataBody: "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca).",
       ready: "Prêt à explorer les données ?",
-      readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités, filtrer par année et changer de langue.",
-      footerLeft: "CampusStats · Université d'Ottawa · SEG3125 Devoir 5",
-      footerHome: "Accueil",
-      footerDash: "Tableau de bord",
-      footerSource: "univcan.ca"
+      readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités."
     };
 
     return this.locale === "fr" ? fr : en;
@@ -176,8 +159,6 @@ class CampusStatsDesign4 {
   selectedArray() { return this.universities.filter((u) => this.selected.has(u.id)); }
   trendValues() { return this.years().map((y) => this.value(this.selectedTrend, y)); }
   totalSelected() { return this.selectedArray().reduce((sum, u) => sum + this.value(u.id), 0); }
-  totalAllCurrentYear() { return this.universities.reduce((sum, u) => sum + this.value(u.id), 0); }
-  totalPoints() { return this.universities.length * this.years().length; }
 
   largestSelected() {
     const arr = this.selectedArray();
@@ -198,70 +179,35 @@ class CampusStatsDesign4 {
 
   formatNum(n) { return Number(n).toLocaleString("en-CA"); }
   formatPct(n) { return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`; }
-
   displayUniName(u) { return this.locale === "fr" ? u.nameFr : u.name; }
   displayUniShort(u) { return this.locale === "fr" ? u.shortFr : u.short; }
-
-  goDashboard() {
-    this.currentPage = "dashboard";
-    this.mount();
-  }
-
-  goHome() {
-    this.currentPage = "home";
-    this.mount();
-  }
 
   mount() {
     const app = document.getElementById("app");
     if (!app) return;
-    app.innerHTML = this.page === "home" ? this.renderHome() : this.render();
+
+    app.innerHTML = this.page === "home" ? this.renderHome() : this.renderDashboard();
     this.bind();
+
     if (this.page === "dashboard") {
       this.drawBar();
       this.drawLine();
     }
   }
 
-    renderHome() {
-    const isFr = this.locale === "fr";
+  renderHome() {
+    const tr = this.t();
+    const totalAll = this.universities.reduce((sum, u) => sum + this.value(u.id), 0);
     return `
       <div class="hp-page">
         <div class="hp-container">
           <nav class="hp-nav">
             <div class="hp-brand"><span class="dot">◆</span><span>CampusStats</span></div>
             <div class="hp-links">
-              <button class="hp-tab active">${isFr ? "Accueil" : "Home"}</button>
-              <button class="hp-tab" id="goDashTop">${isFr ? "Tableau de bord" : "Dashboard"}</button>
+              <button class="hp-tab active">${tr.home}</button>
+              <button class="hp-tab" id="goDashTop">${tr.dashboard}</button>
             </div>
-            <button class="hp-lang" id="langBtn">${isFr ? "🌐 English" : "🌐 Français"}</button>
-          </nav>
-  
-          <section class="hp-hero">
-            <h1 class="hp-title">${isFr ? "Explorez les inscriptions universitaires canadiennes" : "Explore Canadian University Enrollment"}</h1>
-            <p class="hp-sub">${isFr ? "Un tableau de bord bilingue interactif." : "An interactive bilingual dashboard."}</p>
-            <button class="hp-btn primary" id="goDashHero">${isFr ? "Ouvrir le tableau de bord →" : "Open Dashboard →"}</button>
-          </section>
-        </div>
-      </div>
-    `;
-  }
-  
-  renderHome() {
-    const tr = this.t();
-    return `
-      <div class="hp-page">
-        <div class="hp-container">
-          <nav class="hp-nav">
-            <div class="hp-brand">
-              <span class="dot">◆</span>
-              <span>CampusStats</span>
-            </div>
-            <div class="hp-links">
-              <button class="hp-tab active" id="homeBtn">${tr.homeNavHome}</button>
-              <button class="hp-tab" id="dashBtnTop">${tr.homeNavDash}</button>
-            </div>
-            <button id="langBtn" class="hp-lang">${this.locale === "fr" ? "🌐 English" : "🌐 Français"}</button>
+            <button id="langBtn" class="hp-lang">${tr.langBtn}</button>
           </nav>
         </div>
 
@@ -271,15 +217,15 @@ class CampusStatsDesign4 {
             <h1 class="hp-title">${tr.homeTitle}</h1>
             <p class="hp-sub">${tr.homeSub}</p>
             <div class="hp-cta">
-              <button class="hp-btn primary" id="dashBtnHero">${tr.openDashboard}</button>
+              <button class="hp-btn primary" id="goDashHero">${tr.openDashboard}</button>
               <button class="hp-btn ghost">${tr.learnMore}</button>
             </div>
 
             <div class="hp-kpis">
               <div class="hp-kpi"><b>${this.universities.length}</b><span>${tr.kpiTracked}</span></div>
               <div class="hp-kpi"><b>${this.years().length}</b><span>${tr.kpiYears}</span></div>
-              <div class="hp-kpi"><b>${this.formatNum(this.totalAllCurrentYear())}</b><span>${tr.kpiStudents}</span></div>
-              <div class="hp-kpi"><b>${this.totalPoints()}</b><span>${tr.kpiPoints}</span></div>
+              <div class="hp-kpi"><b>${this.formatNum(totalAll)}</b><span>${tr.kpiStudents}</span></div>
+              <div class="hp-kpi"><b>${this.universities.length * this.years().length}</b><span>${tr.kpiPoints}</span></div>
             </div>
           </section>
         </div>
@@ -327,16 +273,9 @@ class CampusStatsDesign4 {
           <div class="hp-container">
             <h3>${tr.ready}</h3>
             <p>${tr.readyBody}</p>
-            <button class="hp-btn primary" id="dashBtnBottom">${tr.openDashboard}</button>
+            <button class="hp-btn primary" id="goDashBottom">${tr.openDashboard}</button>
           </div>
         </section>
-
-        <footer class="hp-footer">
-          <div class="hp-container">
-            <span>${tr.footerLeft}</span>
-            <span>${tr.footerHome} · ${tr.footerDash} · ${tr.footerSource}</span>
-          </div>
-        </footer>
       </div>
     `;
   }
@@ -467,22 +406,10 @@ class CampusStatsDesign4 {
       this.locale = this.locale === "en" ? "fr" : "en";
       this.mount();
     });
-    
-    document.getElementById("goDashTop")?.addEventListener("click", () => {
-      this.page = "dashboard";
-      this.mount();
-    });
-    
-    document.getElementById("goDashHero")?.addEventListener("click", () => {
-      this.page = "dashboard";
-      this.mount();
-    });
-    
-    document.getElementById("homeBtn")?.addEventListener("click", () => this.goHome());
 
-    document.getElementById("dashBtnTop")?.addEventListener("click", () => this.goDashboard());
-    document.getElementById("dashBtnHero")?.addEventListener("click", () => this.goDashboard());
-    document.getElementById("dashBtnBottom")?.addEventListener("click", () => this.goDashboard());
+    document.getElementById("goDashTop")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
+    document.getElementById("goDashHero")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
+    document.getElementById("goDashBottom")?.addEventListener("click", () => { this.page = "dashboard"; this.mount(); });
 
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
@@ -548,8 +475,7 @@ class CampusStatsDesign4 {
       ctx.setLineDash(i === yTicks ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(margin.l, y); ctx.lineTo(w - margin.r, y); ctx.stroke();
       const v = Math.round(top - (top * i) / yTicks);
-      ctx.setLineDash([]);
-      ctx.fillText(v === 0 ? "0" : `${Math.round(v / 1000)}K`, 16, y + 4);
+      ctx.setLineDash([]); ctx.fillText(v === 0 ? "0" : `${Math.round(v / 1000)}K`, 16, y + 4);
     }
 
     const slot = plotW / list.length;
@@ -560,8 +486,7 @@ class CampusStatsDesign4 {
       const bh = (val / top) * plotH;
       const x = margin.l + idx * slot + (slot - barW) / 2;
       const y = margin.t + plotH - bh;
-      ctx.fillStyle = u.color;
-      ctx.fillRect(x, y, barW, bh);
+      ctx.fillStyle = u.color; ctx.fillRect(x, y, barW, bh);
       ctx.fillStyle = "#62789a";
       ctx.save();
       ctx.translate(x + barW / 2, h - 16);
@@ -601,16 +526,13 @@ class CampusStatsDesign4 {
     const yMin = min - pad, yMax = max + pad;
 
     const yTicks = 4;
-    ctx.strokeStyle = "#d7deea";
-    ctx.fillStyle = "#7a8ca8";
-    ctx.font = "12px Inter, Arial";
+    ctx.strokeStyle = "#d7deea"; ctx.fillStyle = "#7a8ca8"; ctx.font = "12px Inter, Arial";
     for (let i = 0; i <= yTicks; i++) {
       const y = margin.t + (plotH * i) / yTicks;
       ctx.setLineDash(i === yTicks ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(margin.l, y); ctx.lineTo(w - margin.r, y); ctx.stroke();
       const v = Math.round(yMax - ((yMax - yMin) * i) / yTicks);
-      ctx.setLineDash([]);
-      ctx.fillText(`${Math.round(v / 1000)}K`, 20, y + 4);
+      ctx.setLineDash([]); ctx.fillText(`${Math.round(v / 1000)}K`, 20, y + 4);
     }
 
     const points = vals.map((v, i) => ({
@@ -618,24 +540,16 @@ class CampusStatsDesign4 {
       y: margin.t + ((yMax - v) / (yMax - yMin)) * plotH
     }));
 
-    ctx.strokeStyle = uni.color;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
+    ctx.strokeStyle = uni.color; ctx.lineWidth = 3; ctx.beginPath();
     points.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
     ctx.stroke();
 
     points.forEach((p) => {
-      ctx.fillStyle = uni.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      ctx.fillStyle = uni.color; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
     });
 
-    ctx.fillStyle = "#62789a";
-    ctx.textAlign = "center";
+    ctx.fillStyle = "#62789a"; ctx.textAlign = "center";
     years.forEach((yr, i) => {
       const x = margin.l + (i * plotW) / (years.length - 1);
       ctx.fillText(yr, x, h - 12);
