@@ -51,8 +51,7 @@ const STRINGS = {
     yoy: (name) => `Year-over-year enrollment change for ${name} from 2018–19 to 2022–23.`,
     avg5: "5-yr average",
     howTo: "How to use CampusStats",
-    howToText:
-      "Use the checkboxes to add or remove universities from the bar chart. Change the academic year using the year buttons. Select a university in the trend section to view its 5-year line chart. Switch languages at any time.",
+    howToText: "Use filters and trend selectors to explore the data.",
     sourceTitle: "Data source: Universities Canada",
     sourceText: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
 
@@ -60,8 +59,7 @@ const STRINGS = {
     homeNavDash: "Dashboard",
     homePill: "🍁 Canadian University Data · 2018–2023",
     homeTitle: "Explore Canadian University Enrollment",
-    homeSub:
-      "An interactive bilingual dashboard comparing student enrollment across major Canadian universities. Select institutions, filter by year, and switch languages.",
+    homeSub: "An interactive bilingual dashboard comparing student enrollment across major Canadian universities.",
     openDashboard: "Open Dashboard →",
     learnMore: "Learn more",
     kpiTracked: "universities tracked",
@@ -69,33 +67,27 @@ const STRINGS = {
     kpiStudents: "students in dataset",
     kpiPoints: "enrollment data points",
     whatExplore: "What you can explore",
-    whatExploreBody:
-      "CampusStats is designed to make enrollment data clear, interactive, and accessible in both official languages.",
+    whatExploreBody: "CampusStats is designed to make enrollment data clear and interactive.",
     feat1t: "Bar Chart Comparison",
-    feat1d: "Compare enrollment side by side across multiple universities for any academic year from 2018–19 to 2022–23.",
+    feat1d: "Compare enrollment side by side across universities.",
     feat2t: "Trend Analysis",
-    feat2d: "Track how enrollment changed year over year with a 5-year line chart and average reference.",
+    feat2d: "Track how enrollment changed year over year.",
     feat3t: "Bilingual Interface",
-    feat3d: "Switch between English and French at any time. All labels, chart text, and number formats update instantly.",
+    feat3d: "Switch between English and French instantly.",
     feat4t: "Live Filters",
-    feat4d: "Select universities with color-coded checkboxes and update both charts simultaneously.",
+    feat4d: "Select universities and update charts instantly.",
     included: "8 UNIVERSITIES INCLUDED",
     aboutData: "About the data",
-    aboutDataBody:
-      "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca). This dashboard uses a synthetic educational dataset for demonstration.",
+    aboutDataBody: "Enrollment figures are approximate values based on publicly available data from Universities Canada.",
     ready: "Ready to explore the data?",
-    readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages.",
-    footerLeft: "CampusStats · University of Ottawa · SEG3125 Assignment 5",
-    footerHome: "Home",
-    footerDash: "Dashboard",
-    footerSource: "univcan.ca"
+    readyBody: "Open the interactive dashboard to compare universities and filter by year."
   },
   fr: {
     langBtn: "🌐 English",
     subtitle: "Tableau de bord des inscriptions universitaires canadiennes",
     heroPill: "🎓 Données universitaires canadiennes",
-    heroMain: "Comparez les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les universités et les années pour explorer les données.",
-    heroNote: "Remarque : Les chiffres d'inscription sont approximatifs et proviennent de données publiques d'Universités Canada.",
+    heroMain: "Comparez les inscriptions étudiantes dans les principales universités canadiennes.",
+    heroNote: "Remarque : Les chiffres d'inscription sont approximatifs.",
     totalStudents: "Total des étudiants (sélection)",
     largestUni: "Plus grande université",
     avgEnrollment: "Inscription moyenne",
@@ -106,29 +98,27 @@ const STRINGS = {
     compare: "Comparer les universités",
     selectAll: "Tout sélectionner",
     clearAll: "Tout effacer",
-    selectUniversities: "Sélectionnez les universités à afficher dans l'histogramme :",
+    selectUniversities: "Sélectionnez les universités à afficher :",
     academicYear: "Année universitaire",
     totalByYear: (y) => `Total des inscriptions par université — année ${y}.`,
     trendTitle: "Université — Graphique de tendance",
-    trendHelp: "Sélectionnez une université pour voir sa tendance d'inscription sur 5 ans :",
+    trendHelp: "Sélectionnez une université pour voir sa tendance :",
     barTitle: "Comparaison des inscriptions par université",
-    barDesc: (y) => `Total des inscriptions par université — année ${y}. Utilisez les cases à cocher pour ajouter ou retirer des universités de la comparaison.`,
-    emptyBar: "Aucune université sélectionnée. Veuillez en sélectionner au moins une à l'aide des cases ci-dessus.",
+    barDesc: (y) => `Total des inscriptions par université — année ${y}.`,
+    emptyBar: "Aucune université sélectionnée.",
     lineTitle: "Tendance des inscriptions au fil du temps",
-    yoy: (name) => `Variation annuelle des inscriptions pour ${name} de 2018–19 à 2022–23.`,
+    yoy: (name) => `Variation annuelle des inscriptions pour ${name}.`,
     avg5: "moyenne sur 5 ans",
     howTo: "Comment utiliser CampusStats",
-    howToText:
-      "Utilisez les cases à cocher pour ajouter ou retirer des universités de l'histogramme. Changez l'année universitaire avec les boutons d'année. Sélectionnez une université pour voir sa courbe sur 5 ans. Changez de langue à tout moment.",
+    howToText: "Utilisez les filtres et les sélecteurs de tendance.",
     sourceTitle: "Source des données : Universités Canada",
-    sourceText: "Données provenant d'Universités Canada (univcan.ca). Les chiffres représentent les étudiants équivalents temps plein.",
+    sourceText: "Données provenant d'Universités Canada (univcan.ca).",
 
     homeNavHome: "Accueil",
     homeNavDash: "Tableau de bord",
     homePill: "🍁 Données universitaires canadiennes · 2018–2023",
     homeTitle: "Explorez les inscriptions universitaires canadiennes",
-    homeSub:
-      "Un tableau de bord bilingue interactif comparant les inscriptions étudiantes dans les principales universités canadiennes. Sélectionnez les institutions, filtrez par année et changez de langue.",
+    homeSub: "Un tableau de bord bilingue interactif comparant les inscriptions étudiantes.",
     openDashboard: "Ouvrir le tableau de bord →",
     learnMore: "En savoir plus",
     kpiTracked: "universités suivies",
@@ -136,31 +126,25 @@ const STRINGS = {
     kpiStudents: "étudiants dans le jeu de données",
     kpiPoints: "points de données",
     whatExplore: "Ce que vous pouvez explorer",
-    whatExploreBody:
-      "CampusStats est conçu pour rendre les données d'inscription claires, interactives et accessibles dans les deux langues officielles.",
+    whatExploreBody: "CampusStats rend les données claires et interactives.",
     feat1t: "Comparaison en histogramme",
-    feat1d: "Comparez les inscriptions côte à côte entre plusieurs universités pour chaque année de 2018–19 à 2022–23.",
+    feat1d: "Comparez les inscriptions entre universités.",
     feat2t: "Analyse des tendances",
-    feat2d: "Suivez l'évolution des inscriptions année après année avec une courbe sur 5 ans et une moyenne de référence.",
+    feat2d: "Suivez l'évolution des inscriptions.",
     feat3t: "Interface bilingue",
-    feat3d: "Basculez entre l'anglais et le français à tout moment. Les libellés, textes et formats numériques se mettent à jour instantanément.",
+    feat3d: "Basculez entre l'anglais et le français.",
     feat4t: "Filtres en direct",
-    feat4d: "Sélectionnez les universités avec des cases à cocher colorées et mettez à jour les deux graphiques simultanément.",
+    feat4d: "Sélectionnez les universités et mettez à jour les graphiques.",
     included: "8 UNIVERSITÉS INCLUSES",
     aboutData: "À propos des données",
-    aboutDataBody:
-      "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada (univcan.ca). Ce tableau de bord utilise un jeu de données éducatif synthétique.",
+    aboutDataBody: "Les chiffres d'inscription sont approximatifs.",
     ready: "Prêt à explorer les données ?",
-    readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités, filtrer par année et changer de langue.",
-    footerLeft: "CampusStats · Université d'Ottawa · SEG3125 Devoir 5",
-    footerHome: "Accueil",
-    footerDash: "Tableau de bord",
-    footerSource: "univcan.ca"
+    readyBody: "Ouvrez le tableau de bord interactif."
   }
 };
 
 export default function Design4() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("home"); // IMPORTANT: homepage first
   const [locale, setLocale] = useState("en");
   const [year, setYear] = useState("2022-23");
   const [selectedTrend, setSelectedTrend] = useState("uoft");
@@ -303,13 +287,6 @@ export default function Design4() {
             <button className="hp-btn primary" onClick={() => setPage("dashboard")}>{t.openDashboard}</button>
           </div>
         </section>
-
-        <footer className="hp-footer">
-          <div className="hp-container">
-            <span>{t.footerLeft}</span>
-            <span>{t.footerHome} · {t.footerDash} · {t.footerSource}</span>
-          </div>
-        </footer>
       </div>
     );
   }
