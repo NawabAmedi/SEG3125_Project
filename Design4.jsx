@@ -27,9 +27,7 @@ export default function Design4() {
   const [locale, setLocale] = useState("en");
   const [year, setYear] = useState("2022-23");
   const [selectedTrend, setSelectedTrend] = useState("uoft");
-  const [selected, setSelected] = useState(new Set(["mcgill", "uottawa", "queens", "mcmaster", "waterloo"]));
-  const [helpCollapsed, setHelpCollapsed] = useState(false);
-  const [sourceCollapsed, setSourceCollapsed] = useState(false);
+  const [selected] = useState(new Set(["mcgill", "uottawa", "queens", "mcmaster", "waterloo"]));
 
   const selectedArray = useMemo(() => UNIVERSITIES.filter((u) => selected.has(u.id)), [selected]);
   const trendUni = UNIVERSITIES.find((u) => u.id === selectedTrend);
@@ -69,7 +67,7 @@ export default function Design4() {
   return (
     <div className="cs-page">
       <header className="topbar card-lite">
-        <div className="brand">
+        <div className="brand" style={{ cursor: "pointer" }} onClick={() => setPage("home")}>
           <div className="brand-icon">✉</div>
           <div>
             <h1>CampusStats</h1>
@@ -94,25 +92,21 @@ export default function Design4() {
         <article className="card chart-card">
           <h3>{locale === "fr" ? "Comparaison des inscriptions" : "Enrollment Comparison"}</h3>
           <p className="muted">{totalSelected.toLocaleString("en-CA")}</p>
-          {!selectedArray.length ? (
-            <div className="empty-chart">No universities selected.</div>
-          ) : (
-            <svg viewBox="0 0 640 320" width="100%" height="320">
-              {selectedArray.map((u, idx) => {
-                const val = ENROLLMENT[year][u.id];
-                const barW = 70, gap = 16;
-                const x = 40 + idx * (barW + gap);
-                const h = (val / topBar) * 220;
-                const y = 260 - h;
-                return (
-                  <g key={u.id}>
-                    <rect x={x} y={y} width={barW} height={h} rx="6" fill={u.color} />
-                    <text x={x + barW / 2} y={286} textAnchor="middle" fontSize="12" fill="#5f7698">{u.short}</text>
-                  </g>
-                );
-              })}
-            </svg>
-          )}
+          <svg viewBox="0 0 640 320" width="100%" height="320">
+            {selectedArray.map((u, idx) => {
+              const val = ENROLLMENT[year][u.id];
+              const barW = 70, gap = 16;
+              const x = 40 + idx * (barW + gap);
+              const h = (val / topBar) * 220;
+              const y = 260 - h;
+              return (
+                <g key={u.id}>
+                  <rect x={x} y={y} width={barW} height={h} rx="6" fill={u.color} />
+                  <text x={x + barW / 2} y={286} textAnchor="middle" fontSize="12" fill="#5f7698">{u.short}</text>
+                </g>
+              );
+            })}
+          </svg>
         </article>
 
         <article className="card chart-card">
