@@ -2,6 +2,7 @@ class CampusStatsDesign4 {
   constructor() {
     this.locale = "en";
     this.page = "home"; // homepage first
+    this.hasEnteredDashboard = false; // dashboard only after explicit click
     this.year = "2022-23";
     this.selectedTrend = "uoft";
     this.helpCollapsed = false;
@@ -62,7 +63,6 @@ class CampusStatsDesign4 {
       dataSourceBody: "Data sourced from Universities Canada (univcan.ca). Figures represent full-time equivalent students.",
       universitiesCount: (count, total) => `${count} of ${total} universities`,
       emptySelectionMessage: "No universities selected. Please select at least one university using the checkboxes above.",
-
       home: "Home",
       dashboard: "Dashboard",
       homePill: "🍁 Canadian University Data · 2018–2023",
@@ -84,9 +84,6 @@ class CampusStatsDesign4 {
       feat3d: "Switch between English and French at any time. Labels, chart text, and number formats update instantly.",
       feat4t: "Live Filters",
       feat4d: "Select universities with color-coded checkboxes, choose academic years, and update both charts simultaneously.",
-      included: "8 UNIVERSITIES INCLUDED",
-      aboutData: "About the data",
-      aboutDataBody: "Enrollment figures are approximate values based on publicly available data from Universities Canada (univcan.ca). This dashboard uses synthetic data clearly labeled as such.",
       ready: "Ready to explore the data?",
       readyBody: "Open the interactive dashboard to compare universities, filter by year, and switch languages."
     };
@@ -122,7 +119,6 @@ class CampusStatsDesign4 {
       dataSourceBody: "Données provenant d'Universités Canada (univcan.ca).",
       universitiesCount: (count, total) => `${count} sur ${total} universités`,
       emptySelectionMessage: "Aucune université sélectionnée. Veuillez en sélectionner au moins une.",
-
       home: "Accueil",
       dashboard: "Tableau de bord",
       homePill: "🍁 Données universitaires canadiennes · 2018–2023",
@@ -144,9 +140,6 @@ class CampusStatsDesign4 {
       feat3d: "Basculez entre l'anglais et le français à tout moment.",
       feat4t: "Filtres en direct",
       feat4d: "Sélectionnez les universités et mettez à jour les graphiques instantanément.",
-      included: "8 UNIVERSITÉS INCLUSES",
-      aboutData: "À propos des données",
-      aboutDataBody: "Les chiffres d'inscription sont des valeurs approximatives basées sur des données publiques d'Universités Canada.",
       ready: "Prêt à explorer les données ?",
       readyBody: "Ouvrez le tableau de bord interactif pour comparer les universités."
     };
@@ -186,13 +179,25 @@ class CampusStatsDesign4 {
     const app = document.getElementById("app");
     if (!app) return;
 
-    app.innerHTML = this.page === "home" ? this.renderHome() : this.renderDashboard();
+    const shouldRenderDashboard = this.page === "dashboard" && this.hasEnteredDashboard;
+    app.innerHTML = shouldRenderDashboard ? this.renderDashboard() : this.renderHome();
     this.bind();
 
-    if (this.page === "dashboard") {
+    if (shouldRenderDashboard) {
       this.drawBar();
       this.drawLine();
     }
+  }
+
+  goDashboard() {
+    this.hasEnteredDashboard = true;
+    this.page = "dashboard";
+    this.mount();
+  }
+
+  goHome() {
+    this.page = "home";
+    this.mount();
   }
 
   renderHome() {
@@ -230,27 +235,6 @@ class CampusStatsDesign4 {
             </div>
           </section>
         </div>
-
-        <section class="hp-section">
-          <div class="hp-container">
-            <h2>${tr.whatExplore}</h2>
-            <p class="lead">${tr.whatExploreBody}</p>
-            <div class="hp-cards">
-              <article class="hp-card"><h3>${tr.feat1t}</h3><p>${tr.feat1d}</p></article>
-              <article class="hp-card"><h3>${tr.feat2t}</h3><p>${tr.feat2d}</p></article>
-              <article class="hp-card"><h3>${tr.feat3t}</h3><p>${tr.feat3d}</p></article>
-              <article class="hp-card"><h3>${tr.feat4t}</h3><p>${tr.feat4d}</p></article>
-            </div>
-          </div>
-        </section>
-
-        <section class="hp-cta-bottom">
-          <div class="hp-container">
-            <h3>${tr.ready}</h3>
-            <p>${tr.readyBody}</p>
-            <button class="hp-btn primary" id="goDashBottom">${tr.openDashboard}</button>
-          </div>
-        </section>
       </div>
     `;
   }
@@ -265,7 +249,7 @@ class CampusStatsDesign4 {
     return `
       <div class="cs-page">
         <header class="topbar card-lite">
-          <div class="brand">
+          <div class="brand" id="goHomeBrand" style="cursor:pointer" title="${tr.home}">
             <div class="brand-icon">✉</div>
             <div>
               <h1>CampusStats</h1>
@@ -368,25 +352,11 @@ class CampusStatsDesign4 {
       this.mount();
     });
 
-    document.getElementById("goDashTop")?.addEventListener("click", () => {
-      this.page = "dashboard";
-      this.mount();
-    });
+    document.getElementById("goDashTop")?.addEventListener("click", () => this.goDashboard());
+    document.getElementById("goDashHero")?.addEventListener("click", () => this.goDashboard());
 
-    document.getElementById("goDashHero")?.addEventListener("click", () => {
-      this.page = "dashboard";
-      this.mount();
-    });
-
-    document.getElementById("goDashBottom")?.addEventListener("click", () => {
-      this.page = "dashboard";
-      this.mount();
-    });
-
-    document.getElementById("goHome")?.addEventListener("click", () => {
-      this.page = "home";
-      this.mount();
-    });
+    document.getElementById("goHome")?.addEventListener("click", () => this.goHome());
+    document.getElementById("goHomeBrand")?.addEventListener("click", () => this.goHome());
 
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
