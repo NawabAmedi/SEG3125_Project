@@ -1,3 +1,5 @@
+console.log("DESIGN4 LOADED", new Date().toISOString());
+
 class CampusStatsDesign4 {
   constructor() {
     this.locale = "en";
