@@ -300,3 +300,41 @@ flex-direction:column;
 }
 
 }
+.hp-data {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+
+.hp-data-info {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.data-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  padding: 22px 0;
+  border-bottom: 1px solid #e5eaf2;
+  font-size: 18px;
+}
+
+
+.data-row:first-child {
+  border-top: none;
+}
+
+
+.data-row b {
+  font-size: 18px;
+  color: #12264a;
+}
+
+
+.data-row span {
+  color: #23395d;
+}
