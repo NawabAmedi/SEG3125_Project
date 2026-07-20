@@ -227,12 +227,106 @@ class CampusStatsDesign4 {
               <button class="hp-btn ghost">${tr.learnMore}</button>
             </div>
 
-            <div class="hp-kpis">
-              <div class="hp-kpi"><b>${this.universities.length}</b><span>${tr.kpiTracked}</span></div>
-              <div class="hp-kpi"><b>${this.years().length}</b><span>${tr.kpiYears}</span></div>
-              <div class="hp-kpi"><b>${this.formatNum(totalAll)}</b><span>${tr.kpiStudents}</span></div>
-              <div class="hp-kpi"><b>${this.universities.length * this.years().length}</b><span>${tr.kpiPoints}</span></div>
-            </div>
+          <div class="hp-kpis">
+          <div class="hp-kpi">
+            <b>${this.universities.length}</b>
+            <span>${tr.kpiTracked}</span>
+          </div>
+        
+          <div class="hp-kpi">
+            <b>${this.years().length}</b>
+            <span>${tr.kpiYears}</span>
+          </div>
+        
+          <div class="hp-kpi">
+            <b>${this.formatNum(totalAll)}</b>
+            <span>${tr.kpiStudents}</span>
+          </div>
+        
+          <div class="hp-kpi">
+            <b>${this.universities.length * this.years().length}</b>
+            <span>${tr.kpiPoints}</span>
+          </div>
+        </div>
+ 
+        <section class="hp-explore">
+        
+        <h2>${tr.whatExplore}</h2>
+        
+        <p>
+        ${tr.whatExploreBody}
+        </p>
+
+        <div class="hp-feature-grid">
+        
+        <div class="hp-feature">
+        <h3>📊 ${tr.feat1t}</h3>
+        <p>${tr.feat1d}</p>
+        </div>
+
+        <div class="hp-feature">
+        <h3>📈 ${tr.feat2t}</h3>
+        <p>${tr.feat2d}</p>
+        </div>
+
+        <div class="hp-feature">
+        <h3>🌐 ${tr.feat3t}</h3>
+        <p>${tr.feat3d}</p>
+        </div>
+
+        <div class="hp-feature">
+        <h3>⚡ ${tr.feat4t}</h3>
+        <p>${tr.feat4d}</p>
+        </div>
+        
+        </div>
+        
+        </section>
+        
+        
+        
+        <section class="hp-universities">
+        
+        <h3>8 UNIVERSITIES INCLUDED</h3>
+        
+        <div class="uni-pills">
+        
+        ${this.universities.map(u => 
+        `
+        <span>
+        <i style="background:${u.color}"></i>
+        ${this.displayUniName(u)}
+        </span>
+        `
+        ).join("")}
+        </div>
+        </section>
+        <section class="hp-data">
+        <div>
+        <h2>About the data</h2>
+        
+        <p>
+        Enrollment figures are approximate values based on publicly available data from Universities Canada.
+        </p>
+        
+        </div>
+        
+        <div class="hp-data-info">
+        <p><b>Data range</b> 2018–19 → 2022–23</p>
+        <p><b>Universities</b> 8 major Canadian universities</p>
+        <p><b>Data type</b> Full-time equivalent</p>
+        <p><b>Source</b> univcan.ca</p>
+        </div>
+        </section>
+        <section class="hp-bottom">
+        
+        <h2>${tr.ready}</h2>
+        <p>${tr.readyBody}</p>
+        
+        <button class="hp-btn primary" id="goDashBottom">
+        ${tr.openDashboard}
+        </button>
+        </section>
           </section>
         </div>
       </div>
