@@ -2,8 +2,8 @@
 class CampusStatsDesign4 {
   constructor() {
     this.locale = "en";
-    this.page = "dashboard"; // dashboard first
-    this.hasEnteredDashboard = true; // render dashboard immediately
+    this.page = "home";
+    this.hasEnteredDashboard = false;
     this.year = "2022-23";
     this.selectedTrend = "uoft";
     this.helpCollapsed = false;
