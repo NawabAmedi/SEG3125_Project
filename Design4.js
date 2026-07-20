@@ -1,6 +1,5 @@
 
 class CampusStatsDesign4 {
-  console.log("DESIGN4 LOADED", new Date().toISOString());
   constructor() {
     this.locale = "en";
     this.page = "home"; // homepage first
