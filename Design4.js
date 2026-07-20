@@ -1,7 +1,7 @@
 class CampusStatsDesign4 {
   constructor() {
     this.locale = "en";
-    this.page = "home"; // START ON HOME
+    this.page = "home"; // homepage first
     this.year = "2022-23";
     this.selectedTrend = "uoft";
     this.helpCollapsed = false;
@@ -186,9 +186,7 @@ class CampusStatsDesign4 {
     const app = document.getElementById("app");
     if (!app) return;
 
-    // THIS IS THE IMPORTANT CHANGE
-    app.innerHTML = this.page === "home" ? this.renderHome() : this.render();
-
+    app.innerHTML = this.page === "home" ? this.renderHome() : this.renderDashboard();
     this.bind();
 
     if (this.page === "dashboard") {
@@ -205,7 +203,7 @@ class CampusStatsDesign4 {
       <div class="hp-page">
         <div class="hp-container">
           <nav class="hp-nav">
-            <div class="hp-brand"><span class="dot">✉</span><span>CampusStats</span></div>
+            <div class="hp-brand"><span class="dot">◆</span><span>CampusStats</span></div>
             <div class="hp-links">
               <button class="hp-tab active">${tr.home}</button>
               <button class="hp-tab" id="goDashTop">${tr.dashboard}</button>
@@ -257,8 +255,7 @@ class CampusStatsDesign4 {
     `;
   }
 
-  // KEEP YOUR CURRENT DASHBOARD RENDER LOGIC HERE
-  render() {
+  renderDashboard() {
     const tr = this.t();
     const trUni = this.universities.find((u) => u.id === this.selectedTrend);
     const growth = this.growthFor(this.selectedTrend);
@@ -277,6 +274,10 @@ class CampusStatsDesign4 {
           </div>
           <button id="langBtn" class="lang-btn">${tr.langBtn}</button>
         </header>
+
+        <section class="controls card">
+          <button class="text-btn" id="goHome">← ${tr.home}</button>
+        </section>
 
         <section class="hero card-hero">
           <div class="pill">${tr.heroPill}</div>
@@ -371,12 +372,19 @@ class CampusStatsDesign4 {
       this.page = "dashboard";
       this.mount();
     });
+
     document.getElementById("goDashHero")?.addEventListener("click", () => {
       this.page = "dashboard";
       this.mount();
     });
+
     document.getElementById("goDashBottom")?.addEventListener("click", () => {
       this.page = "dashboard";
+      this.mount();
+    });
+
+    document.getElementById("goHome")?.addEventListener("click", () => {
+      this.page = "home";
       this.mount();
     });
 
