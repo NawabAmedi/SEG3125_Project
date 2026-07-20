@@ -261,6 +261,11 @@ class CampusStatsDesign4 {
 
         <section class="controls card">
           <button class="text-btn" id="goHome">← ${tr.home}</button>
+          <button class="text-btn" id="goHomeBtn">🏠 ${tr.home}</button>
+        </section>
+        
+        <section class="controls card">
+          <button class="text-btn" id="goHome">← ${tr.home}</button>
         </section>
 
         <section class="hero card-hero">
@@ -351,6 +356,8 @@ class CampusStatsDesign4 {
       this.locale = this.locale === "en" ? "fr" : "en";
       this.mount();
     });
+
+    document.getElementById("goHomeBtn")?.addEventListener("click", () => this.goHome());
 
     document.getElementById("goDashTop")?.addEventListener("click", () => this.goDashboard());
     document.getElementById("goDashHero")?.addEventListener("click", () => this.goDashboard());
