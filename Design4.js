@@ -264,10 +264,6 @@ class CampusStatsDesign4 {
           <button class="text-btn" id="goHome">← ${tr.home}</button>
           <button class="text-btn" id="goHomeBtn">🏠 ${tr.home}</button>
         </section>
-        
-        <section class="controls card">
-          <button class="text-btn" id="goHome">← ${tr.home}</button>
-        </section>
 
         <section class="hero card-hero">
           <div class="pill">${tr.heroPill}</div>
@@ -307,7 +303,9 @@ class CampusStatsDesign4 {
               <strong class="trend-title">${tr.uniTrendChart}</strong>
               <p class="muted">${tr.selectUniTrend}</p>
               <div class="trend-grid">
-                ${this.universities.map((u) => `<button class="trend-chip ${u.id === this.selectedTrend ? "active" : ""}" data-trend="${u.id}"><i style="background:${u.color}"></i>${this.displayUniShort(u)}</button>`).join("")}
+                ${this.universities
+                  .map((u) => `<button class="trend-chip ${u.id === this.selectedTrend ? "active" : ""}" data-trend="${u.id}"><i style="background:${u.color}"></i>${this.displayUniShort(u)}</button>`)
+                  .join("")}
               </div>
             </div>
           </div>
