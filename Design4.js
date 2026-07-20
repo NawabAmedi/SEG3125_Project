@@ -259,10 +259,6 @@ class CampusStatsDesign4 {
           <button id="langBtn" class="lang-btn">${tr.langBtn}</button>
         </header>
 
-        <section class="controls card">
-          <button class="text-btn" id="goHome">← ${tr.home}</button>
-          <button class="text-btn" id="goHomeBtn">🏠 ${tr.home}</button>
-        </section>
 
         <section class="hero card-hero">
           <div class="pill">${tr.heroPill}</div>
@@ -360,8 +356,6 @@ class CampusStatsDesign4 {
     document.getElementById("goDashTop")?.addEventListener("click", () => this.goDashboard());
     document.getElementById("goDashHero")?.addEventListener("click", () => this.goDashboard());
 
-    document.getElementById("goHome")?.addEventListener("click", () => this.goHome());
-    document.getElementById("goHomeBrand")?.addEventListener("click", () => this.goHome());
 
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
