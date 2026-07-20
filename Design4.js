@@ -300,9 +300,9 @@ class CampusStatsDesign4 {
         `
         ).join("")}
         </div>
-        </section>
         <section class="hp-data">
-        <div>
+
+        <div class="hp-data-text">
         <h2>About the data</h2>
         
         <p>
@@ -312,11 +312,29 @@ class CampusStatsDesign4 {
         </div>
         
         <div class="hp-data-info">
-        <p><b>Data range</b> 2018–19 → 2022–23</p>
-        <p><b>Universities</b> 8 major Canadian universities</p>
-        <p><b>Data type</b> Full-time equivalent</p>
-        <p><b>Source</b> univcan.ca</p>
+        
+        <div class="data-row">
+        <b>Data range</b>
+        <span>2018–19 → 2022–23</span>
         </div>
+        
+        <div class="data-row">
+        <b>Universities</b>
+        <span>8 major Canadian universities</span>
+        </div>
+        
+        <div class="data-row">
+        <b>Data type</b>
+        <span>Full-time equivalent</span>
+        </div>
+        
+        <div class="data-row">
+        <b>Source</b>
+        <span>univcan.ca</span>
+        </div>
+        
+        </div>
+        
         </section>
         <section class="hp-bottom">
         
