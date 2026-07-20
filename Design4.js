@@ -444,7 +444,7 @@ class CampusStatsDesign4 {
       this.locale = this.locale === "en" ? "fr" : "en";
       this.mount();
     });
-
+    document.getElementById("goDashBottom")?.addEventListener("click", () => this.goDashboard());
     document.getElementById("goHomeBtn")?.addEventListener("click", () => this.goHome());
 
     document.getElementById("goDashTop")?.addEventListener("click", () => this.goDashboard());
