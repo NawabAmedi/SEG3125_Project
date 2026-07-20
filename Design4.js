@@ -1,5 +1,3 @@
-alert("NEW VERSION");
-
 class CampusStatsDesign4 {
   constructor() {
     this.locale = "en";
