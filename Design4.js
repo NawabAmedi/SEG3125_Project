@@ -446,16 +446,13 @@ class CampusStatsDesign4 {
     });
     document.getElementById("goDashBottom")?.addEventListener("click", () => this.goDashboard());
     document.getElementById("goHomeBtn")?.addEventListener("click", () => this.goHome());
-
-    document.getElementById("goHome")?.addEventListener("click", () => {
-      this.page = "home";
-      this.mount();
-    });
     
     document.getElementById("goDashTop")?.addEventListener("click", () => this.goDashboard());
     document.getElementById("goDashHero")?.addEventListener("click", () => this.goDashboard());
 
-
+    document.getElementById("goHome")?.addEventListener("click", () => this.goHome()); 
+    document.getElementById("goHomeBrand")?.addEventListener("click", () => this.goHome());
+    
     document.querySelectorAll("[data-year]").forEach((b) => b.addEventListener("click", () => {
       this.year = b.dataset.year;
       this.mount();
