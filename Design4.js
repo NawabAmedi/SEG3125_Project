@@ -180,7 +180,7 @@ class CampusStatsDesign4 {
     if (!app) return;
 
     const shouldRenderDashboard = this.page === "dashboard" && this.hasEnteredDashboard;
-    app.innerHTML = this.hasEnteredDashboard ? this.renderDashboard() : this.renderHome();
+    app.innerHTML = shouldRenderDashboard ? this.renderDashboard() : this.renderHome();
     this.bind();
 
     if (shouldRenderDashboard) {
