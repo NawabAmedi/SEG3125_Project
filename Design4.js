@@ -1,3 +1,4 @@
+alert("NEW VERSION");
 
 class CampusStatsDesign4 {
   constructor() {
